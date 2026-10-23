@@ -26,6 +26,46 @@ var CORX = {
   branco: ['BRANCO', '#ffffff', 'c_nuvem'], preto: ['PRETO', '#2b2b33', 'c_carvao'], rosa: ['ROSA', '#ff6fb5', 'c_flor'], marrom: ['MARROM', '#8b5a2b', 'c_marrom']
 };
 
+
+/* ---------- encaixe automático das opções na tela (qualquer aparelho/orientação) ---------- */
+function overflowPx() { return document.documentElement.scrollHeight - innerHeight; }
+function fitBox(box, opt) {
+  if (!box || !box.children.length || !box.offsetParent) return;
+  opt = opt || {}; var n = box.children.length, gap = opt.gap || (innerWidth < 500 ? 10 : 16), extraH = opt.extraH || 0;
+  box.style.width = '100%'; box.style.maxWidth = 'none';
+  var W = box.clientWidth, H = innerHeight - box.getBoundingClientRect().top - (opt.below || 70), best = null;
+  for (var cols = 1; cols <= n; cols++) {
+    var rows = Math.ceil(n / cols), s = Math.min((W - gap * (cols - 1)) / cols, (H - gap * (rows - 1)) / rows - extraH);
+    if (!best || s > best[1] + 2) best = [cols, s];
+  }
+  var big = Math.max(1, Math.min(innerWidth, innerHeight) / 560), cols_ = best[0], rows_ = Math.ceil(n / cols_), s = Math.max(opt.min || 52, Math.min(best[1], (opt.max || 190) * big));
+  box.style.display = 'flex'; box.style.flexWrap = 'wrap'; box.style.justifyContent = 'center'; box.style.gap = (gap + extraH) + 'px ' + gap + 'px';
+  box.style.marginLeft = 'auto'; box.style.marginRight = 'auto';
+  function apply() {
+    box.style.maxWidth = (cols_ * s + gap * (cols_ - 1) + 2) + 'px';
+    [].forEach.call(box.children, function (c) { c.style.width = s + 'px'; c.style.height = s + 'px'; c.style.flex = 'none'; if (opt.pad) c.style.padding = Math.round(s * opt.pad) + 'px'; });
+  }
+  apply();
+  for (var k = 0, ov = overflowPx(); ov > 1 && s > (opt.min || 52) && k < 15; k++, ov = overflowPx()) { s = Math.max(opt.min || 52, s - Math.max(4, ov / rows_)); apply(); }
+}
+function shrinkTo(el, prop, minV) {  /* reduz um elemento até a página caber sem rolar */
+  if (!el || !el.getClientRects().length) return; var ov = overflowPx();
+  for (var k = 0; ov > 1 && k < 12; k++) { var cur = el.getBoundingClientRect()[prop === 'width' ? 'width' : 'height']; var nv = Math.max(minV, cur - ov - 2); if (nv >= cur) break; if (prop === 'maxh') el.style.maxHeight = nv + 'px'; else el.style[prop] = nv + 'px'; ov = overflowPx(); }
+}
+function fitNow() {
+  requestAnimationFrame(function () {
+    var ow = document.getElementById('c-obj'), tg = document.getElementById('s-img'), nb = document.getElementById('n-box');
+    if (CUR === 'cores') { ow.style.width = ''; ow.style.height = ''; fitBox(document.getElementById('c-opts'), { below: 50, max: 130, extraH: 30, min: 46 }); shrinkTo(ow, 'width', 90); if (ow.style.width) ow.style.height = ow.style.width; }
+    if (CUR === 'sombras') { tg.style.height = ''; fitBox(document.getElementById('s-opts'), { below: 40, max: 170, pad: 0.08 }); shrinkTo(tg, 'height', 60); }
+    if (CUR === 'formas') fitBox(document.getElementById('f-opts'), { below: 80, max: 200, pad: 0.1 });
+    if (CUR === 'contar') { nb.style.minHeight = ''; fitBox(document.getElementById('n-opts'), { below: 40, max: 120, min: 48 }); nb.style.minHeight = '0'; }
+    if (CUR === 'piano') { var k = document.getElementById('keys'); k.style.height = ''; shrinkTo(k, 'height', 110); }
+    if (CUR === 'pintar') { var sv = document.getElementById('svg'), pl = document.getElementById('pal'); sv.style.maxHeight = ''; pl.style.width = ''; shrinkTo(sv, 'maxh', 160); if (innerWidth > innerHeight) shrinkTo(pl, 'width', 130); }
+    if (CUR === 'memoria') memFit();
+  });
+}
+addEventListener('resize', fitNow); addEventListener('orientationchange', function () { setTimeout(fitNow, 300); });
+
 /* ---------- QUE COR É? ---------- */
 var cq = [], ci = 0, cLock = false, C_N = 8;
 function coresStart() {
@@ -57,6 +97,7 @@ function coresRound() {
     };
     box.appendChild(b);
   });
+  fitNow();
 }
 
 /* ---------- MEMÓRIA ---------- */
@@ -71,7 +112,9 @@ function memFit() {
     if (!best || w > best[1] + 0.5) best = [cols, w];
   }
   var w = Math.max(Math.min(best[1], 190), 42);
-  bd.style.gap = gap + 'px'; bd.style.gridTemplateColumns = 'repeat(' + best[0] + ',' + Math.floor(w) + 'px)'; bd.style.maxWidth = 'none'; bd.style.justifyContent = 'center';
+  bd.style.gap = gap + 'px'; bd.style.maxWidth = 'none'; bd.style.justifyContent = 'center';
+  var rows = Math.ceil(2 * n / best[0]);
+  for (var k = 0; k < 15; k++) { bd.style.gridTemplateColumns = 'repeat(' + best[0] + ',' + Math.floor(w) + 'px)'; var ov = overflowPx(); if (ov <= 1 || w <= 42) break; w = Math.max(42, w - Math.max(3, ov / rows * 0.75)); }
 }
 addEventListener('resize', function () { memFit(); });
 function memStart() {
@@ -160,6 +203,7 @@ function paintBind() { document.querySelectorAll('#svg .pz').forEach(function (p
 function paintSet(k) {
   var svg = document.getElementById('svg'); svg.innerHTML = k === 'juju' ? JUJU_SVG : DESENHOS[k](); paintBind();
   document.querySelectorAll('#dsel button').forEach(function (b) { b.classList.toggle('sel', b.dataset.k === k); });
+  fitNow();
 }
 function paintInit() {
   if (pInit) return; pInit = true; JUJU_SVG = document.getElementById('svg').innerHTML; var pal = document.getElementById('pal');
@@ -204,6 +248,7 @@ function contarRound() {
   while (ops.length < nOpt) { var r = Math.max(1, Math.min(10, nAns + Math.floor(Math.random() * 7) - 3)); if (ops.indexOf(r) < 0) ops.push(r); }
   shuffle(ops); var nb = document.getElementById('n-opts'); nb.innerHTML = ''; if (nRound > 0) setTimeout(function () { falar('q_quantos'); }, 300);
   ops.forEach(function (v, k) { var b = document.createElement('button'); b.textContent = v; b.style.background = NCOL[(v + k) % NCOL.length]; b.onclick = function () { contarPick(v, b); }; nb.appendChild(b); });
+  fitNow();
 }
 function contarPick(v, b) {
   if (nLock) return; if (v !== nAns) { shake(b); sNo(); fNo(); return; }
@@ -297,6 +342,7 @@ function sombrasRound() {
     };
     box.appendChild(b);
   });
+  fitNow();
 }
 
 /* ---------- FORMAS ---------- */
@@ -328,6 +374,7 @@ function formasRound(first) {
     };
     box.appendChild(b);
   });
+  fitNow();
   var wait = first ? (((FALAS.i_formas || [0, 4])[1]) * 1000 + 500) : 350; setTimeout(function () { if (CUR === 'formas') falar('f_' + FALVO); }, wait);
 }
 
@@ -348,12 +395,14 @@ function quebraBuild() {
   var availW = Math.min(document.querySelector('main').clientWidth - 8, 1000), availH = innerHeight - hdr - 150;
   var bw, bh;
   if (land) { bw = Math.min(availW * 0.56, availH * ar); }
-  else { bw = Math.min(availW, availH * 0.55 * ar); }
+  else { bw = Math.min(availW - 40, availH * 0.5 * ar); }
   bh = bw / ar; var pw = bw / QG.c, ph = bh / QG.r;
   bd.style.width = bw + 'px'; bd.style.height = bh + 'px'; bd.innerHTML = '<div class="ghost" style="background-image:url(' + url + ')"></div>';
   QG.pw = pw; QG.ph = ph; tr.innerHTML = '';
   var ts = land ? Math.min(1, (availW - bw - 30) / (pw * 2.2)) : Math.min(1, (availH * 0.42) / (ph * Math.ceil(QG.total / Math.max(1, Math.floor(availW / (pw + 10)))))) ;
-  ts = Math.max(0.55, Math.min(ts, 0.95)); QG.ts = ts;
+  var trayW = land ? Math.max(120, availW - bw - 90) : availW - 70, trayH = land ? availH + 60 : Math.max(120, innerHeight - hdr - bh - 150);
+  for (ts = 0.95; ts > 0.35; ts -= 0.05) { var pc = Math.max(1, Math.floor((trayW + 10) / (pw * ts + 10))), pr = Math.ceil(QG.total / pc); if (pr * (ph * ts + 10) <= trayH) break; }
+  QG.ts = ts;
   for (var i = 0; i < QG.total; i++) {
     var x = i % QG.c, y = Math.floor(i / QG.c);
     var s = document.createElement('div'); s.className = 'slot'; s.style.left = x * pw + 'px'; s.style.top = y * ph + 'px'; s.style.width = pw + 'px'; s.style.height = ph + 'px'; s.dataset.i = i; bd.appendChild(s);
@@ -432,7 +481,7 @@ function pianoInit() {
     Object.keys(SONGS).forEach(function (s) { var b = document.createElement('button'); b.className = 'btn grn'; b.textContent = '⭐ ' + SONGS[s][0]; b.onclick = function () { pianoSong(s); }; bar.appendChild(b); });
     var ins = document.createElement('button'); ins.className = 'btn'; ins.id = 'pi-ins'; ins.onclick = function () { INSTR = (INSTR + 1) % 3; insLbl(); pnote(523); }; bar.appendChild(ins); insLbl();
   }
-  pianoStop();
+  pianoStop(); fitNow();
 }
 function insLbl() { document.getElementById('pi-ins').textContent = ['🎹 Piano', '🎵 Sininho', '🤖 Robô'][INSTR]; }
 function pianoKey(i) {

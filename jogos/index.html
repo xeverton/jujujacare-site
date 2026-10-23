@@ -158,7 +158,7 @@ h1{font-size:clamp(30px,6vw,46px);line-height:1.05;text-align:center;margin:8px 
 
 /* ===== ajuste para celular, tablet e computador ===== */
 :root{--hdr:72px}
-main{max-width:1100px;padding:clamp(10px,2.2dvh,18px) clamp(10px,3vw,24px) 30px}
+main{max-width:1100px;padding:clamp(10px,2.2dvh,18px) clamp(10px,3vw,24px) 10px}
 @media(max-width:400px){.top{gap:4px;padding:6px 8px}.top img{height:24px}.top .back{font-size:14px;padding:3px 9px}.stars{font-size:14px;padding:1px 7px}.snd{width:36px;height:36px;font-size:15px}}
 .menu{grid-template-columns:repeat(auto-fill,minmax(min(240px,100%),1fr));gap:clamp(12px,2vw,22px)}
 .privp{display:none}#menu.on~.privp{display:block}
@@ -247,7 +247,7 @@ main{max-width:1100px;padding:clamp(10px,2.2dvh,18px) clamp(10px,3vw,24px) 30px}
 .pc.placed{position:absolute;border:0;border-radius:0;box-shadow:none;cursor:default;animation:snap .35s}
 .pc.no{animation:shake .45s}
 @keyframes snap{40%{transform:scale(1.12)}}
-@media (orientation:landscape){.qwrap{flex-direction:row;align-items:flex-start;justify-content:center}.qtray{width:auto;flex:1;max-width:46vw;max-height:calc(100dvh - 150px);overflow:auto}}
+@media (orientation:landscape){.qwrap{flex-direction:row;align-items:flex-start;justify-content:center}.qtray{width:auto;flex:1;max-width:46vw;overflow:hidden}}
 
 /* sem zoom por toque e sem menu ao segurar */
 html{-webkit-text-size-adjust:100%;touch-action:manipulation}
@@ -255,6 +255,23 @@ body{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
 img{-webkit-user-drag:none;-webkit-touch-callout:none}
 button,.card,.opt,.bub,.tr,.pc,.mcard{touch-action:manipulation;-webkit-touch-callout:none}
 .pc,.qboard,.qtray,.bath{touch-action:none}
+
+/* telas grandes: figuras maiores */
+@media (min-width:700px) and (min-height:700px){
+ .objwrap{width:min(520px,40dvh,70vw)}
+ .tgt{height:min(320px,26dvh)}
+ .cbox{min-height:min(360px,28dvh)}
+ .cbox .it{width:clamp(80px,min(14vw,13dvh),170px)}
+ .q{font-size:clamp(26px,3.4dvh,46px)}
+ .keys button{max-width:140px}.keys{height:clamp(200px,calc(100dvh - 360px),560px)}
+ .yard .tr img{width:clamp(60px,9dvh,120px)}
+ .mcard .ic{height:150px}.mcard .ic img{height:130px}
+}
+/* opções encaixadas por JS */
+#f-opts,#s-opts,#c-opts,#n-opts{grid-template-columns:none!important;display:flex}
+#f-opts button,#s-opts button{aspect-ratio:auto;padding:10px}
+#c-opts .opt{aspect-ratio:auto}
+#n-opts button{aspect-ratio:auto;font-size:clamp(28px,7vmin,64px)}
 </style></head><body>
 <header class="top"><a href="/" aria-label="Voltar ao site"><img src="img/logo.webp" alt="Juju Jacaré"></a>
 <button class="back" id="back" onclick="voltar()">⬅ Voltar ao site</button>
@@ -391,7 +408,7 @@ button,.card,.opt,.bub,.tr,.pc,.mcard{touch-action:manipulation;-webkit-touch-ca
 <div class="row"><button class="btn grn" id="w-again">Jogar de novo</button><button class="btn" onclick="hideWin();go('menu')">Outros jogos</button></div></div></div>
 <canvas id="party"></canvas>
 
-<script src="jogos.js?v=10"></script>
+<script src="jogos.js?v=15"></script>
 <script>
 /* ---------- utilidades ---------- */
 var STARS=0;try{STARS=+localStorage.getItem('jj_stars')||0}catch(e){}
@@ -415,7 +432,7 @@ function showWin(t,p,img,again,lbl){document.getElementById('w-again').textConte
 function hideWin(){document.getElementById('win').classList.remove('on');}
 function go(id){document.querySelectorAll('.scr').forEach(function(s){s.classList.toggle('on',s.id===id);});
  var bk=document.getElementById('back');bk.textContent=id==='menu'?'⬅ Voltar ao site':'⬅ Jogos';bk.style.visibility=(typeof APP!=='undefined'&&APP&&id==='menu')?'hidden':'';CUR=id;scrollTo(0,0);
- if(id==='cores')coresStart();if(id==='memoria')memStart();if(id==='pintar')paintInit();if(id==='contar')contarStart();if(id==='lixo')lixoStart();if(id==='bolhas')bolhasStart();else bolhasStop();if(id==='sombras')sombrasStart();if(id==='formas')formasStart();if(id==='quebra')quebraStart();if(id==='piano'){pianoInit();if(typeof musStop==='function')musStop();}else if(typeof STARTED!=='undefined'&&STARTED&&typeof musStart==='function')musStart();;if(id!=='piano'&&typeof pianoStop==='function')pianoStop();
+ if(id==='cores')coresStart();if(id==='memoria')memStart();if(id==='pintar')paintInit();if(id==='contar')contarStart();if(id==='lixo')lixoStart();if(id==='bolhas')bolhasStart();else bolhasStop();if(id==='sombras')sombrasStart();if(id==='formas')formasStart();if(id==='quebra')quebraStart();if(id==='piano'){pianoInit();if(typeof musStop==='function')musStop();}else if(typeof STARTED!=='undefined'&&STARTED&&typeof musStart==='function')musStart();;if(id!=='piano'&&typeof pianoStop==='function')pianoStop();if(typeof fitNow==='function')setTimeout(fitNow,60);
  if(typeof STARTED!=='undefined'&&STARTED){if(id==='menu')calar();else falar('i_'+id,true);}
  try{if(id==='menu')history.replaceState(null,'','#');else if(!NOPUSH)history.pushState({g:id},'','#'+id);else history.replaceState({g:id},'','#'+id);}catch(e){}NOPUSH=false;}
 
