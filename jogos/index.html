@@ -45,6 +45,7 @@ h1{font-size:clamp(30px,6vw,46px);line-height:1.05;text-align:center;margin:8px 
 .q{font-size:clamp(28px,6vw,40px);font-weight:800}
 .objwrap{position:relative;width:min(300px,62vw);aspect-ratio:1;margin:6px auto}
 .objwrap img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transition:transform .25s}
+#c-grey{filter:grayscale(1) brightness(1.12) contrast(.8)}
 .objwrap .col{clip-path:circle(0% at 50% 50%);transition:clip-path .55s ease-out}
 .objwrap.done .col{clip-path:circle(75% at 50% 50%)}
 .objwrap.done img{animation:pop .5s}
@@ -282,7 +283,7 @@ button,.card,.opt,.bub,.tr,.pc,.mcard{touch-action:manipulation;-webkit-touch-ca
 <!-- ================= CORES ================= -->
 <section class="scr" id="cores">
 <div class="stage">
-<div class="q"><span class="lvtag" data-lv="cores"></span> <span id="c-q">Que cor é?</span><button class="rep" onclick="falar('qc_'+cq[ci].f)" aria-label="Ouvir">🔊</button></div>
+<div class="q"><span class="lvtag" data-lv="cores"></span> <span id="c-q">Que cor é?</span><button class="rep" onclick="falar(qk(cq[ci]))" aria-label="Ouvir">🔊</button></div>
 <div class="objwrap" id="c-obj"><img id="c-grey" alt=""><img class="col" id="c-col" alt=""></div>
 <div class="big" id="c-word">&nbsp;</div>
 <div class="opts" id="c-opts"></div><div class="opts-pad"></div>
@@ -390,7 +391,7 @@ button,.card,.opt,.bub,.tr,.pc,.mcard{touch-action:manipulation;-webkit-touch-ca
 <div class="row"><button class="btn grn" id="w-again">Jogar de novo</button><button class="btn" onclick="hideWin();go('menu')">Outros jogos</button></div></div></div>
 <canvas id="party"></canvas>
 
-<script src="jogos.js?v=7"></script>
+<script src="jogos.js?v=10"></script>
 <script>
 /* ---------- utilidades ---------- */
 var STARS=0;try{STARS=+localStorage.getItem('jj_stars')||0}catch(e){}

@@ -3,9 +3,10 @@
 
 /* ---------- catálogo, níveis e utilidades ---------- */
 var CAT = [], CAT_OK = false, PZL = [];
-var CATP = fetch('obj/catalogo.json').then(function (r) { return r.json(); }).then(function (d) { CAT = d; CAT_OK = true; }).catch(function () {});
-fetch('pzl/lista.json').then(function (r) { return r.json(); }).then(function (d) { PZL = d; }).catch(function () {});
+var CATP = fetch('obj/catalogo.json?v=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (d) { CAT = d; CAT_OK = true; }).catch(function () {});
+fetch('pzl/lista.json?v=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (d) { PZL = d; }).catch(function () {});
 function catReady(fn) { if (CAT_OK) fn(); else CATP.then(fn); }
+function qk(o) { return 'qc_' + o.f.split('/').pop(); }
 function oimg(o, grey) { return 'obj/' + o.f + (grey ? '_cinza' : '') + '.webp'; }
 function pick(a, n) { return shuffle(a.slice()).slice(0, n); }
 function rnd(a) { return a[Math.floor(Math.random() * a.length)]; }
@@ -33,13 +34,13 @@ function coresStart() {
     cq = []; var used = {};
     shuffle(pool).forEach(function (o) { if (cq.length < C_N && (used[o.c] || 0) < 2) { cq.push(o); used[o.c] = (used[o.c] || 0) + 1; } });
     ci = 0; coresRound(); lvShow();
-    setTimeout(function () { if (CUR === 'cores' && ci === 0) falar('qc_' + cq[0].f); }, (((FALAS.i_cores || [0, 5])[1]) * 1000 + 400));
+    setTimeout(function () { if (CUR === 'cores' && ci === 0) falar(qk(cq[0])); }, (((FALAS.i_cores || [0, 5])[1]) * 1000 + 400));
   });
 }
 function coresRound() {
   cLock = false; var it = cq[ci], L = lv('cores'), w = document.getElementById('c-obj'); w.classList.remove('done');
-  document.getElementById('c-grey').src = oimg(it, true); document.getElementById('c-col').src = oimg(it);
-  if (cq[ci + 1]) { preload(oimg(cq[ci + 1], true)); preload(oimg(cq[ci + 1])); }
+  document.getElementById('c-grey').src = oimg(it); document.getElementById('c-col').src = oimg(it);
+  if (cq[ci + 1]) preload(oimg(cq[ci + 1]));
   document.getElementById('c-word').innerHTML = '&nbsp;';
   document.getElementById('c-q').textContent = 'Qual é a cor ' + it.a + ' ' + it.q + '? (' + (ci + 1) + '/' + C_N + ')';
   var nOpt = Math.min(2 + L, 6), others = pick(Object.keys(CORX).filter(function (k) { return k !== it.c; }), nOpt - 1);
@@ -52,7 +53,7 @@ function coresRound() {
       if (k !== it.c) { shake(b); sNo(); fNo(); return; }
       cLock = true; sOk(); addStar(); w.classList.add('done'); falar(CORX[k][2]);
       var wd = document.getElementById('c-word'); wd.textContent = CORX[k][0] + '!'; wd.style.color = CORX[k][1]; party(70);
-      setTimeout(function () { ci++; if (ci < C_N) { coresRound(); setTimeout(function () { falar('qc_' + cq[ci].f); }, 250); } else levelWin('cores', 'Parabéns!', 'Você conhece as cores! 🌈', oimg(it), coresStart); }, 1700);
+      setTimeout(function () { ci++; if (ci < C_N) { coresRound(); setTimeout(function () { falar(qk(cq[ci])); }, 250); } else levelWin('cores', 'Parabéns!', 'Você conhece as cores! 🌈', oimg(it), coresStart); }, 1700);
     };
     box.appendChild(b);
   });
