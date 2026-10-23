@@ -247,6 +247,13 @@ main{max-width:1100px;padding:clamp(10px,2.2dvh,18px) clamp(10px,3vw,24px) 30px}
 .pc.no{animation:shake .45s}
 @keyframes snap{40%{transform:scale(1.12)}}
 @media (orientation:landscape){.qwrap{flex-direction:row;align-items:flex-start;justify-content:center}.qtray{width:auto;flex:1;max-width:46vw;max-height:calc(100dvh - 150px);overflow:auto}}
+
+/* sem zoom por toque e sem menu ao segurar */
+html{-webkit-text-size-adjust:100%;touch-action:manipulation}
+body{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+img{-webkit-user-drag:none;-webkit-touch-callout:none}
+button,.card,.opt,.bub,.tr,.pc,.mcard{touch-action:manipulation;-webkit-touch-callout:none}
+.pc,.qboard,.qtray,.bath{touch-action:none}
 </style></head><body>
 <header class="top"><a href="/" aria-label="Voltar ao site"><img src="img/logo.webp" alt="Juju Jacaré"></a>
 <button class="back" id="back" onclick="voltar()">⬅ Voltar ao site</button>
@@ -447,4 +454,8 @@ addEventListener('popstate',function(){if(CUR!=='menu'){hideWin();NOPUSH=true;go
 var h=location.hash.replace('#','');if(['cores','memoria','pintar','contar','lixo','bolhas','sombras','formas','quebra','piano'].indexOf(h)>=0){NOPUSH=true;go(h);}
 </script>
 <script>if('serviceWorker' in navigator){addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){});});}</script>
+<script>(function(){function no(e){e.preventDefault();}document.addEventListener('gesturestart',no,{passive:false});document.addEventListener('gesturechange',no,{passive:false});
+document.addEventListener('touchmove',function(e){if(e.touches&&e.touches.length>1)e.preventDefault();},{passive:false});
+document.addEventListener('contextmenu',function(e){if(!e.target.closest('input,textarea'))e.preventDefault();});
+document.addEventListener('dragstart',function(e){if(e.target.tagName==='IMG'||e.target.tagName==='A')e.preventDefault();});})();</script>
 </body></html>
