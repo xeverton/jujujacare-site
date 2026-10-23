@@ -238,5 +238,201 @@
 "l_nao": [
 "Ops! Isso não é lixo! Deixa no jardim!",
 2.46
+],
+"qc_maca": [
+"E aí, qual é a cor da maçã?",
+1.52
+],
+"qc_morango": [
+"E aí, qual é a cor do morango?",
+1.51
+],
+"qc_cereja": [
+"E aí, qual é a cor da cereja?",
+1.54
+],
+"qc_tomate": [
+"E aí, qual é a cor do tomate?",
+1.58
+],
+"qc_pimenta": [
+"E aí, qual é a cor da pimenta?",
+1.57
+],
+"qc_banana": [
+"E aí, qual é a cor da banana?",
+1.59
+],
+"qc_milho": [
+"E aí, qual é a cor do milho?",
+1.36
+],
+"qc_queijo": [
+"E aí, qual é a cor do queijo?",
+1.5
+],
+"qc_brocolis": [
+"E aí, qual é a cor do brócolis?",
+1.69
+],
+"qc_pepino": [
+"E aí, qual é a cor do pepino?",
+1.6
+],
+"qc_pera": [
+"E aí, qual é a cor da pera?",
+1.39
+],
+"qc_alface": [
+"E aí, qual é a cor da alface?",
+1.65
+],
+"qc_laranja": [
+"E aí, qual é a cor da laranja?",
+1.54
+],
+"qc_cenoura": [
+"E aí, qual é a cor da cenoura?",
+1.58
+],
+"qc_abobora": [
+"E aí, qual é a cor da abóbora?",
+1.67
+],
+"qc_uva": [
+"E aí, qual é a cor da uva?",
+1.52
+],
+"qc_berinjela": [
+"E aí, qual é a cor da berinjela?",
+1.64
+],
+"qc_mirtilo": [
+"E aí, qual é a cor do mirtilo?",
+1.67
+],
+"qc_coco": [
+"E aí, qual é a cor do coco?",
+1.56
+],
+"qc_biscoito": [
+"E aí, qual é a cor do biscoito?",
+1.73
+],
+"qc_raposa": [
+"E aí, qual é a cor da raposa?",
+1.64
+],
+"qc_urso": [
+"E aí, qual é a cor do urso?",
+1.56
+],
+"qc_tigre": [
+"E aí, qual é a cor do tigre?",
+1.66
+],
+"qc_porquinho": [
+"E aí, qual é a cor do porquinho?",
+1.59
+],
+"qc_sapo": [
+"E aí, qual é a cor do sapo?",
+1.58
+],
+"qc_pintinho": [
+"E aí, qual é a cor do pintinho?",
+1.58
+],
+"qc_joaninha": [
+"E aí, qual é a cor da joaninha?",
+1.61
+],
+"qc_tartaruga": [
+"E aí, qual é a cor da tartaruga?",
+1.7
+],
+"qc_caranguejo": [
+"E aí, qual é a cor do caranguejo?",
+1.57
+],
+"qc_ovelha": [
+"E aí, qual é a cor da ovelha?",
+1.38
+],
+"qc_flamingo": [
+"E aí, qual é a cor do flamingo?",
+1.62
+],
+"qc_jacare": [
+"E aí, qual é a cor do jacaré?",
+1.6
+],
+"qc_caminhao-de-bombeiros": [
+"E aí, qual é a cor do caminhão de bombeiros?",
+2.24
+],
+"qc_basquete": [
+"E aí, qual é a cor da bola de basquete?",
+2.12
+],
+"qc_ursinho": [
+"E aí, qual é a cor do ursinho?",
+1.63
+],
+"qc_coroa": [
+"E aí, qual é a cor da coroa?",
+1.47
+],
+"qc_cartola": [
+"E aí, qual é a cor da cartola?",
+1.5
+],
+"qc_bola-oito": [
+"E aí, qual é a cor da bola oito?",
+1.73
+],
+"qc_oculos-escuros": [
+"E aí, qual é a cor dos óculos escuros?",
+2.18
+],
+"qc_dente": [
+"E aí, qual é a cor do dente?",
+1.39
+],
+"qc_sol": [
+"E aí, qual é a cor do sol?",
+1.43
+],
+"qc_estrela": [
+"E aí, qual é a cor da estrela?",
+1.57
+],
+"qc_nuvem": [
+"E aí, qual é a cor da nuvem?",
+1.5
+],
+"qc_cacto": [
+"E aí, qual é a cor do cacto?",
+1.64
+],
+"qc_trevo": [
+"E aí, qual é a cor do trevo?",
+1.38
+],
+"qc_fogo": [
+"E aí, qual é a cor do fogo?",
+1.53
+],
+"qc_onda": [
+"E aí, qual é a cor da onda?",
+1.47
+],
+"qc_flor-de-cerejeira": [
+"E aí, qual é a cor da flor de cerejeira?",
+2.12
+],
+"qc_folha": [
+"E aí, qual é a cor da folha?",
+1.49
 ]
 }

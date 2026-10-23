@@ -275,7 +275,7 @@ main{max-width:1100px;padding:clamp(10px,2.2dvh,18px) clamp(10px,3vw,24px) 30px}
 <!-- ================= CORES ================= -->
 <section class="scr" id="cores">
 <div class="stage">
-<div class="q"><span class="lvtag" data-lv="cores"></span> <span id="c-q">Que cor é?</span></div>
+<div class="q"><span class="lvtag" data-lv="cores"></span> <span id="c-q">Que cor é?</span><button class="rep" onclick="falar('qc_'+cq[ci].f)" aria-label="Ouvir">🔊</button></div>
 <div class="objwrap" id="c-obj"><img id="c-grey" alt=""><img class="col" id="c-col" alt=""></div>
 <div class="big" id="c-word">&nbsp;</div>
 <div class="opts" id="c-opts"></div><div class="opts-pad"></div>
@@ -383,7 +383,7 @@ main{max-width:1100px;padding:clamp(10px,2.2dvh,18px) clamp(10px,3vw,24px) 30px}
 <div class="row"><button class="btn grn" id="w-again">Jogar de novo</button><button class="btn" onclick="hideWin();go('menu')">Outros jogos</button></div></div></div>
 <canvas id="party"></canvas>
 
-<script src="jogos.js?v=5"></script>
+<script src="jogos.js?v=6"></script>
 <script>
 /* ---------- utilidades ---------- */
 var STARS=0;try{STARS=+localStorage.getItem('jj_stars')||0}catch(e){}
