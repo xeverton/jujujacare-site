@@ -143,7 +143,7 @@ h1{font-size:clamp(30px,6vw,46px);line-height:1.05;text-align:center;margin:8px 
 .keys button.on{transform:translateY(6px);box-shadow:0 1px 0 var(--ol);filter:brightness(1.25)}
 .keys button.hint{animation:hint .6s ease-in-out infinite alternate}
 @keyframes hint{from{filter:brightness(1)}to{filter:brightness(1.45) drop-shadow(0 0 12px #fff);transform:translateY(-6px)}}
-.pjuju{height:90px;display:block;margin:0 auto}.pjuju.dance{animation:talk .25s ease-in-out infinite alternate}
+.pjuju{height:clamp(50px,9dvh,90px);display:block;margin:0 auto}.pjuju.dance{animation:talk .25s ease-in-out infinite alternate}
 .pbar{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:12px}
 .fala{position:fixed;left:50%;bottom:14px;transform:translate(-50%,140%);z-index:45;display:flex;align-items:flex-end;gap:8px;max-width:min(560px,calc(100vw - 24px));width:100%;transition:transform .35s cubic-bezier(.3,1.4,.5,1);pointer-events:none}
 .fala.on{transform:translate(-50%,0);pointer-events:auto}
@@ -154,6 +154,71 @@ h1{font-size:clamp(30px,6vw,46px);line-height:1.05;text-align:center;margin:8px 
 .fala.talk img{animation:talk .18s ease-in-out infinite alternate}
 @keyframes bob{to{transform:translateY(-6px)}}@keyframes talk{to{transform:translateY(-4px) rotate(-3deg) scale(1.03)}}
 .snd{border:4px solid var(--ol);border-radius:999px;background:#fff;font-size:20px;width:46px;height:46px;cursor:pointer;flex:none}
+
+/* ===== ajuste para celular, tablet e computador ===== */
+:root{--hdr:72px}
+main{max-width:1100px;padding:clamp(10px,2.2dvh,18px) clamp(10px,3vw,24px) 30px}
+@media(max-width:400px){.top{gap:4px;padding:6px 8px}.top img{height:24px}.top .back{font-size:14px;padding:3px 9px}.stars{font-size:14px;padding:1px 7px}.snd{width:36px;height:36px;font-size:15px}}
+.menu{grid-template-columns:repeat(auto-fill,minmax(min(240px,100%),1fr));gap:clamp(12px,2vw,22px)}
+.privp{display:none}#menu.on~.privp{display:block}
+.stage{padding:clamp(8px,1.6dvh,16px) clamp(8px,2vw,16px)}
+.q{font-size:clamp(20px,min(6vw,4.6dvh),40px);line-height:1.15}
+.objwrap{width:min(300px,62vw,32dvh)}
+.big{font-size:clamp(30px,min(10vw,7dvh),70px)}
+.opts{flex-wrap:nowrap}
+.opt{width:clamp(64px,min(24vw,14dvh),140px);border-width:5px}
+.opt span{font-size:clamp(13px,1.9dvh,18px);bottom:-1.9em}
+.opts-pad{height:clamp(26px,4.5dvh,44px)}
+.cbox{min-height:min(300px,60vw,30dvh)}
+.cbox .it{width:clamp(56px,min(25vw,14dvh),130px)}
+.nums button{width:clamp(64px,min(22vw,13dvh),120px);font-size:clamp(34px,min(12vw,7.5dvh),68px)}
+.paint svg{display:block;width:auto;height:auto;max-width:100%;max-height:calc(100dvh - 130px);aspect-ratio:400/480;margin:0 auto}
+@media(max-width:640px){.paint svg{max-height:calc(100dvh - 300px)}.pal{padding:8px;gap:7px}.pal .act{font-size:14px}}
+.yard{height:clamp(220px,calc(100dvh - 190px),560px)}
+.bath{height:clamp(240px,calc(100dvh - 120px),640px)}
+.tgt{height:clamp(80px,min(30vw,20dvh),190px)}
+.sils button{width:clamp(76px,min(26vw,19dvh),170px)}
+.shapes{max-width:min(440px,calc((100dvh - 230px)*1.05))}
+.pzl{width:min(86vw,460px,calc(100dvh - 260px));min-width:200px}
+.keys{height:clamp(150px,calc(100dvh - 360px),380px)}
+.keys button{max-width:110px}
+.pbar .btn{font-size:clamp(15px,2.2dvh,20px);padding:6px 16px}
+.win .box{max-height:calc(100dvh - 24px);overflow:auto}
+.win img{height:clamp(80px,18dvh,150px)}
+/* celular deitado / telas baixas: lado a lado */
+@media (orientation:landscape) and (max-height:560px){
+ :root{--hdr:56px}
+ .top{padding:4px 12px}.top img{height:30px}.top .back{font-size:15px;padding:2px 12px}.snd{width:36px;height:36px}
+ main{padding-top:8px}
+ h1{font-size:26px;margin:2px 0}.sub{margin-bottom:10px;font-size:16px}
+ .mcard{padding:10px}.mcard .ic{height:80px}.mcard .ic img{height:70px}.mcard h2{font-size:22px}
+ #cores .stage,#contar .stage,#sombras .stage{display:grid;grid-template-columns:1fr 1fr;align-items:center;column-gap:12px}
+ #cores .q,#contar .q,#sombras .q{grid-column:1/-1}
+ #cores .objwrap,#contar .cbox,#sombras .tgt{grid-column:1;grid-row:2/span 3;width:auto;max-width:100%}
+ #cores .objwrap{height:calc(100dvh - 150px);width:auto;aspect-ratio:1}
+ #contar .cbox{min-height:0}
+ #sombras .tgt{height:calc(100dvh - 160px)}
+ #cores .big,#cores .opts,#cores .opts-pad,#contar .big,#contar .nums,#sombras .sils{grid-column:2}
+ .opt{width:clamp(56px,20dvh,110px)}.nums button{width:clamp(56px,20dvh,100px);font-size:clamp(30px,11dvh,56px)}
+ .sils button{width:clamp(70px,30dvh,150px)}
+ .shapes{grid-template-columns:repeat(4,1fr);max-width:calc((100dvh - 170px)*4.3)}
+ .paint{grid-template-columns:1fr 210px}.paint svg{max-height:calc(100dvh - 90px)}
+ .pal{grid-template-columns:repeat(4,1fr);padding:8px;gap:6px}.pal .act{grid-column:span 2;font-size:13px;padding:2px 4px}
+ #quebra.on{display:grid;grid-template-columns:auto auto;justify-content:center;align-items:center;gap:20px}
+ #quebra .lvl{grid-column:2;grid-row:1;flex-direction:column;margin:0}
+ #quebra .pzl{grid-column:1;grid-row:1/span 2;width:calc(100dvh - 100px);margin:0}
+ #quebra .pref{grid-column:2;grid-row:2;flex-direction:column}
+ .pjuju{display:none}.keys{height:calc(100dvh - 185px);margin-top:4px}.pbar{margin-top:8px}#pi-info{display:none}
+ .lvl{margin-bottom:6px}.info{margin-top:6px;font-size:17px}
+ .yard{height:calc(100dvh - 150px)}.bath{height:calc(100dvh - 95px)}
+ .fala img{width:56px}.fala .bal{font-size:15px;padding:6px 10px}
+}
+/* telas grandes (tablet/computador): aproveita o espaço */
+@media (min-width:900px) and (min-height:700px){
+ .stage{padding:22px}
+ .opt span{font-size:20px}
+ .objwrap{width:min(360px,36dvh)}.tgt{height:min(220px,24dvh)}
+}
 </style></head><body>
 <header class="top"><a href="/" aria-label="Voltar ao site"><img src="img/logo.webp" alt="Juju Jacaré"></a>
 <button class="back" id="back" onclick="voltar()">⬅ Voltar ao site</button>
@@ -283,7 +348,7 @@ h1{font-size:clamp(30px,6vw,46px);line-height:1.05;text-align:center;margin:8px 
 <div class="info" id="pi-info">Toque nas teclas! 🎶</div>
 </div>
 </section>
-<p style="text-align:center;font-size:14px;margin:26px 0 90px;opacity:.8"><a href="/privacidade.html" style="color:inherit">Política de Privacidade</a></p>
+<p class="privp" style="text-align:center;font-size:14px;margin:26px 0 90px;opacity:.8"><a href="/privacidade.html" style="color:inherit">Política de Privacidade</a></p>
 </main>
 
 <div class="win" id="win"><div class="box"><img id="w-img" src="img/juju.webp" alt=""><h2 id="w-t">Parabéns!</h2><p id="w-p"></p>
@@ -340,9 +405,14 @@ var MEM=['pato','coelho','formiga','ursinha','joaninha','borboleta','juju','maca
 function memStart(n){MEM_N=n;document.getElementById('lv-f').classList.toggle('sel',n===3);document.getElementById('lv-n').classList.toggle('sel',n===6);
  var pick=shuffle(MEM.slice()).slice(0,n),deck=shuffle(pick.concat(pick)),bd=document.getElementById('board');
  bd.style.gridTemplateColumns='repeat('+(n===3?3:4)+',1fr)';bd.style.maxWidth=(n===3?520:720)+'px';bd.innerHTML='';mOpen=[];mMoves=0;mPairs=0;mLock=false;
- deck.forEach(function(nm){var c=document.createElement('button');c.className='card';c.dataset.n=nm;c.setAttribute('aria-label','carta');
+ memFit();deck.forEach(function(nm){var c=document.createElement('button');c.className='card';c.dataset.n=nm;c.setAttribute('aria-label','carta');
   c.innerHTML='<div class="in"><div class="b">?</div><div class="f"><img src="img/'+nm+'.webp" alt=""></div></div>';c.onclick=function(){memFlip(c);};bd.appendChild(c);});
  memInfo();}
+function memFit(){var bd=document.getElementById('board');if(!bd)return;var n=MEM_N,hdr=document.querySelector('.top').offsetHeight,land=innerWidth>innerHeight;
+ var availH=innerHeight-hdr-(innerHeight<560?100:140),availW=Math.min(document.querySelector('main').clientWidth-24,1000),gap=12,best=null;
+ (n===3?[3,6,2]:[4,6,3]).forEach(function(cols){var rows=Math.ceil(2*n/cols);var w=Math.min((availW-gap*(cols-1))/cols,(availH-gap*(rows-1))/rows*0.75);if(!best||w>best[1])best=[cols,w];});
+ var w=Math.max(Math.min(best[1],200),48);bd.style.gridTemplateColumns='repeat('+best[0]+','+Math.floor(w)+'px)';bd.style.maxWidth='none';bd.style.justifyContent='center';}
+addEventListener('resize',function(){memFit();});
 function memInfo(){document.getElementById('m-info').textContent='Pares: '+mPairs+' de '+MEM_N+'   •   Jogadas: '+mMoves;}
 function memFlip(c){if(mLock||c.classList.contains('up')||c.classList.contains('ok'))return;c.classList.add('up');sPop();mOpen.push(c);
  if(mOpen.length<2)return;mMoves++;var a=mOpen[0],b=mOpen[1];mOpen=[];
