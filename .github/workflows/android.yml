@@ -1,0 +1,50 @@
+name: Gerar app Android
+on:
+  push:
+    branches: [main]
+    paths: ['android/build.json', 'android/build.js', '.github/workflows/android.yml']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '17'}
+      - uses: actions/setup-node@v4
+        with: {node-version: '20'}
+      - name: Android SDK
+        run: |
+          yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses >/dev/null || true
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "build-tools;36.1.0" "platforms;android-36" >/dev/null
+          sudo mkdir -p "$ANDROID_HOME/tools"
+      - name: Compilar
+        working-directory: android
+        run: |
+          npm i --no-save @bubblewrap/core@1.27.0
+          PW=$(openssl rand -hex 16); echo "$PW" > pw.txt
+          PW=$PW node build.js
+          BT="$ANDROID_HOME/build-tools/36.1.0"
+          AAB=proj/app/build/outputs/bundle/release/app-release.aab
+          APK=$(ls proj/app/build/outputs/apk/release/*.apk | head -1)
+          mkdir -p out
+          jarsigner -keystore android.keystore -storepass "$PW" -keypass "$PW" -signedjar out/juju-jacare.aab "$AAB" juju
+          "$BT/zipalign" -f -p 4 "$APK" aligned.apk
+          "$BT/apksigner" sign --ks android.keystore --ks-pass pass:$PW --ks-key-alias juju --key-pass pass:$PW --out out/juju-jacare.apk aligned.apk
+          keytool -list -v -keystore android.keystore -storepass "$PW" | grep -i "SHA256:" | head -1 | sed 's/.*SHA256: *//' > out/sha256.txt
+          cat out/sha256.txt
+          tar czf secret.tgz android.keystore pw.txt
+          openssl rand -hex 32 > k.txt
+          openssl enc -aes-256-cbc -pbkdf2 -in secret.tgz -out out/chave.enc -pass file:k.txt
+          openssl pkeyutl -encrypt -pubin -inkey enc_pub.pem -in k.txt -out out/chave.key.enc
+          cp proj/twa-manifest.json out/
+          rm -f secret.tgz k.txt pw.txt
+      - name: Publicar no branch android-build
+        run: |
+          cd android/out
+          git init -q -b android-build
+          git config user.name "github-actions"; git config user.email "actions@users.noreply.github.com"
+          git add -A; git commit -qm "Build Android ${GITHUB_SHA::7}"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" android-build

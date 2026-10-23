@@ -1,0 +1,150 @@
+{
+"oi": [
+"Oi, amiguinho! Eu sou o Juju Jacaré! Vamos brincar? Escolha um jogo!",
+3.96
+],
+"i_cores": [
+"Vamos descobrir as cores! Olha a figura cinzinha. Qual é a cor dela? Toque na bolinha com a cor certa!",
+5.18
+],
+"i_memoria": [
+"Vamos jogar memória! Toque em duas cartas. Se os amiguinhos forem iguais, você ganha uma estrela!",
+5.19
+],
+"i_pintar": [
+"Vamos pintar o Juju! Escolha uma cor e depois toque no desenho para pintar. Capricha!",
+4.6
+],
+"i_contar": [
+"Vamos contar juntinhos! Conte quantas figuras tem e toque no número certo!",
+4.19
+],
+"i_lixo": [
+"Xi, o quintal está bagunçado! Toque no lixo para jogar na lixeira. Mas cuidado: os amiguinhos e as flores ficam no jardim!",
+6.71
+],
+"i_bolhas": [
+"Hora do banho! Estoure as bolhas de sabão bem rapidinho! As bolhas com patinho valem mais!",
+4.97
+],
+"q_cor": [
+"Qual é a cor?",
+0.56
+],
+"q_quantos": [
+"Quantos tem?",
+0.53
+],
+"c_maca": [
+"É vermelho!",
+0.64
+],
+"c_sol": [
+"É amarelo!",
+0.66
+],
+"c_ceu": [
+"É azul!",
+0.48
+],
+"c_juju": [
+"É verde!",
+0.71
+],
+"c_laranja": [
+"É laranja!",
+0.61
+],
+"c_uva": [
+"É roxo!",
+0.51
+],
+"c_nuvem": [
+"É branco!",
+0.6
+],
+"c_carvao": [
+"É preto!",
+0.6
+],
+"c_flor": [
+"É rosa!",
+0.53
+],
+"n1": [
+"É um só!",
+0.63
+],
+"n2": [
+"Dois!",
+0.46
+],
+"n3": [
+"Três!",
+0.47
+],
+"n4": [
+"Quatro!",
+0.43
+],
+"n5": [
+"Cinco!",
+0.53
+],
+"n6": [
+"Seis!",
+0.48
+],
+"ok1": [
+"Muito bem!",
+0.63
+],
+"ok2": [
+"Isso mesmo!",
+0.76
+],
+"ok3": [
+"Você acertou!",
+0.75
+],
+"ok4": [
+"Uau, que legal!",
+0.93
+],
+"no1": [
+"Quase! Tente de novo!",
+1.15
+],
+"no2": [
+"Hum, não é esse. Tenta outro!",
+1.75
+],
+"win": [
+"Parabéns! Você conseguiu! Vamos jogar de novo?",
+2.83
+],
+"l_amigo": [
+"Ops! Esse é um amiguinho do Juju!",
+1.84
+],
+"l_flor": [
+"Essa florzinha fica no jardim!",
+1.64
+],
+"l_fim": [
+"Oba! Quintal limpinho! Lugar de lixo é no lixo!",
+2.56
+],
+"m_par": [
+"Achou o par!",
+0.65
+],
+"b_fim": [
+"Que banho divertido!",
+1.07
+],
+"p_salvo": [
+"Que desenho lindo! Ficou salvo!",
+1.66
+]
+}

@@ -25,6 +25,8 @@ button{font:inherit;color:inherit;cursor:pointer}
 .top img{height:44px;display:block}
 .top .back{background:var(--y);border:4px solid var(--ol);border-radius:999px;padding:4px 16px;font-weight:800;font-size:18px;box-shadow:0 4px 0 var(--ol)}
 .top .back[hidden]{display:none}
+.top .back{white-space:nowrap}
+@media(max-width:480px){.top{gap:6px;padding:8px 10px}.top img{height:32px}.top .back{font-size:15px;padding:4px 10px}.stars{font-size:16px;padding:2px 8px}.snd{width:40px;height:40px;font-size:17px}}
 .stars{font-weight:800;font-size:20px;background:#fff;border:4px solid var(--ol);border-radius:999px;padding:2px 14px;white-space:nowrap}
 main{max-width:980px;margin:0 auto;padding:18px 16px 40px}
 .scr{display:none}.scr.on{display:block}
@@ -116,10 +118,21 @@ h1{font-size:clamp(30px,6vw,46px);line-height:1.05;text-align:center;margin:8px 
  box-shadow:inset -6px -8px 14px rgba(155,93,229,.25),inset 6px 6px 12px rgba(255,111,181,.2);display:flex;align-items:center;justify-content:center;font-size:26px}
 .bub.pop{animation:bpop .25s forwards}
 @keyframes bpop{to{transform:scale(1.6);opacity:0}}
+.fala{position:fixed;left:50%;bottom:14px;transform:translate(-50%,140%);z-index:45;display:flex;align-items:flex-end;gap:8px;max-width:min(560px,calc(100vw - 24px));width:100%;transition:transform .35s cubic-bezier(.3,1.4,.5,1);pointer-events:none}
+.fala.on{transform:translate(-50%,0);pointer-events:auto}
+.fala img{width:82px;flex:none;animation:bob 1s ease-in-out infinite alternate}
+.fala .bal{flex:1;background:#fff;border:5px solid var(--ol);border-radius:24px 24px 24px 6px;padding:10px 14px;font-size:18px;line-height:1.25;box-shadow:0 5px 0 var(--ol);position:relative}
+.fala .bal button{margin-top:6px;border:3px solid var(--ol);border-radius:999px;background:#ffd23f;font:inherit;font-size:15px;padding:3px 10px;cursor:pointer}
+.fala .x{position:absolute;top:-12px;right:-10px;width:30px;height:30px;border-radius:50%;border:3px solid var(--ol);background:#fff;font-size:15px;line-height:1;cursor:pointer;margin:0!important;padding:0!important}
+.fala.talk img{animation:talk .18s ease-in-out infinite alternate}
+@keyframes bob{to{transform:translateY(-6px)}}@keyframes talk{to{transform:translateY(-4px) rotate(-3deg) scale(1.03)}}
+.snd{border:4px solid var(--ol);border-radius:999px;background:#fff;font-size:20px;width:46px;height:46px;cursor:pointer;flex:none}
 </style></head><body>
 <header class="top"><a href="/" aria-label="Voltar ao site"><img src="img/logo.webp" alt="Juju Jacaré"></a>
 <button class="back" id="back" onclick="voltar()">⬅ Voltar ao site</button>
-<span class="stars" id="stars">⭐ 0</span></header>
+<button class="snd" id="snd" onclick="toggleSom()" aria-label="Som">🔊</button><span class="stars" id="stars">⭐ 0</span></header>
+<div class="fala" id="fala"><img src="img/juju.webp" alt=""><div class="bal"><button class="x" onclick="calar()" aria-label="Fechar">✕</button><span id="fala-t"></span><br><button onclick="falarDeNovo()">🔊 Ouvir de novo</button></div></div>
+<div id="tapme" style="position:fixed;inset:0;z-index:60;background:rgba(43,24,64,.55);display:flex;align-items:center;justify-content:center" onclick="comecar()"><div style="background:#fff;border:6px solid var(--ol);border-radius:34px;padding:22px 26px;text-align:center;box-shadow:0 10px 0 var(--ol);max-width:380px"><img src="img/juju.webp" alt="" style="height:140px"><h2 style="font-size:34px;line-height:1.05;margin:6px 0">Vamos brincar?</h2><button style="font:inherit;font-size:26px;border:5px solid var(--ol);border-radius:999px;background:#4cd964;padding:8px 28px;cursor:pointer;margin-top:6px">▶ Começar</button></div></div>
 <main>
 <!-- ================= MENU ================= -->
 <section class="scr on" id="menu">
@@ -205,6 +218,7 @@ h1{font-size:clamp(30px,6vw,46px);line-height:1.05;text-align:center;margin:8px 
 <div class="bath" id="bath"><div class="bhud"><span id="b-cnt">🫧 0</span><span id="b-time">⏱ 30</span></div>
 <img src="img/juju.webp" class="bjuju" alt=""></div>
 </section>
+<p style="text-align:center;font-size:14px;margin:26px 0 90px;opacity:.8"><a href="/privacidade.html" style="color:inherit">Política de Privacidade</a></p>
 </main>
 
 <div class="win" id="win"><div class="box"><img id="w-img" src="img/juju.webp" alt=""><h2 id="w-t">Parabéns!</h2><p id="w-p"></p>
@@ -217,7 +231,7 @@ var STARS=0;try{STARS=+localStorage.getItem('jj_stars')||0}catch(e){}
 function addStar(n){STARS+=n||1;document.getElementById('stars').textContent='⭐ '+STARS;try{localStorage.setItem('jj_stars',STARS)}catch(e){}}
 addStar(0);
 function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
-var AC=null;function tone(f,d,type,v,when){try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();var t=AC.currentTime+(when||0);var o=AC.createOscillator(),g=AC.createGain();o.type=type||'sine';o.frequency.setValueAtTime(f,t);g.gain.setValueAtTime(v||.18,t);g.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+d);}catch(e){}}
+var AC=null;function tone(f,d,type,v,when){if(typeof SOM!=='undefined'&&!SOM)return;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();var t=AC.currentTime+(when||0);var o=AC.createOscillator(),g=AC.createGain();o.type=type||'sine';o.frequency.setValueAtTime(f,t);g.gain.setValueAtTime(v||.18,t);g.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+d);}catch(e){}}
 function sOk(){[523,659,784,1047].forEach(function(f,i){tone(f,.25,'triangle',.18,i*.09);});}
 function sNo(){tone(220,.18,'square',.06);tone(180,.22,'square',.05,.12);}
 function sPop(){tone(700+Math.random()*300,.08,'sine',.15);}
@@ -230,11 +244,12 @@ function party(n){PC.width=innerWidth;PC.height=innerHeight;var cols=['#ff3b4a',
 function step(){PX.clearRect(0,0,PC.width,PC.height);PP.forEach(function(p){p.vy+=.45;p.x+=p.vx;p.y+=p.vy;p.a+=p.s*.3;PX.save();PX.translate(p.x,p.y);PX.rotate(p.a);PX.fillStyle=p.c;PX.fillRect(-p.r,-p.r/2,p.r*2,p.r);PX.restore();});
  PP=PP.filter(function(p){return p.y<PC.height+40;});PA=PP.length?requestAnimationFrame(step):null;if(!PA)PX.clearRect(0,0,PC.width,PC.height);}
 function showWin(t,p,img,again){document.getElementById('w-t').textContent=t;document.getElementById('w-p').textContent=p;document.getElementById('w-img').src=img;
- document.getElementById('w-again').onclick=function(){hideWin();again();};document.getElementById('win').classList.add('on');sWin();party(160);}
+ document.getElementById('w-again').onclick=function(){hideWin();again();};document.getElementById('win').classList.add('on');sWin();party(160);if(!VOZ.src||VOZ.src.indexOf('l_fim')<0)setTimeout(function(){falar(CUR==='bolhas'?'b_fim':'win')},250);}
 function hideWin(){document.getElementById('win').classList.remove('on');}
 function go(id){document.querySelectorAll('.scr').forEach(function(s){s.classList.toggle('on',s.id===id);});
- var bk=document.getElementById('back');bk.textContent=id==='menu'?'⬅ Voltar ao site':'⬅ Jogos';CUR=id;scrollTo(0,0);
+ var bk=document.getElementById('back');bk.textContent=id==='menu'?'⬅ Voltar ao site':'⬅ Jogos';bk.style.visibility=(typeof APP!=='undefined'&&APP&&id==='menu')?'hidden':'';CUR=id;scrollTo(0,0);
  if(id==='cores')coresStart();if(id==='memoria')memStart(MEM_N);if(id==='pintar')paintInit();if(id==='contar')contarStart();if(id==='lixo')lixoStart();if(id==='bolhas')bolhasStart();else bolhasStop();
+ if(typeof STARTED!=='undefined'&&STARTED){if(id==='menu')calar();else falar('i_'+id,true);}
  try{if(id==='menu')history.replaceState(null,'','#');else if(!NOPUSH)history.pushState({g:id},'','#'+id);else history.replaceState({g:id},'','#'+id);}catch(e){}NOPUSH=false;}
 
 /* ---------- QUE COR É? ---------- */
@@ -244,14 +259,14 @@ var cq=[],ci=0,cLock=false;
 function coresStart(){cq=shuffle(CORES.slice());ci=0;coresRound();}
 function coresRound(){cLock=false;var it=cq[ci];var w=document.getElementById('c-obj');w.classList.remove('done');
  document.getElementById('c-grey').src='img/'+it[0]+'_cinza.webp';document.getElementById('c-col').src='img/'+it[0]+'.webp';
- document.getElementById('c-word').innerHTML='&nbsp;';document.getElementById('c-q').textContent='Que cor é? ('+(ci+1)+'/'+cq.length+')';
+ document.getElementById('c-word').innerHTML='&nbsp;';document.getElementById('c-q').textContent='Que cor é? ('+(ci+1)+'/'+cq.length+')';if(ci>0)setTimeout(function(){falar('q_cor')},300);
  var others=shuffle(CORES.filter(function(c){return c!==it;})).slice(0,2);var ops=shuffle([it].concat(others));
  var box=document.getElementById('c-opts');box.innerHTML='';
  ops.forEach(function(o){var b=document.createElement('button');b.className='opt';b.style.background=o[2];b.setAttribute('aria-label',o[1]);
   b.innerHTML='<span>'+o[1]+'</span>';b.onclick=function(){coresPick(o,b);};box.appendChild(b);});}
 function coresPick(o,b){if(cLock)return;var it=cq[ci];
- if(o!==it){b.classList.remove('no');void b.offsetWidth;b.classList.add('no');sNo();return;}
- cLock=true;sOk();addStar();document.getElementById('c-obj').classList.add('done');
+ if(o!==it){b.classList.remove('no');void b.offsetWidth;b.classList.add('no');sNo();fNo();return;}
+ cLock=true;sOk();falar('c_'+it[0]);addStar();document.getElementById('c-obj').classList.add('done');
  var wd=document.getElementById('c-word');wd.textContent=it[1]+'!';wd.style.color=it[2];party(70);
  setTimeout(function(){ci++;if(ci<cq.length)coresRound();else showWin('Parabéns!','Você acertou todas as cores! 🌈','img/juju.webp',coresStart);},1700);}
 
@@ -266,7 +281,7 @@ function memStart(n){MEM_N=n;document.getElementById('lv-f').classList.toggle('s
 function memInfo(){document.getElementById('m-info').textContent='Pares: '+mPairs+' de '+MEM_N+'   •   Jogadas: '+mMoves;}
 function memFlip(c){if(mLock||c.classList.contains('up')||c.classList.contains('ok'))return;c.classList.add('up');sPop();mOpen.push(c);
  if(mOpen.length<2)return;mMoves++;var a=mOpen[0],b=mOpen[1];mOpen=[];
- if(a.dataset.n===b.dataset.n){setTimeout(function(){a.classList.add('ok');b.classList.add('ok');a.classList.remove('up');b.classList.remove('up');sOk();addStar();party(40);mPairs++;memInfo();
+ if(a.dataset.n===b.dataset.n){setTimeout(function(){a.classList.add('ok');b.classList.add('ok');a.classList.remove('up');b.classList.remove('up');sOk();addStar();party(40);mPairs++;memInfo();if(mPairs<MEM_N)falar(aleat(['m_par','ok1','ok4']));
    if(mPairs===MEM_N)setTimeout(function(){showWin('Muito bem!','Você achou todos os pares em '+mMoves+' jogadas! 🎉','img/'+a.dataset.n+'.webp',function(){memStart(MEM_N);});},700);},350);}
  else{mLock=true;memInfo();setTimeout(function(){a.classList.remove('up');b.classList.remove('up');mLock=false;},1000);}
  memInfo();}
@@ -276,13 +291,13 @@ var PAL=['#ff3b4a','#ff8c1a','#ffd23f','#4cd964','#2f9a37','#3fa9f5','#9b5de5','
 function paintInit(){if(pInit)return;pInit=true;var pal=document.getElementById('pal');
  PAL.forEach(function(c){var b=document.createElement('button');b.className='c'+(c===cur?' sel':'');b.style.background=c;b.setAttribute('aria-label','cor');
   b.onclick=function(){cur=c;pal.querySelectorAll('.c').forEach(function(x){x.classList.remove('sel');});b.classList.add('sel');sPop();};pal.appendChild(b);});
- [['🌈 Cores do Juju',function(){document.querySelectorAll('#svg .pz').forEach(function(p){p.setAttribute('fill',p.dataset.def);});party(60);sOk();}],
+ [['🌈 Cores do Juju',function(){document.querySelectorAll('#svg .pz').forEach(function(p){p.setAttribute('fill',p.dataset.def);});party(60);sOk();fOk();}],
   ['🧽 Limpar',function(){document.querySelectorAll('#svg .pz').forEach(function(p){p.setAttribute('fill','#fff');});}],
   ['💾 Salvar',savePic]].forEach(function(a){var b=document.createElement('button');b.className='act';b.textContent=a[0];b.onclick=a[1];pal.appendChild(b);});
  document.querySelectorAll('#svg .pz').forEach(function(p){p.addEventListener('click',function(){p.setAttribute('fill',cur);sPop();});});}
 function savePic(){var svg=document.getElementById('svg'),xml=new XMLSerializer().serializeToString(svg);
  var img=new Image();img.onload=function(){var cv=document.createElement('canvas');cv.width=800;cv.height=960;var x=cv.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,800,960);x.drawImage(img,0,0,800,960);
-  var a=document.createElement('a');a.download='meu-juju-jacare.png';a.href=cv.toDataURL('image/png');a.click();addStar();};
+  var a=document.createElement('a');a.download='meu-juju-jacare.png';a.href=cv.toDataURL('image/png');a.click();addStar();falar('p_salvo',true);};
  img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(xml);}
 
 
@@ -294,13 +309,13 @@ function contarRound(){nLock=false;nAns=1+Math.floor(Math.random()*(nRound<3?3:5
  for(var i=0;i<nAns;i++){var d=document.createElement('div');d.className='it';d.style.animationDelay=(i*.12)+'s';d.innerHTML='<img src="img/'+o+'.webp" alt=""><b>'+(i+1)+'</b>';box.appendChild(d);}
  document.getElementById('n-q').textContent='Quantos tem? ('+(nRound+1)+'/'+N_TOTAL+')';document.getElementById('n-word').innerHTML='&nbsp;';
  var ops=[nAns];while(ops.length<3){var r=1+Math.floor(Math.random()*6);if(ops.indexOf(r)<0)ops.push(r);}shuffle(ops);
- var nb=document.getElementById('n-opts');nb.innerHTML='';
+ var nb=document.getElementById('n-opts');nb.innerHTML='';if(nRound>0)setTimeout(function(){falar('q_quantos')},300);
  ops.forEach(function(v,k){var b=document.createElement('button');b.textContent=v;b.style.background=NCOL[(v+k)%NCOL.length];b.onclick=function(){contarPick(v,b);};nb.appendChild(b);});}
 var NOMES=['','UM','DOIS','TRÊS','QUATRO','CINCO','SEIS'];
-function contarPick(v,b){if(nLock)return;if(v!==nAns){b.classList.remove('no');void b.offsetWidth;b.classList.add('no');sNo();return;}
- nLock=true;var its=document.querySelectorAll('#n-box .it');its.forEach(function(e,i){setTimeout(function(){e.classList.add('cnt');tone(500+i*90,.15,'triangle',.16);},i*280);});
- setTimeout(function(){sOk();addStar();party(60);var w=document.getElementById('n-word');w.textContent=NOMES[nAns]+'!';w.style.color='#ff8c1a';},its.length*280);
- setTimeout(function(){nRound++;if(nRound<N_TOTAL)contarRound();else showWin('Muito bem!','Você sabe contar direitinho! 🔢','img/laranja.webp',contarStart);},its.length*280+1500);}
+function contarPick(v,b){if(nLock)return;if(v!==nAns){b.classList.remove('no');void b.offsetWidth;b.classList.add('no');sNo();fNo();return;}
+ nLock=true;var its=document.querySelectorAll('#n-box .it');its.forEach(function(e,i){setTimeout(function(){e.classList.add('cnt');tone(500+i*90,.15,'triangle',.16);},i*600);});
+ setTimeout(function(){sOk();addStar();party(60);falar('n'+nAns);var w=document.getElementById('n-word');w.textContent=NOMES[nAns]+'!';w.style.color='#ff8c1a';},its.length*600);
+ setTimeout(function(){nRound++;if(nRound<N_TOTAL)contarRound();else showWin('Muito bem!','Você sabe contar direitinho! 🔢','img/laranja.webp',contarStart);},its.length*600+1700);}
 
 /* ---------- JOGA NO LIXO ---------- */
 var TRASH=['🍌','🥤','📰','🥫','🍎','🧃','🍾','🥡'],FRIENDS=['pato','coelho','formiga','ursinha'],lLeft=0,lLevel=0;
@@ -318,11 +333,11 @@ function lixoRound(){var y=document.getElementById('yard');y.querySelectorAll('.
 function lixoInfo(){document.getElementById('l-cnt').textContent='('+lLeft+' restando)';}
 function lixoTap(b){if(b.classList.contains('gone'))return;var t=b.dataset.t;
  if(t!=='lixo'){b.classList.remove('no');void b.offsetWidth;b.classList.add('no');sNo();
-  document.getElementById('l-info').textContent=t==='amigo'?'Ops! Esse é um amiguinho do Juju! 😄':'Essa florzinha é bonita, deixa no jardim! 🌼';return;}
+  falar(t==='amigo'?'l_amigo':'l_flor');document.getElementById('l-info').textContent=t==='amigo'?'Ops! Esse é um amiguinho do Juju! 😄':'Essa florzinha é bonita, deixa no jardim! 🌼';return;}
  var bin=document.getElementById('bin'),yard=document.getElementById('yard');b.style.left=(bin.offsetLeft/yard.clientWidth*100+2)+'%';b.style.top=(bin.offsetTop/yard.clientHeight*100)+'%';
  b.classList.add('gone');sPop();setTimeout(function(){bin.classList.remove('eat');void bin.offsetWidth;bin.classList.add('eat');tone(300,.12,'square',.08);},550);
  lLeft--;lixoInfo();addStar();document.getElementById('l-info').textContent=['Isso aí! 👏','Muito bem! ♻️','Quintal limpinho! 🌿','Boa! 🎉'][Math.floor(Math.random()*4)];
- if(lLeft===0){lLevel++;setTimeout(function(){sOk();party(80);showWin('Quintal limpinho!','Lugar de lixo é no lixo! ♻️','img/juju.webp',lixoRound);},800);}}
+ if(lLeft===0){lLevel++;setTimeout(function(){sOk();party(80);falar('l_fim');showWin('Quintal limpinho!','Lugar de lixo é no lixo! ♻️','img/juju.webp',lixoRound);},800);}}
 
 /* ---------- ESTOURA BOLHAS ---------- */
 var bT=null,bS=null,bCount=0,bTime=30,bRun=false;
@@ -340,8 +355,38 @@ function spawnBub(){if(!bRun||document.getElementById('bolhas').className.indexO
  d.addEventListener('pointerdown',function(){if(d.classList.contains('pop'))return;d.classList.add('pop');tone(900+Math.random()*500,.07,'sine',.16);
   bCount+=d.textContent?3:1;if(d.textContent){addStar();sOk();}bInfo();setTimeout(function(){d.remove();},260);});}
 
+
+/* ---------- VOZ DO JUJU + MÚSICA ---------- */
+var FALAS={},SOM=true,VOZ=new Audio(),ULT=null,FT=null,STARTED=false;
+try{SOM=localStorage.getItem('jj_som')!=='0'}catch(e){}
+fetch('som/falas.json').then(function(r){return r.json()}).then(function(d){FALAS=d;}).catch(function(){});
+function somBtn(){document.getElementById('snd').textContent=SOM?'🔊':'🔇';}
+function falar(k,mostra){if(!SOM)return;var f=FALAS[k];ULT=k;try{VOZ.pause();VOZ.src='som/'+k+'.mp3';VOZ.currentTime=0;var p=VOZ.play();if(p&&p.catch)p.catch(function(){});}catch(e){}
+ musVol(.25);var el=document.getElementById('fala');
+ if(mostra&&f){document.getElementById('fala-t').textContent=f[0];el.classList.add('on','talk');clearTimeout(FT);
+  FT=setTimeout(function(){el.classList.remove('on')},Math.max(5000,(f[1]+3)*1000));}}
+VOZ.addEventListener('ended',function(){document.getElementById('fala').classList.remove('talk');musVol(1);});
+function falarDeNovo(){if(ULT)falar(ULT,true);}
+function calar(){try{VOZ.pause()}catch(e){}var el=document.getElementById('fala');el.classList.remove('on','talk');musVol(1);}
+function aleat(a){return a[Math.floor(Math.random()*a.length)];}
+function fOk(){falar(aleat(['ok1','ok2','ok3','ok4']));}
+function fNo(){falar(aleat(['no1','no2']));}
+/* música de fundo suave (gerada no navegador) */
+var MG=null,MT=null,MSTEP=0,MEL=[[523,659],[587,698],[659,784],[587,698],[523,659],[440,523],[494,587],[392,494]];
+function musVol(v){if(MG&&AC)MG.gain.setTargetAtTime(v*.05,AC.currentTime,.2);}
+function musStart(){if(!SOM||MT)return;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();
+ if(!MG){MG=AC.createGain();MG.gain.value=.05;MG.connect(AC.destination);}MG.gain.setTargetAtTime(.05,AC.currentTime,.2);
+ MT=setInterval(function(){var t=AC.currentTime,c=MEL[Math.floor(MSTEP/4)%MEL.length],f=MSTEP%4===0?c[0]/2:(MSTEP%2?c[1]:c[0]);
+  var o=AC.createOscillator(),g=AC.createGain();o.type='triangle';o.frequency.value=f;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(1,t+.03);g.gain.exponentialRampToValueAtTime(.001,t+.5);
+  o.connect(g);g.connect(MG);o.start(t);o.stop(t+.55);MSTEP++;},330);}catch(e){}}
+function musStop(){clearInterval(MT);MT=null;}
+function toggleSom(){SOM=!SOM;try{localStorage.setItem('jj_som',SOM?'1':'0')}catch(e){}somBtn();if(SOM){musStart();falar(CUR==='menu'?'oi':'i_'+CUR,true);}else{musStop();calar();}}
+function comecar(){document.getElementById('tapme').style.display='none';STARTED=true;musStart();falar(CUR==='menu'?'oi':'i_'+CUR,true);}
+somBtn();
+var APP=false;try{if(/[?&]app=1/.test(location.search))sessionStorage.setItem('jj_app','1');APP=sessionStorage.getItem('jj_app')==='1'||matchMedia('(display-mode: standalone)').matches&&document.referrer.indexOf('android-app://')===0;}catch(e){}
+if(APP){var lg=document.querySelector('.top a');if(lg){lg.removeAttribute('href');}document.getElementById('back').style.visibility='hidden';}
 var CUR='menu',NOPUSH=false;
-function voltar(){if(CUR==='menu'){location.href='/';}else{hideWin();go('menu');}}
+function voltar(){if(CUR==='menu'){if(!APP)location.href='/';}else{hideWin();go('menu');}}
 addEventListener('popstate',function(){if(CUR!=='menu'){hideWin();NOPUSH=true;go('menu');}});
 /* abrir direto pelo endereço (#cores, #memoria, #pintar) */
 var h=location.hash.replace('#','');if(['cores','memoria','pintar','contar','lixo','bolhas'].indexOf(h)>=0){NOPUSH=true;go(h);}
