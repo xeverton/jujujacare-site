@@ -13,7 +13,7 @@ const cfg = JSON.parse(fs.readFileSync(__dirname + '/build.json', 'utf8'));
     startUrl: cfg.startUrl, display: 'standalone', orientation: 'default',
     themeColor: '#5cc93b', navigationColor: '#5cc93b', backgroundColor: '#5cc93b',
     iconUrl: 'https://jujujacare.com.br/icon-512.png', maskableIconUrl: 'https://jujujacare.com.br/icon-mask-512.png',
-    enableNotifications: false, shortcuts: [], fallbackType: 'customtabs', enableSiteSettingsShortcut: false,
+    enableNotifications: false, shortcuts: [], minSdkVersion: 24, fallbackType: 'customtabs', enableSiteSettingsShortcut: false,
     appVersionCode: cfg.appVersionCode, appVersionName: cfg.appVersionName, appVersion: cfg.appVersionName,
     themeColorDark: '#3a9a22', navigationColorDark: '#3a9a22', navigationDividerColor: '#5cc93b', navigationDividerColorDark: '#3a9a22',
     signingKey: { path: process.cwd() + '/android.keystore', alias: 'juju' },
