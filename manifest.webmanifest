@@ -1,0 +1,25 @@
+{
+  "name": "Juju Jacaré – Músicas e Jogos",
+  "short_name": "Juju Jacaré",
+  "description": "Músicas infantis animadas e jogos educativos com o Juju Jacaré.",
+  "id": "/",
+  "start_url": "/?app=1",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#5cc93b",
+  "theme_color": "#5cc93b",
+  "lang": "pt-BR",
+  "categories": ["kids", "education", "music", "games"],
+  "icons": [
+    {"src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "/icon-mask-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable"},
+    {"src": "/icon-mask-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ],
+  "shortcuts": [
+    {"name": "Jogos do Juju", "short_name": "Jogos", "url": "/jogos/", "icons": [{"src": "/icon-192.png", "sizes": "192x192"}]},
+    {"name": "Que cor é?", "url": "/jogos/#cores", "icons": [{"src": "/icon-192.png", "sizes": "192x192"}]},
+    {"name": "Pinte o Juju", "url": "/jogos/#pintar", "icons": [{"src": "/icon-192.png", "sizes": "192x192"}]}
+  ]
+}
