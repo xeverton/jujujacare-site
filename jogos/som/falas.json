@@ -146,5 +146,53 @@
 "p_salvo": [
 "Que desenho lindo! Ficou salvo!",
 1.66
+],
+"i_sombras": [
+"Cadê a sombra? Olha o amiguinho lá em cima e toque na sombra igualzinha a ele!",
+3.83
+],
+"q_sombra": [
+"Qual é a sombra?",
+0.75
+],
+"i_formas": [
+"Vamos aprender as formas! Escuta o Juju e toque na forma certa!",
+3.66
+],
+"f_circulo": [
+"Cadê o círculo?",
+0.9
+],
+"f_quadrado": [
+"Cadê o quadrado?",
+0.89
+],
+"f_triangulo": [
+"Cadê o triângulo?",
+1.07
+],
+"f_estrela": [
+"Cadê a estrela?",
+0.92
+],
+"f_coracao": [
+"Cadê o coração?",
+0.92
+],
+"i_quebra": [
+"Vamos montar o quebra-cabeça! Toque em duas pecinhas para trocar de lugar, até a figura ficar certinha!",
+5.52
+],
+"i_piano": [
+"É hora da música! Toque nas teclas coloridas para tocar. Aperte o botão estrela e toque junto com o Juju!",
+5.77
+],
+"pi_vez": [
+"Agora é a sua vez! Toque a tecla que acendeu!",
+2.46
+],
+"q_fim": [
+"Montou! Que figura bonita!",
+1.69
 ]
 }

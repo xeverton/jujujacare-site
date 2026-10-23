@@ -118,6 +118,33 @@ h1{font-size:clamp(30px,6vw,46px);line-height:1.05;text-align:center;margin:8px 
  box-shadow:inset -6px -8px 14px rgba(155,93,229,.25),inset 6px 6px 12px rgba(255,111,181,.2);display:flex;align-items:center;justify-content:center;font-size:26px}
 .bub.pop{animation:bpop .25s forwards}
 @keyframes bpop{to{transform:scale(1.6);opacity:0}}
+
+/* ---- novos jogos ---- */
+.tgt{height:clamp(120px,30vw,170px);margin:6px auto 4px;display:block;animation:pop .5s}
+.sils{display:flex;justify-content:center;gap:clamp(10px,3vw,26px);flex-wrap:wrap;margin-top:12px}
+.sils button{width:clamp(96px,26vw,150px);aspect-ratio:1;border-radius:26px;border:5px solid var(--ol);background:#eef8ff;box-shadow:0 6px 0 var(--ol);padding:8px}
+.sils img{width:100%;height:100%;object-fit:contain;filter:brightness(0);opacity:.82;transition:filter .5s,opacity .5s}
+.sils button.ok img{filter:none;opacity:1}.sils button.ok{background:#e6ffd9;transform:scale(1.08)}
+.sils button.no{animation:shake .45s}
+.shapes{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(10px,3vw,22px);max-width:420px;margin:14px auto 0}
+.shapes button{aspect-ratio:1;border-radius:26px;border:5px solid var(--ol);background:#fff;box-shadow:0 6px 0 var(--ol);padding:12px}
+.shapes svg{width:100%;height:100%;overflow:visible}.shapes button.ok{background:#e6ffd9;transform:scale(1.06)}.shapes button.no{animation:shake .45s}
+.rep{border:4px solid var(--ol);border-radius:999px;background:#ffd23f;font-size:20px;padding:2px 12px;margin-left:8px;vertical-align:middle;cursor:pointer}
+.pzl{display:grid;gap:4px;width:min(86vw,420px);aspect-ratio:1;margin:12px auto 0;background:var(--ol);border:5px solid var(--ol);border-radius:20px;overflow:hidden;box-shadow:0 8px 0 var(--ol)}
+.pzl div{background-repeat:no-repeat;cursor:pointer;transition:transform .15s,outline .15s}
+.pzl div.sel{outline:5px solid #ffd23f;outline-offset:-5px;transform:scale(.94)}
+.pzl.done{gap:0}.pzl.done div{outline:none}
+.pref{display:flex;align-items:center;justify-content:center;gap:10px;font-weight:800;font-size:18px;margin-top:10px}
+.pref img{height:64px;border:4px solid var(--ol);border-radius:14px;background:var(--bgc,#fff)}
+.keys{display:flex;gap:6px;justify-content:center;height:min(52vh,330px);margin-top:12px}
+.keys button{flex:1;max-width:84px;border:5px solid var(--ol);border-radius:0 0 22px 22px;box-shadow:0 7px 0 var(--ol);background:var(--k);display:flex;flex-direction:column;justify-content:flex-end;align-items:center;padding-bottom:10px;transition:transform .08s,filter .08s}
+.keys button img{width:90%;max-width:58px}
+.keys button b{font-size:18px;color:#fff;-webkit-text-stroke:2px var(--ol);paint-order:stroke fill}
+.keys button.on{transform:translateY(6px);box-shadow:0 1px 0 var(--ol);filter:brightness(1.25)}
+.keys button.hint{animation:hint .6s ease-in-out infinite alternate}
+@keyframes hint{from{filter:brightness(1)}to{filter:brightness(1.45) drop-shadow(0 0 12px #fff);transform:translateY(-6px)}}
+.pjuju{height:90px;display:block;margin:0 auto}.pjuju.dance{animation:talk .25s ease-in-out infinite alternate}
+.pbar{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:12px}
 .fala{position:fixed;left:50%;bottom:14px;transform:translate(-50%,140%);z-index:45;display:flex;align-items:flex-end;gap:8px;max-width:min(560px,calc(100vw - 24px));width:100%;transition:transform .35s cubic-bezier(.3,1.4,.5,1);pointer-events:none}
 .fala.on{transform:translate(-50%,0);pointer-events:auto}
 .fala img{width:82px;flex:none;animation:bob 1s ease-in-out infinite alternate}
@@ -144,6 +171,10 @@ h1{font-size:clamp(30px,6vw,46px);line-height:1.05;text-align:center;margin:8px 
 <button class="mcard" style="--c:#ff8c1a" onclick="go('contar')"><div class="ic"><img src="img/laranja.webp" alt="" style="height:70px"><img src="img/laranja.webp" alt="" style="height:70px"><img src="img/laranja.webp" alt="" style="height:70px"></div><h2>Vamos contar?</h2><p>Conte os objetos e toque no número.</p></button>
 <button class="mcard" style="--c:#4cd964" onclick="go('lixo')"><div class="ic" style="font-size:80px">🗑️</div><h2>Joga no lixo!</h2><p>Ache o lixo no quintal e jogue na lixeira.</p></button>
 <button class="mcard" style="--c:#3fa9f5" onclick="go('bolhas')"><div class="ic" style="font-size:80px">🫧</div><h2>Estoura bolhas</h2><p>Hora do banho! Estoure as bolhas de sabão.</p></button>
+<button class="mcard" style="--c:#2b2b33" onclick="go('sombras')"><div class="ic"><img src="img/coelho.webp" alt=""><img src="img/coelho.webp" alt="" style="filter:brightness(0);opacity:.8"></div><h2>Cadê a sombra?</h2><p>Ache a sombra igualzinha ao amiguinho.</p></button>
+<button class="mcard" style="--c:#ffd23f" onclick="go('formas')"><div class="ic" style="font-size:70px">🔺🟦⭐</div><h2>Formas</h2><p>Círculo, quadrado, triângulo, estrela…</p></button>
+<button class="mcard" style="--c:#ff6fb5" onclick="go('quebra')"><div class="ic" style="font-size:80px">🧩</div><h2>Quebra-cabeça</h2><p>Troque as pecinhas e monte a figura.</p></button>
+<button class="mcard" style="--c:#9b5de5" onclick="go('piano')"><div class="ic" style="font-size:80px">🎹</div><h2>Piano do Juju</h2><p>Toque as teclas e aprenda uma musiquinha.</p></button>
 </div>
 <p class="pais">👨‍👩‍👧 <b>Para os pais:</b> jogos grátis, sem anúncios e sem cadastro. Brinque junto e aproveite para cantar as <a href="/#clipes">músicas do Juju</a>!</p>
 </section>
@@ -218,6 +249,40 @@ h1{font-size:clamp(30px,6vw,46px);line-height:1.05;text-align:center;margin:8px 
 <div class="bath" id="bath"><div class="bhud"><span id="b-cnt">🫧 0</span><span id="b-time">⏱ 30</span></div>
 <img src="img/juju.webp" class="bjuju" alt=""></div>
 </section>
+<!-- ================= SOMBRAS ================= -->
+<section class="scr" id="sombras">
+<div class="stage">
+<div class="q"><span id="s-q">Qual é a sombra?</span><button class="rep" onclick="falar('q_sombra')" aria-label="Ouvir">🔊</button></div>
+<img class="tgt" id="s-img" alt="">
+<div class="sils" id="s-opts"></div>
+</div>
+</section>
+
+<!-- ================= FORMAS ================= -->
+<section class="scr" id="formas">
+<div class="stage">
+<div class="q"><span id="f-q">Cadê o círculo?</span><button class="rep" onclick="falar('f_'+FALVO)" aria-label="Ouvir">🔊</button></div>
+<div class="shapes" id="f-opts"></div>
+<div class="info" id="f-info">&nbsp;</div>
+</div>
+</section>
+
+<!-- ================= QUEBRA-CABEÇA ================= -->
+<section class="scr" id="quebra">
+<div class="lvl"><button id="qz-f" class="sel" onclick="quebraStart(2)">Fácil</button><button id="qz-n" onclick="quebraStart(3)">Normal</button></div>
+<div class="pzl" id="pzl"></div>
+<div class="pref">Monte assim: <img id="q-ref" alt=""></div>
+</section>
+
+<!-- ================= PIANO ================= -->
+<section class="scr" id="piano">
+<div class="stage">
+<img src="img/juju.webp" class="pjuju" id="pj" alt="">
+<div class="keys" id="keys"></div>
+<div class="pbar"><button class="btn grn" id="pi-song" onclick="pianoSong()">⭐ Toque junto: Brilha, brilha estrelinha</button></div>
+<div class="info" id="pi-info">Toque nas teclas! 🎶</div>
+</div>
+</section>
 <p style="text-align:center;font-size:14px;margin:26px 0 90px;opacity:.8"><a href="/privacidade.html" style="color:inherit">Política de Privacidade</a></p>
 </main>
 
@@ -244,11 +309,11 @@ function party(n){PC.width=innerWidth;PC.height=innerHeight;var cols=['#ff3b4a',
 function step(){PX.clearRect(0,0,PC.width,PC.height);PP.forEach(function(p){p.vy+=.45;p.x+=p.vx;p.y+=p.vy;p.a+=p.s*.3;PX.save();PX.translate(p.x,p.y);PX.rotate(p.a);PX.fillStyle=p.c;PX.fillRect(-p.r,-p.r/2,p.r*2,p.r);PX.restore();});
  PP=PP.filter(function(p){return p.y<PC.height+40;});PA=PP.length?requestAnimationFrame(step):null;if(!PA)PX.clearRect(0,0,PC.width,PC.height);}
 function showWin(t,p,img,again){document.getElementById('w-t').textContent=t;document.getElementById('w-p').textContent=p;document.getElementById('w-img').src=img;
- document.getElementById('w-again').onclick=function(){hideWin();again();};document.getElementById('win').classList.add('on');sWin();party(160);if(!VOZ.src||VOZ.src.indexOf('l_fim')<0)setTimeout(function(){falar(CUR==='bolhas'?'b_fim':'win')},250);}
+ document.getElementById('w-again').onclick=function(){hideWin();again();};document.getElementById('win').classList.add('on');sWin();party(160);if(!VOZ.src||VOZ.src.indexOf('l_fim')<0&&VOZ.src.indexOf('q_fim')<0)setTimeout(function(){falar(CUR==='bolhas'?'b_fim':'win')},250);}
 function hideWin(){document.getElementById('win').classList.remove('on');}
 function go(id){document.querySelectorAll('.scr').forEach(function(s){s.classList.toggle('on',s.id===id);});
  var bk=document.getElementById('back');bk.textContent=id==='menu'?'⬅ Voltar ao site':'⬅ Jogos';bk.style.visibility=(typeof APP!=='undefined'&&APP&&id==='menu')?'hidden':'';CUR=id;scrollTo(0,0);
- if(id==='cores')coresStart();if(id==='memoria')memStart(MEM_N);if(id==='pintar')paintInit();if(id==='contar')contarStart();if(id==='lixo')lixoStart();if(id==='bolhas')bolhasStart();else bolhasStop();
+ if(id==='cores')coresStart();if(id==='memoria')memStart(MEM_N);if(id==='pintar')paintInit();if(id==='contar')contarStart();if(id==='lixo')lixoStart();if(id==='bolhas')bolhasStart();else bolhasStop();if(id==='sombras')sombrasStart();if(id==='formas')formasStart();if(id==='quebra')quebraStart();if(id==='piano'){pianoInit();if(typeof musStop==='function')musStop();}else if(typeof STARTED!=='undefined'&&STARTED&&typeof musStart==='function')musStart();;if(id!=='piano'&&typeof pianoStop==='function')pianoStop();
  if(typeof STARTED!=='undefined'&&STARTED){if(id==='menu')calar();else falar('i_'+id,true);}
  try{if(id==='menu')history.replaceState(null,'','#');else if(!NOPUSH)history.pushState({g:id},'','#'+id);else history.replaceState({g:id},'','#'+id);}catch(e){}NOPUSH=false;}
 
@@ -356,6 +421,69 @@ function spawnBub(){if(!bRun||document.getElementById('bolhas').className.indexO
   bCount+=d.textContent?3:1;if(d.textContent){addStar();sOk();}bInfo();setTimeout(function(){d.remove();},260);});}
 
 
+/* ---------- CADÊ A SOMBRA? ---------- */
+var SOBJ=['pato','coelho','formiga','ursinha','joaninha','borboleta','juju','maca','sol','uva','laranja','flor','nuvem'],sq=[],si=0,sLock=false,S_TOTAL=8;
+function sombrasStart(){sq=shuffle(SOBJ.slice()).slice(0,S_TOTAL);si=0;sombrasRound();}
+function sombrasRound(){sLock=false;var it=sq[si];var im=document.getElementById('s-img');im.src='img/'+it+'.webp';im.style.animation='none';void im.offsetWidth;im.style.animation='';
+ document.getElementById('s-q').textContent='Qual é a sombra? ('+(si+1)+'/'+S_TOTAL+')';
+ var ops=shuffle([it].concat(shuffle(SOBJ.filter(function(x){return x!==it;})).slice(0,si<3?1:2)));var box=document.getElementById('s-opts');box.innerHTML='';
+ ops.forEach(function(o){var b=document.createElement('button');b.innerHTML='<img src="img/'+o+'.webp" alt="">';b.setAttribute('aria-label','sombra');
+  b.onclick=function(){if(sLock)return;if(o!==it){b.classList.remove('no');void b.offsetWidth;b.classList.add('no');sNo();fNo();return;}
+   sLock=true;b.classList.add('ok');sOk();fOk();addStar();party(60);
+   setTimeout(function(){si++;if(si<S_TOTAL){sombrasRound();falar('q_sombra');}else showWin('Muito bem!','Você achou todas as sombras! 🌗','img/'+it+'.webp',sombrasStart);},1600);};box.appendChild(b);});}
+
+/* ---------- FORMAS ---------- */
+var FORMAS={circulo:['CÍRCULO','<circle cx="50" cy="50" r="44"/>'],quadrado:['QUADRADO','<rect x="8" y="8" width="84" height="84" rx="6"/>'],
+ triangulo:['TRIÂNGULO','<path d="M50 6 L95 90 L5 90 Z"/>'],estrela:['ESTRELA','<path d="M50 4 L62 37 L97 38 L69 59 L79 93 L50 73 L21 93 L31 59 L3 38 L38 37 Z"/>'],
+ coracao:['CORAÇÃO','<path d="M50 90 C20 70 3 52 6 30 C9 10 36 4 50 24 C64 4 91 10 94 30 C97 52 80 70 50 90 Z"/>']};
+var FCOL=['#ff4d5e','#3fa9f5','#ffd23f','#4cd964','#9b5de5','#ff8c1a','#ff6fb5'],FALVO='circulo',fr=0,fLock=false,F_TOTAL=8,fLast='';
+function formasStart(){fr=0;formasRound(true);}
+function formasRound(first){fLock=false;var ks=Object.keys(FORMAS);do{FALVO=ks[Math.floor(Math.random()*ks.length)];}while(FALVO===fLast);fLast=FALVO;
+ document.getElementById('f-q').textContent='Cadê o '.replace('o ',(FALVO==='estrela'?'a ':'o '))+FORMAS[FALVO][0].toLowerCase()+'?';
+ document.getElementById('f-info').textContent=(fr+1)+' de '+F_TOTAL;
+ var ops=shuffle([FALVO].concat(shuffle(ks.filter(function(k){return k!==FALVO;})).slice(0,3))),cols=shuffle(FCOL.slice()),box=document.getElementById('f-opts');box.innerHTML='';
+ ops.forEach(function(k,i){var b=document.createElement('button');b.setAttribute('aria-label',FORMAS[k][0]);
+  b.innerHTML='<svg viewBox="0 0 100 100" fill="'+cols[i]+'" stroke="#33204a" stroke-width="6" stroke-linejoin="round">'+FORMAS[k][1]+'</svg>';
+  b.onclick=function(){if(fLock)return;if(k!==FALVO){b.classList.remove('no');void b.offsetWidth;b.classList.add('no');sNo();fNo();return;}
+   fLock=true;b.classList.add('ok');sOk();fOk();addStar();party(60);document.getElementById('f-info').textContent='É o '.replace('o ',(k==='estrela'?'a ':'o '))+FORMAS[k][0]+'! ✨';
+   setTimeout(function(){fr++;if(fr<F_TOTAL)formasRound();else showWin('Parabéns!','Você conhece todas as formas! 🔺🟦⭐','img/juju.webp',formasStart);},1600);};box.appendChild(b);});
+ var wait=first?(((FALAS.i_formas||[0,4])[1])*1000+500):350;setTimeout(function(){if(CUR==='formas')falar('f_'+FALVO);},wait);}
+
+/* ---------- QUEBRA-CABEÇA ---------- */
+var QIMG=['juju','pato','coelho','ursinha','joaninha','borboleta','sol','flor','maca'],QBG=['#bfe9ff','#fff0a0','#ffd6e8','#d9f7c8','#e7dcff'],qN=2,qOrd=[],qSel=-1,qPic='',qBg='';
+function quebraStart(n){qN=n||qN;document.getElementById('qz-f').classList.toggle('sel',qN===2);document.getElementById('qz-n').classList.toggle('sel',qN===3);
+ qPic=QIMG[Math.floor(Math.random()*QIMG.length)];qBg=QBG[Math.floor(Math.random()*QBG.length)];var r=document.getElementById('q-ref');r.src='img/'+qPic+'.webp';r.style.setProperty('--bgc',qBg);
+ var t=qN*qN;qOrd=[];for(var i=0;i<t;i++)qOrd.push(i);do{shuffle(qOrd);}while(qOrd.every(function(v,i){return v===i;}));qSel=-1;quebraDraw();}
+function quebraDraw(){var p=document.getElementById('pzl');p.classList.remove('done');p.style.gridTemplateColumns='repeat('+qN+',1fr)';p.innerHTML='';
+ qOrd.forEach(function(v,pos){var d=document.createElement('div');var x=v%qN,y=Math.floor(v/qN);d.style.backgroundImage='url(img/'+qPic+'.webp)';d.style.backgroundColor=qBg;
+  d.style.backgroundSize=(qN*100)+'% '+(qN*100)+'%';d.style.backgroundPosition=(qN>1?x/(qN-1)*100:0)+'% '+(qN>1?y/(qN-1)*100:0)+'%';if(pos===qSel)d.classList.add('sel');
+  d.onclick=function(){quebraTap(pos);};p.appendChild(d);});}
+function quebraTap(pos){if(qSel<0){qSel=pos;sPop();quebraDraw();return;}if(qSel===pos){qSel=-1;quebraDraw();return;}
+ var t=qOrd[qSel];qOrd[qSel]=qOrd[pos];qOrd[pos]=t;var ok=qOrd[pos]===pos||qOrd[qSel]===qSel;qSel=-1;quebraDraw();if(ok){tone(880,.12,'triangle',.15);}else sPop();
+ if(qOrd.every(function(v,i){return v===i;})){document.getElementById('pzl').classList.add('done');addStar(qN);sOk();falar('q_fim');
+  setTimeout(function(){showWin('Montou!','Que quebra-cabeça bonito! 🧩','img/'+qPic+'.webp',function(){quebraStart();});},1400);}}
+
+/* ---------- PIANO DO JUJU ---------- */
+var PK=[[262,'DÓ','#ff4d5e','maca'],[294,'RÉ','#ff8c1a','laranja'],[330,'MI','#ffd23f','sol'],[349,'FÁ','#4cd964','juju'],[392,'SOL','#3fa9f5','pato'],[440,'LÁ','#9b5de5','uva'],[494,'SI','#ff6fb5','flor'],[523,'DÓ','#ff4d5e','joaninha']];
+var SONG=[0,0,4,4,5,5,4,3,3,2,2,1,1,0,4,4,3,3,2,2,1,4,4,3,3,2,2,1,0,0,4,4,5,5,4,3,3,2,2,1,1,0],pInitK=false,pSong=-1,pDT=null;
+function pnote(f){if(typeof SOM!=='undefined'&&!SOM)return;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();var t=AC.currentTime;
+ [[1,'triangle',.28],[2,'sine',.08],[3,'sine',.03]].forEach(function(h){var o=AC.createOscillator(),g=AC.createGain();o.type=h[1];o.frequency.value=f*h[0];
+  g.gain.setValueAtTime(h[2],t);g.gain.exponentialRampToValueAtTime(.001,t+1.1);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+1.15);});}catch(e){}}
+function pianoInit(){if(!pInitK){pInitK=true;var k=document.getElementById('keys');PK.forEach(function(p,i){var b=document.createElement('button');b.style.setProperty('--k',p[2]);
+  b.innerHTML='<img src="img/'+p[3]+'.webp" alt=""><b>'+p[1]+'</b>';b.setAttribute('aria-label',p[1]);b.addEventListener('pointerdown',function(e){e.preventDefault();pianoKey(i);});k.appendChild(b);});}
+ pianoStop();}
+function pianoKey(i){var ks=document.querySelectorAll('#keys button'),b=ks[i];pnote(PK[i][0]);b.classList.add('on');setTimeout(function(){b.classList.remove('on');},180);
+ var pj=document.getElementById('pj');pj.classList.add('dance');clearTimeout(pDT);pDT=setTimeout(function(){pj.classList.remove('dance');},500);
+ if(pSong>=0){if(i===SONG[pSong]){pSong++;addStarQuiet();if(pSong>=SONG.length){var done=pSong;pianoStop();addStar(3);sOk();showWin('Que lindo!','Você tocou Brilha, brilha estrelinha! 🌟','img/sol.webp',function(){pianoSong();});return;}pianoHint();}}
+ else document.getElementById('pi-info').textContent=PK[i][1]+' 🎵';}
+var pStarN=0;function addStarQuiet(){pStarN++;document.getElementById('pi-info').textContent='⭐ '+pStarN+' de '+SONG.length+' notas';}
+function pianoHint(){var ks=document.querySelectorAll('#keys button');ks.forEach(function(b,j){b.classList.toggle('hint',j===SONG[pSong]);});}
+function pianoSong(){pSong=0;pStarN=0;document.getElementById('pi-info').textContent='Siga a tecla que brilha! ✨';
+ var demo=[0,0,4,4,5,5,4],k=0;var ks=document.querySelectorAll('#keys button');ks.forEach(function(b){b.classList.remove('hint');});
+ (function nx(){if(pSong!==0||CUR!=='piano')return;if(k<demo.length){var i=demo[k++];pnote(PK[i][0]);ks[i].classList.add('on');setTimeout(function(){ks[i].classList.remove('on');},250);setTimeout(nx,k===7?600:450);}
+  else{falar('pi_vez');pianoHint();}})();}
+function pianoStop(){pSong=-1;document.querySelectorAll('#keys button').forEach(function(b){b.classList.remove('hint');});var i=document.getElementById('pi-info');if(i)i.textContent='Toque nas teclas! 🎶';}
+
 /* ---------- VOZ DO JUJU + MÚSICA ---------- */
 var FALAS={},SOM=true,VOZ=new Audio(),ULT=null,FT=null,STARTED=false;
 try{SOM=localStorage.getItem('jj_som')!=='0'}catch(e){}
@@ -389,7 +517,7 @@ var CUR='menu',NOPUSH=false;
 function voltar(){if(CUR==='menu'){if(!APP)location.href='/';}else{hideWin();go('menu');}}
 addEventListener('popstate',function(){if(CUR!=='menu'){hideWin();NOPUSH=true;go('menu');}});
 /* abrir direto pelo endereço (#cores, #memoria, #pintar) */
-var h=location.hash.replace('#','');if(['cores','memoria','pintar','contar','lixo','bolhas'].indexOf(h)>=0){NOPUSH=true;go(h);}
+var h=location.hash.replace('#','');if(['cores','memoria','pintar','contar','lixo','bolhas','sombras','formas','quebra','piano'].indexOf(h)>=0){NOPUSH=true;go(h);}
 </script>
 <script>if('serviceWorker' in navigator){addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){});});}</script>
 </body></html>
