@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Jogos do Juju Jacaré 🎮 Brincadeiras para crianças</title>
+<meta name="description" content="Jogos fáceis e gratuitos com o Juju Jacaré: descubra as cores, jogo da memória e pinte o Juju. Feitos para crianças pequenas!">
+<meta property="og:type" content="website"><meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="🎮 Jogos do Juju Jacaré – brincar e aprender!">
+<meta property="og:description" content="Descubra as cores, jogo da memória e pinte o Juju. Grátis e fácil para os pequenos! 🐊🌈">
+<meta property="og:image" content="https://jujujacare.com.br/og-juju.jpg">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="theme-color" content="#5cc93b">
+<link rel="icon" href="img/juju.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{--ol:#33204a;--g:#5cc93b;--y:#ffe14d;--r:#ff2b3d;--b:#3fa9f5;--p:#9b5de5;--bg:#fffbea}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{font-family:'Baloo 2',system-ui,sans-serif;color:var(--ol);background:radial-gradient(circle at 15% 10%,#fff7b0 0,transparent 30%),radial-gradient(circle at 90% 90%,#c9f2ff 0,transparent 35%),linear-gradient(160deg,#9be15d,var(--g));min-height:100%;overflow-x:hidden;user-select:none}
+button{font:inherit;color:inherit;cursor:pointer}
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 16px;background:rgba(255,251,234,.92);border-bottom:4px solid var(--ol);position:sticky;top:0;z-index:10}
+.top img{height:44px;display:block}
+.top .back{background:var(--y);border:4px solid var(--ol);border-radius:999px;padding:4px 16px;font-weight:800;font-size:18px;box-shadow:0 4px 0 var(--ol)}
+.top .back[hidden]{display:none}
+.stars{font-weight:800;font-size:20px;background:#fff;border:4px solid var(--ol);border-radius:999px;padding:2px 14px;white-space:nowrap}
+main{max-width:980px;margin:0 auto;padding:18px 16px 40px}
+.scr{display:none}.scr.on{display:block}
+h1{font-size:clamp(30px,6vw,46px);line-height:1.05;text-align:center;margin:8px 0 4px}
+.sub{text-align:center;font-size:19px;margin-bottom:22px}
+.menu{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+.mcard{background:#fff;border:5px solid var(--ol);border-radius:30px;padding:18px;text-align:center;box-shadow:0 9px 0 var(--c);transition:transform .15s}
+.mcard:hover,.mcard:active{transform:translateY(-4px) rotate(-1deg)}
+.mcard .ic{height:130px;display:flex;align-items:center;justify-content:center;gap:4px}
+.mcard .ic img{height:110px}
+.mcard h2{font-size:28px;margin-top:8px}.mcard p{font-size:16px}
+.pais{margin-top:26px;background:rgba(255,255,255,.85);border:4px solid var(--ol);border-radius:22px;padding:14px 18px;font-size:16px;text-align:center}
+.pais a{color:var(--p);font-weight:800}
+/* ---- cores */
+.stage{background:#fff;border:5px solid var(--ol);border-radius:34px;padding:16px;text-align:center;box-shadow:0 9px 0 var(--ol);position:relative;overflow:hidden}
+.q{font-size:clamp(28px,6vw,40px);font-weight:800}
+.objwrap{position:relative;width:min(300px,62vw);aspect-ratio:1;margin:6px auto}
+.objwrap img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transition:transform .25s}
+.objwrap .col{clip-path:circle(0% at 50% 50%);transition:clip-path .55s ease-out}
+.objwrap.done .col{clip-path:circle(75% at 50% 50%)}
+.objwrap.done img{animation:pop .5s}
+@keyframes pop{40%{transform:scale(1.15) rotate(-4deg)}}
+.big{font-size:clamp(40px,10vw,70px);font-weight:800;line-height:1;height:1.1em;-webkit-text-stroke:3px var(--ol);paint-order:stroke fill;letter-spacing:1px}
+.opts{display:flex;justify-content:center;gap:clamp(12px,4vw,36px);margin-top:10px;flex-wrap:wrap}
+.opt{width:clamp(92px,24vw,140px);aspect-ratio:1;border-radius:50%;border:6px solid var(--ol);box-shadow:0 7px 0 var(--ol);position:relative;display:flex;align-items:flex-end;justify-content:center;transition:transform .1s}
+.opt span{position:absolute;bottom:-38px;font-weight:800;font-size:18px;white-space:nowrap}
+.opt:active{transform:translateY(4px);box-shadow:0 3px 0 var(--ol)}
+.opt.no{animation:shake .45s}
+@keyframes shake{20%,60%{transform:translateX(-10px)}40%,80%{transform:translateX(10px)}}
+.opts-pad{height:44px}
+/* ---- memória */
+.lvl{display:flex;justify-content:center;gap:12px;margin-bottom:14px}
+.lvl button{border:4px solid var(--ol);border-radius:999px;padding:4px 20px;font-weight:800;font-size:18px;background:#fff;box-shadow:0 4px 0 var(--ol)}
+.lvl button.sel{background:var(--y)}
+.board{display:grid;gap:clamp(8px,2vw,16px);max-width:720px;margin:0 auto}
+.card{aspect-ratio:3/4;perspective:800px;border:0;background:none}
+.card .in{position:relative;width:100%;height:100%;transition:transform .45s;transform-style:preserve-3d}
+.card.up .in,.card.ok .in{transform:rotateY(180deg)}
+.card .f,.card .b{position:absolute;inset:0;border:5px solid var(--ol);border-radius:20px;backface-visibility:hidden;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 0 var(--ol)}
+.card .b{background:repeating-linear-gradient(45deg,#5cc93b 0 14px,#4ab52f 14px 28px);font-size:clamp(34px,8vw,60px);font-weight:800;color:#fff;-webkit-text-stroke:3px var(--ol);paint-order:stroke fill}
+.card .f{background:#fff;transform:rotateY(180deg)}
+.card .f img{width:82%;height:82%;object-fit:contain}
+.card.ok .f{background:#fff7b0;animation:glow 1s}
+@keyframes glow{50%{box-shadow:0 0 0 10px var(--y),0 6px 0 var(--ol)}}
+.info{text-align:center;font-weight:800;font-size:20px;margin-top:14px}
+/* ---- pintar */
+.paint{display:grid;grid-template-columns:1fr 150px;gap:16px;align-items:start}
+.paint svg{width:100%;max-height:70vh;background:#fff;border:5px solid var(--ol);border-radius:30px;box-shadow:0 9px 0 var(--ol);touch-action:manipulation}
+.paint svg .pz{cursor:pointer;transition:fill .2s}
+.pal{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;background:#fff;border:5px solid var(--ol);border-radius:24px;padding:12px}
+.pal button.c{aspect-ratio:1;border-radius:50%;border:5px solid var(--ol)}
+.pal button.c.sel{outline:5px solid var(--y);outline-offset:3px;transform:scale(1.08)}
+.pal .act{grid-column:span 2;border:4px solid var(--ol);border-radius:999px;padding:4px 8px;font-weight:800;font-size:16px;background:var(--y);box-shadow:0 4px 0 var(--ol)}
+@media(max-width:640px){.paint{grid-template-columns:1fr}.pal{grid-template-columns:repeat(6,1fr)}.pal .act{grid-column:span 3}}
+/* ---- festa */
+#party{position:fixed;inset:0;pointer-events:none;z-index:50}
+.win{position:fixed;inset:0;z-index:40;background:rgba(43,24,64,.55);display:none;align-items:center;justify-content:center;padding:16px}
+.win.on{display:flex}
+.win .box{background:#fff;border:6px solid var(--ol);border-radius:34px;padding:22px;text-align:center;max-width:420px;width:100%;box-shadow:0 10px 0 var(--ol);animation:pop .5s}
+.win img{height:150px}
+.win h2{font-size:40px;line-height:1}.win p{font-size:20px;margin:6px 0 16px}
+.win .row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.btn{border:4px solid var(--ol);border-radius:999px;padding:8px 22px;font-weight:800;font-size:20px;box-shadow:0 5px 0 var(--ol);background:var(--y)}
+.btn.red{background:var(--r);color:#fff}.btn.grn{background:#4cd964}
+</style></head><body>
+<header class="top"><a href="/" aria-label="Voltar ao site"><img src="img/logo.webp" alt="Juju Jacaré"></a>
+<button class="back" id="back" hidden onclick="go('menu')">⬅ Jogos</button>
+<span class="stars" id="stars">⭐ 0</span></header>
+<main>
+<!-- ================= MENU ================= -->
+<section class="scr on" id="menu">
+<h1>🎮 Jogos do Juju</h1><p class="sub">Escolha uma brincadeira!</p>
+<div class="menu">
+<button class="mcard" style="--c:#ff4d5e" onclick="go('cores')"><div class="ic"><img src="img/maca_cinza.webp" alt=""><img src="img/maca.webp" alt=""></div><h2>Que cor é?</h2><p>Toque na cor certa e pinte a figura!</p></button>
+<button class="mcard" style="--c:#3fa9f5" onclick="go('memoria')"><div class="ic"><img src="img/pato.webp" alt=""><img src="img/pato.webp" alt=""></div><h2>Memória</h2><p>Ache os pares dos amigos do Juju.</p></button>
+<button class="mcard" style="--c:#9b5de5" onclick="go('pintar')"><div class="ic"><img src="img/juju.webp" alt=""></div><h2>Pinte o Juju</h2><p>Escolha as cores e pinte do seu jeito.</p></button>
+</div>
+<p class="pais">👨‍👩‍👧 <b>Para os pais:</b> jogos grátis, sem anúncios e sem cadastro. Brinque junto e aproveite para cantar as <a href="/#clipes">músicas do Juju</a>!</p>
+</section>
+
+<!-- ================= CORES ================= -->
+<section class="scr" id="cores">
+<div class="stage">
+<div class="q" id="c-q">Que cor é?</div>
+<div class="objwrap" id="c-obj"><img id="c-grey" alt=""><img class="col" id="c-col" alt=""></div>
+<div class="big" id="c-word">&nbsp;</div>
+<div class="opts" id="c-opts"></div><div class="opts-pad"></div>
+</div>
+</section>
+
+<!-- ================= MEMÓRIA ================= -->
+<section class="scr" id="memoria">
+<div class="lvl"><button id="lv-f" class="sel" onclick="memStart(3)">Fácil</button><button id="lv-n" onclick="memStart(6)">Normal</button></div>
+<div class="board" id="board"></div>
+<div class="info" id="m-info">&nbsp;</div>
+</section>
+
+<!-- ================= PINTAR ================= -->
+<section class="scr" id="pintar">
+<div class="paint">
+<svg id="svg" viewBox="0 0 400 480" xmlns="http://www.w3.org/2000/svg" stroke="#33204a" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
+ <rect class="pz" data-def="#bfe9ff" x="0" y="0" width="400" height="480" fill="#fff" stroke="none"/>
+ <circle class="pz" data-def="#ffd23f" cx="345" cy="58" r="34" fill="#fff"/>
+ <path class="pz" data-def="#6bd24a" d="M0 400 Q200 360 400 400 L400 480 L0 480 Z" fill="#fff"/>
+ <path class="pz" data-def="#4cd964" d="M285 360 Q370 360 380 300 Q392 350 330 395 Q300 410 270 400 Z" fill="#fff"/>
+ <ellipse class="pz" data-def="#4cd964" cx="160" cy="430" rx="40" ry="24" fill="#fff"/>
+ <ellipse class="pz" data-def="#4cd964" cx="240" cy="430" rx="40" ry="24" fill="#fff"/>
+ <ellipse class="pz" data-def="#4cd964" cx="200" cy="335" rx="105" ry="100" fill="#fff"/>
+ <ellipse class="pz" data-def="#fff0a0" cx="200" cy="345" rx="62" ry="80" fill="#fff"/>
+ <g fill="none" stroke-width="4"><path d="M150 310 Q200 322 250 310"/><path d="M144 345 Q200 357 256 345"/><path d="M150 380 Q200 392 250 380"/></g>
+ <ellipse class="pz" data-def="#4cd964" cx="95" cy="300" rx="22" ry="52" transform="rotate(30 95 300)" fill="#fff"/>
+ <ellipse class="pz" data-def="#4cd964" cx="305" cy="300" rx="22" ry="52" transform="rotate(-30 305 300)" fill="#fff"/>
+ <ellipse class="pz" data-def="#4cd964" cx="200" cy="160" rx="100" ry="72" fill="#fff"/>
+ <path class="pz" data-def="#4cd964" d="M120 175 Q200 150 290 170 Q320 185 300 215 Q200 245 115 215 Q95 195 120 175 Z" fill="#fff"/>
+ <circle class="pz" data-def="#4cd964" cx="160" cy="100" r="36" fill="#fff"/>
+ <circle class="pz" data-def="#4cd964" cx="240" cy="100" r="36" fill="#fff"/>
+ <circle cx="160" cy="100" r="22" fill="#fff" stroke-width="4"/><circle cx="240" cy="100" r="22" fill="#fff" stroke-width="4"/>
+ <circle cx="164" cy="104" r="11" fill="#33204a" stroke="none"/><circle cx="244" cy="104" r="11" fill="#33204a" stroke="none"/>
+ <circle cx="168" cy="99" r="4" fill="#fff" stroke="none"/><circle cx="248" cy="99" r="4" fill="#fff" stroke="none"/>
+ <circle cx="185" cy="172" r="4" fill="#33204a" stroke="none"/><circle cx="215" cy="172" r="4" fill="#33204a" stroke="none"/>
+ <path d="M135 200 Q200 225 280 198" fill="none" stroke-width="5"/>
+ <path d="M160 206 l6 10 l6 -9 M232 207 l6 9 l6 -10" fill="#fff" stroke-width="3"/>
+ <path class="pz" data-def="#ff4d5e" d="M118 238 Q200 268 284 236 L290 262 Q200 296 112 264 Z" fill="#fff"/>
+ <path class="pz" data-def="#ff4d5e" d="M222 262 L250 262 L258 330 L228 334 Z" fill="#fff"/>
+</svg>
+<div class="pal" id="pal"></div>
+</div>
+</section>
+</main>
+
+<div class="win" id="win"><div class="box"><img id="w-img" src="img/juju.webp" alt=""><h2 id="w-t">Parabéns!</h2><p id="w-p"></p>
+<div class="row"><button class="btn grn" id="w-again">Jogar de novo</button><button class="btn" onclick="hideWin();go('menu')">Outros jogos</button></div></div></div>
+<canvas id="party"></canvas>
+
+<script>
+/* ---------- utilidades ---------- */
+var STARS=0;try{STARS=+localStorage.getItem('jj_stars')||0}catch(e){}
+function addStar(n){STARS+=n||1;document.getElementById('stars').textContent='⭐ '+STARS;try{localStorage.setItem('jj_stars',STARS)}catch(e){}}
+addStar(0);
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+var AC=null;function tone(f,d,type,v,when){try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();var t=AC.currentTime+(when||0);var o=AC.createOscillator(),g=AC.createGain();o.type=type||'sine';o.frequency.setValueAtTime(f,t);g.gain.setValueAtTime(v||.18,t);g.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+d);}catch(e){}}
+function sOk(){[523,659,784,1047].forEach(function(f,i){tone(f,.25,'triangle',.18,i*.09);});}
+function sNo(){tone(220,.18,'square',.06);tone(180,.22,'square',.05,.12);}
+function sPop(){tone(700+Math.random()*300,.08,'sine',.15);}
+function sWin(){[523,659,784,659,784,1047].forEach(function(f,i){tone(f,.3,'triangle',.2,i*.13);});}
+/* confete */
+var PC=document.getElementById('party'),PX=PC.getContext('2d'),PP=[],PA=null;
+function party(n){PC.width=innerWidth;PC.height=innerHeight;var cols=['#ff3b4a','#ff8c1a','#ffd23f','#4cd964','#3fa9f5','#9b5de5','#ff6fb5'];
+ for(var i=0;i<(n||90);i++)PP.push({x:innerWidth/2+(Math.random()-.5)*200,y:innerHeight*.45,vx:(Math.random()-.5)*16,vy:-Math.random()*16-5,r:Math.random()*6+5,c:cols[i%7],a:Math.random()*6,s:Math.random()-.5});
+ if(!PA)PA=requestAnimationFrame(step);}
+function step(){PX.clearRect(0,0,PC.width,PC.height);PP.forEach(function(p){p.vy+=.45;p.x+=p.vx;p.y+=p.vy;p.a+=p.s*.3;PX.save();PX.translate(p.x,p.y);PX.rotate(p.a);PX.fillStyle=p.c;PX.fillRect(-p.r,-p.r/2,p.r*2,p.r);PX.restore();});
+ PP=PP.filter(function(p){return p.y<PC.height+40;});PA=PP.length?requestAnimationFrame(step):null;if(!PA)PX.clearRect(0,0,PC.width,PC.height);}
+function showWin(t,p,img,again){document.getElementById('w-t').textContent=t;document.getElementById('w-p').textContent=p;document.getElementById('w-img').src=img;
+ document.getElementById('w-again').onclick=function(){hideWin();again();};document.getElementById('win').classList.add('on');sWin();party(160);}
+function hideWin(){document.getElementById('win').classList.remove('on');}
+function go(id){document.querySelectorAll('.scr').forEach(function(s){s.classList.toggle('on',s.id===id);});
+ document.getElementById('back').hidden=(id==='menu');scrollTo(0,0);
+ if(id==='cores')coresStart();if(id==='memoria')memStart(MEM_N);if(id==='pintar')paintInit();
+ try{history.replaceState(null,'',id==='menu'?'#':'#'+id)}catch(e){}}
+
+/* ---------- QUE COR É? ---------- */
+var CORES=[['maca','VERMELHO','#ff3b4a'],['sol','AMARELO','#ffd23f'],['ceu','AZUL','#3fa9f5'],['juju','VERDE','#4cd964'],['laranja','LARANJA','#ff8c1a'],
+ ['uva','ROXO','#9b5de5'],['nuvem','BRANCO','#ffffff'],['carvao','PRETO','#2b2b33'],['flor','ROSA','#ff6fb5']];
+var cq=[],ci=0,cLock=false;
+function coresStart(){cq=shuffle(CORES.slice());ci=0;coresRound();}
+function coresRound(){cLock=false;var it=cq[ci];var w=document.getElementById('c-obj');w.classList.remove('done');
+ document.getElementById('c-grey').src='img/'+it[0]+'_cinza.webp';document.getElementById('c-col').src='img/'+it[0]+'.webp';
+ document.getElementById('c-word').innerHTML='&nbsp;';document.getElementById('c-q').textContent='Que cor é? ('+(ci+1)+'/'+cq.length+')';
+ var others=shuffle(CORES.filter(function(c){return c!==it;})).slice(0,2);var ops=shuffle([it].concat(others));
+ var box=document.getElementById('c-opts');box.innerHTML='';
+ ops.forEach(function(o){var b=document.createElement('button');b.className='opt';b.style.background=o[2];b.setAttribute('aria-label',o[1]);
+  b.innerHTML='<span>'+o[1]+'</span>';b.onclick=function(){coresPick(o,b);};box.appendChild(b);});}
+function coresPick(o,b){if(cLock)return;var it=cq[ci];
+ if(o!==it){b.classList.remove('no');void b.offsetWidth;b.classList.add('no');sNo();return;}
+ cLock=true;sOk();addStar();document.getElementById('c-obj').classList.add('done');
+ var wd=document.getElementById('c-word');wd.textContent=it[1]+'!';wd.style.color=it[2];party(70);
+ setTimeout(function(){ci++;if(ci<cq.length)coresRound();else showWin('Parabéns!','Você acertou todas as cores! 🌈','img/juju.webp',coresStart);},1700);}
+
+/* ---------- MEMÓRIA ---------- */
+var MEM=['pato','coelho','formiga','ursinha','joaninha','borboleta','juju','maca','sol','uva'],MEM_N=3,mOpen=[],mMoves=0,mPairs=0,mLock=false;
+function memStart(n){MEM_N=n;document.getElementById('lv-f').classList.toggle('sel',n===3);document.getElementById('lv-n').classList.toggle('sel',n===6);
+ var pick=shuffle(MEM.slice()).slice(0,n),deck=shuffle(pick.concat(pick)),bd=document.getElementById('board');
+ bd.style.gridTemplateColumns='repeat('+(n===3?3:4)+',1fr)';bd.style.maxWidth=(n===3?520:720)+'px';bd.innerHTML='';mOpen=[];mMoves=0;mPairs=0;mLock=false;
+ deck.forEach(function(nm){var c=document.createElement('button');c.className='card';c.dataset.n=nm;c.setAttribute('aria-label','carta');
+  c.innerHTML='<div class="in"><div class="b">?</div><div class="f"><img src="img/'+nm+'.webp" alt=""></div></div>';c.onclick=function(){memFlip(c);};bd.appendChild(c);});
+ memInfo();}
+function memInfo(){document.getElementById('m-info').textContent='Pares: '+mPairs+' de '+MEM_N+'   •   Jogadas: '+mMoves;}
+function memFlip(c){if(mLock||c.classList.contains('up')||c.classList.contains('ok'))return;c.classList.add('up');sPop();mOpen.push(c);
+ if(mOpen.length<2)return;mMoves++;var a=mOpen[0],b=mOpen[1];mOpen=[];
+ if(a.dataset.n===b.dataset.n){setTimeout(function(){a.classList.add('ok');b.classList.add('ok');a.classList.remove('up');b.classList.remove('up');sOk();addStar();party(40);mPairs++;memInfo();
+   if(mPairs===MEM_N)setTimeout(function(){showWin('Muito bem!','Você achou todos os pares em '+mMoves+' jogadas! 🎉','img/'+a.dataset.n+'.webp',function(){memStart(MEM_N);});},700);},350);}
+ else{mLock=true;memInfo();setTimeout(function(){a.classList.remove('up');b.classList.remove('up');mLock=false;},1000);}
+ memInfo();}
+
+/* ---------- PINTE O JUJU ---------- */
+var PAL=['#ff3b4a','#ff8c1a','#ffd23f','#4cd964','#2f9a37','#3fa9f5','#9b5de5','#ff6fb5','#8b5a2b','#2b2b33','#bfe9ff','#ffffff'],cur='#4cd964',pInit=false;
+function paintInit(){if(pInit)return;pInit=true;var pal=document.getElementById('pal');
+ PAL.forEach(function(c){var b=document.createElement('button');b.className='c'+(c===cur?' sel':'');b.style.background=c;b.setAttribute('aria-label','cor');
+  b.onclick=function(){cur=c;pal.querySelectorAll('.c').forEach(function(x){x.classList.remove('sel');});b.classList.add('sel');sPop();};pal.appendChild(b);});
+ [['🌈 Cores do Juju',function(){document.querySelectorAll('#svg .pz').forEach(function(p){p.setAttribute('fill',p.dataset.def);});party(60);sOk();}],
+  ['🧽 Limpar',function(){document.querySelectorAll('#svg .pz').forEach(function(p){p.setAttribute('fill','#fff');});}],
+  ['💾 Salvar',savePic]].forEach(function(a){var b=document.createElement('button');b.className='act';b.textContent=a[0];b.onclick=a[1];pal.appendChild(b);});
+ document.querySelectorAll('#svg .pz').forEach(function(p){p.addEventListener('click',function(){p.setAttribute('fill',cur);sPop();});});}
+function savePic(){var svg=document.getElementById('svg'),xml=new XMLSerializer().serializeToString(svg);
+ var img=new Image();img.onload=function(){var cv=document.createElement('canvas');cv.width=800;cv.height=960;var x=cv.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,800,960);x.drawImage(img,0,0,800,960);
+  var a=document.createElement('a');a.download='meu-juju-jacare.png';a.href=cv.toDataURL('image/png');a.click();addStar();};
+ img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(xml);}
+
+/* abrir direto pelo endereço (#cores, #memoria, #pintar) */
+var h=location.hash.replace('#','');if(['cores','memoria','pintar'].indexOf(h)>=0)go(h);
+</script>
+</body></html>
