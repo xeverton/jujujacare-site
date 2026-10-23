@@ -118,7 +118,7 @@ h1{font-size:clamp(30px,6vw,46px);line-height:1.05;text-align:center;margin:8px 
 @keyframes bpop{to{transform:scale(1.6);opacity:0}}
 </style></head><body>
 <header class="top"><a href="/" aria-label="Voltar ao site"><img src="img/logo.webp" alt="Juju Jacaré"></a>
-<button class="back" id="back" hidden onclick="go('menu')">⬅ Jogos</button>
+<button class="back" id="back" onclick="voltar()">⬅ Voltar ao site</button>
 <span class="stars" id="stars">⭐ 0</span></header>
 <main>
 <!-- ================= MENU ================= -->
@@ -233,9 +233,9 @@ function showWin(t,p,img,again){document.getElementById('w-t').textContent=t;doc
  document.getElementById('w-again').onclick=function(){hideWin();again();};document.getElementById('win').classList.add('on');sWin();party(160);}
 function hideWin(){document.getElementById('win').classList.remove('on');}
 function go(id){document.querySelectorAll('.scr').forEach(function(s){s.classList.toggle('on',s.id===id);});
- document.getElementById('back').hidden=(id==='menu');scrollTo(0,0);
+ var bk=document.getElementById('back');bk.textContent=id==='menu'?'⬅ Voltar ao site':'⬅ Jogos';CUR=id;scrollTo(0,0);
  if(id==='cores')coresStart();if(id==='memoria')memStart(MEM_N);if(id==='pintar')paintInit();if(id==='contar')contarStart();if(id==='lixo')lixoStart();if(id==='bolhas')bolhasStart();else bolhasStop();
- try{history.replaceState(null,'',id==='menu'?'#':'#'+id)}catch(e){}}
+ try{if(id==='menu')history.replaceState(null,'','#');else if(!NOPUSH)history.pushState({g:id},'','#'+id);else history.replaceState({g:id},'','#'+id);}catch(e){}NOPUSH=false;}
 
 /* ---------- QUE COR É? ---------- */
 var CORES=[['maca','VERMELHO','#ff3b4a'],['sol','AMARELO','#ffd23f'],['ceu','AZUL','#3fa9f5'],['juju','VERDE','#4cd964'],['laranja','LARANJA','#ff8c1a'],
@@ -340,8 +340,11 @@ function spawnBub(){if(!bRun||document.getElementById('bolhas').className.indexO
  d.addEventListener('pointerdown',function(){if(d.classList.contains('pop'))return;d.classList.add('pop');tone(900+Math.random()*500,.07,'sine',.16);
   bCount+=d.textContent?3:1;if(d.textContent){addStar();sOk();}bInfo();setTimeout(function(){d.remove();},260);});}
 
+var CUR='menu',NOPUSH=false;
+function voltar(){if(CUR==='menu'){location.href='/';}else{hideWin();go('menu');}}
+addEventListener('popstate',function(){if(CUR!=='menu'){hideWin();NOPUSH=true;go('menu');}});
 /* abrir direto pelo endereço (#cores, #memoria, #pintar) */
-var h=location.hash.replace('#','');if(['cores','memoria','pintar','contar','lixo','bolhas'].indexOf(h)>=0)go(h);
+var h=location.hash.replace('#','');if(['cores','memoria','pintar','contar','lixo','bolhas'].indexOf(h)>=0){NOPUSH=true;go(h);}
 </script>
 <script>if('serviceWorker' in navigator){addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){});});}</script>
 </body></html>
