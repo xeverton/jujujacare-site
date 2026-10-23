@@ -8,8 +8,8 @@
 5.18
 ],
 "i_memoria": [
-"Vamos jogar memória! Toque em duas cartas. Se os amiguinhos forem iguais, você ganha uma estrela!",
-5.19
+"Vamos jogar memória! Toque em duas cartas. Se as figuras forem iguais, você ganha uma estrela!",
+5.06
 ],
 "i_pintar": [
 "Vamos pintar o Juju! Escolha uma cor e depois toque no desenho para pintar. Capricha!",
@@ -148,8 +148,8 @@
 1.66
 ],
 "i_sombras": [
-"Cadê a sombra? Olha o amiguinho lá em cima e toque na sombra igualzinha a ele!",
-3.83
+"Cadê a sombra? Olha a figura lá em cima e toque na sombra igualzinha a ela!",
+3.75
 ],
 "q_sombra": [
 "Qual é a sombra?",
@@ -180,8 +180,8 @@
 0.92
 ],
 "i_quebra": [
-"Vamos montar o quebra-cabeça! Toque em duas pecinhas para trocar de lugar, até a figura ficar certinha!",
-5.52
+"Vamos montar o quebra-cabeça! Segure uma pecinha e arraste até o lugar certo no quadro!",
+5.02
 ],
 "i_piano": [
 "É hora da música! Toque nas teclas coloridas para tocar. Aperte o botão estrela e toque junto com o Juju!",
@@ -194,5 +194,49 @@
 "q_fim": [
 "Montou! Que figura bonita!",
 1.69
+],
+"c_marrom": [
+"É marrom!",
+0.58
+],
+"n7": [
+"Sete!",
+0.47
+],
+"n8": [
+"Oito!",
+0.41
+],
+"n9": [
+"Nove!",
+0.46
+],
+"n10": [
+"Dez!",
+0.39
+],
+"f_losango": [
+"Cadê o losango?",
+0.87
+],
+"f_oval": [
+"Cadê o oval?",
+0.7
+],
+"f_retangulo": [
+"Cadê o retângulo?",
+1.01
+],
+"lv_up": [
+"Uau! Subiu de nível! Agora ficou mais difícil!",
+2.94
+],
+"q_peca": [
+"Encaixou!",
+0.65
+],
+"l_nao": [
+"Ops! Isso não é lixo! Deixa no jardim!",
+2.46
 ]
 }

@@ -172,8 +172,8 @@ main{max-width:1100px;padding:clamp(10px,2.2dvh,18px) clamp(10px,3vw,24px) 30px}
 .cbox{min-height:min(300px,60vw,30dvh)}
 .cbox .it{width:clamp(56px,min(25vw,14dvh),130px)}
 .nums button{width:clamp(64px,min(22vw,13dvh),120px);font-size:clamp(34px,min(12vw,7.5dvh),68px)}
-.paint svg{display:block;width:auto;height:auto;max-width:100%;max-height:calc(100dvh - 130px);aspect-ratio:400/480;margin:0 auto}
-@media(max-width:640px){.paint svg{max-height:calc(100dvh - 300px)}.pal{padding:8px;gap:7px}.pal .act{font-size:14px}}
+.paint svg{display:block;width:auto;height:auto;max-width:100%;max-height:calc(100dvh - 200px);aspect-ratio:400/480;margin:0 auto}
+@media(max-width:640px){.paint svg{max-height:calc(100dvh - 350px)}.pal{padding:8px;gap:7px}.pal .act{font-size:14px}}
 .yard{height:clamp(220px,calc(100dvh - 190px),560px)}
 .bath{height:clamp(240px,calc(100dvh - 120px),640px)}
 .tgt{height:clamp(80px,min(30vw,20dvh),190px)}
@@ -193,7 +193,7 @@ main{max-width:1100px;padding:clamp(10px,2.2dvh,18px) clamp(10px,3vw,24px) 30px}
  h1{font-size:26px;margin:2px 0}.sub{margin-bottom:10px;font-size:16px}
  .mcard{padding:10px}.mcard .ic{height:80px}.mcard .ic img{height:70px}.mcard h2{font-size:22px}
  #cores .stage,#contar .stage,#sombras .stage{display:grid;grid-template-columns:1fr 1fr;align-items:center;column-gap:12px}
- #cores .q,#contar .q,#sombras .q{grid-column:1/-1}
+ #cores .q,#contar .q,#sombras .q,.stage .lvtag.corner{grid-column:1/-1}.stage .lvtag.corner{justify-self:center}
  #cores .objwrap,#contar .cbox,#sombras .tgt{grid-column:1;grid-row:2/span 3;width:auto;max-width:100%}
  #cores .objwrap{height:calc(100dvh - 150px);width:auto;aspect-ratio:1}
  #contar .cbox{min-height:0}
@@ -202,12 +202,8 @@ main{max-width:1100px;padding:clamp(10px,2.2dvh,18px) clamp(10px,3vw,24px) 30px}
  .opt{width:clamp(56px,20dvh,110px)}.nums button{width:clamp(56px,20dvh,100px);font-size:clamp(30px,11dvh,56px)}
  .sils button{width:clamp(70px,30dvh,150px)}
  .shapes{grid-template-columns:repeat(4,1fr);max-width:calc((100dvh - 170px)*4.3)}
- .paint{grid-template-columns:1fr 210px}.paint svg{max-height:calc(100dvh - 90px)}
+ .paint{grid-template-columns:1fr 210px}.paint svg{max-height:calc(100dvh - 155px)}.dsel{margin-bottom:4px}
  .pal{grid-template-columns:repeat(4,1fr);padding:8px;gap:6px}.pal .act{grid-column:span 2;font-size:13px;padding:2px 4px}
- #quebra.on{display:grid;grid-template-columns:auto auto;justify-content:center;align-items:center;gap:20px}
- #quebra .lvl{grid-column:2;grid-row:1;flex-direction:column;margin:0}
- #quebra .pzl{grid-column:1;grid-row:1/span 2;width:calc(100dvh - 100px);margin:0}
- #quebra .pref{grid-column:2;grid-row:2;flex-direction:column}
  .pjuju{display:none}.keys{height:calc(100dvh - 185px);margin-top:4px}.pbar{margin-top:8px}#pi-info{display:none}
  .lvl{margin-bottom:6px}.info{margin-top:6px;font-size:17px}
  .yard{height:calc(100dvh - 150px)}.bath{height:calc(100dvh - 95px)}
@@ -219,6 +215,38 @@ main{max-width:1100px;padding:clamp(10px,2.2dvh,18px) clamp(10px,3vw,24px) 30px}
  .opt span{font-size:20px}
  .objwrap{width:min(360px,36dvh)}.tgt{height:min(220px,24dvh)}
 }
+
+/* ===== níveis, mais opções, quebra-cabeça arrastável ===== */
+.stage{position:relative}
+.lvtag{display:inline-block;background:#ffd23f;border:3px solid var(--ol);border-radius:999px;padding:0 12px;font-weight:800;font-size:clamp(13px,1.9dvh,17px);white-space:nowrap;vertical-align:middle}
+.lvtag.corner{margin-bottom:2px}
+.lvl .lvtag{font-size:18px;padding:3px 14px}
+.opts.many{flex-wrap:wrap;gap:30px 14px;max-width:560px;margin-left:auto;margin-right:auto}
+.opts.many .opt{width:clamp(54px,min(19vw,10.5dvh),108px)}
+.opts.many~.opts-pad{height:clamp(30px,5dvh,44px)}
+.sils.many{gap:clamp(8px,2vw,16px)}.sils.many button{width:clamp(64px,min(20vw,14dvh),130px)}
+.shapes button{min-width:0}.shapes{grid-template-columns:repeat(2,minmax(0,1fr))}.shapes.six{grid-template-columns:repeat(3,minmax(0,1fr));max-width:min(520px,calc((100dvh - 250px)*1.6))}
+.dsel{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.dsel button{width:clamp(38px,min(11vw,6.5dvh),56px);height:clamp(38px,min(11vw,6.5dvh),56px);border-radius:16px;border:4px solid var(--ol);background:#fff;font-size:clamp(22px,3.6dvh,30px);box-shadow:0 4px 0 var(--ol)}
+.dsel button.sel{background:#ffd23f;transform:translateY(-3px)}
+.yard .tr img{width:clamp(44px,min(11vw,8dvh),80px);display:block}
+.bub img{width:72%;height:72%;object-fit:contain;pointer-events:none}.bub span{font-size:26px;pointer-events:none}
+.bub.gold{background:radial-gradient(circle at 30% 30%,#fff 0 12%,rgba(255,225,77,.55) 13% 60%,rgba(255,180,0,.6));border-color:#ffe14d}
+.qwrap{display:flex;flex-direction:column;align-items:center;gap:14px}
+.qboard{position:relative;background:#fff;border:5px solid var(--ol);border-radius:14px;box-shadow:0 8px 0 var(--ol);box-sizing:content-box;touch-action:none}
+.qboard .ghost{position:absolute;inset:0;background-size:100% 100%;opacity:.22;filter:grayscale(.3)}
+.qboard .slot{position:absolute;outline:2px dashed rgba(51,32,74,.35);outline-offset:-2px}
+.qboard .slot.hint{animation:slotHint .45s ease-in-out 3 alternate}
+@keyframes slotHint{to{background:rgba(255,210,63,.75);outline:4px solid #ff8c1a}}
+.qboard.done .slot{outline:none}
+.qtray{display:flex;flex-wrap:wrap;justify-content:center;align-content:flex-start;gap:10px;width:100%;max-width:1000px;min-height:60px;padding:10px;background:rgba(255,255,255,.55);border:4px dashed rgba(51,32,74,.4);border-radius:22px;touch-action:none}
+.pc{background-repeat:no-repeat;background-color:#fff;border:3px solid #fff;border-radius:8px;box-shadow:0 4px 0 rgba(51,32,74,.45),0 0 0 2px var(--ol);cursor:grab;touch-action:none;flex:none;transition:transform .15s}
+.pc.ph{visibility:hidden}
+.pc.drag{position:fixed;z-index:80;cursor:grabbing;box-shadow:0 14px 24px rgba(0,0,0,.35),0 0 0 3px #ffd23f;transition:none}
+.pc.placed{position:absolute;border:0;border-radius:0;box-shadow:none;cursor:default;animation:snap .35s}
+.pc.no{animation:shake .45s}
+@keyframes snap{40%{transform:scale(1.12)}}
+@media (orientation:landscape){.qwrap{flex-direction:row;align-items:flex-start;justify-content:center}.qtray{width:auto;flex:1;max-width:46vw;max-height:calc(100dvh - 150px);overflow:auto}}
 </style></head><body>
 <header class="top"><a href="/" aria-label="Voltar ao site"><img src="img/logo.webp" alt="Juju Jacaré"></a>
 <button class="back" id="back" onclick="voltar()">⬅ Voltar ao site</button>
@@ -231,23 +259,23 @@ main{max-width:1100px;padding:clamp(10px,2.2dvh,18px) clamp(10px,3vw,24px) 30px}
 <h1>🎮 Jogos do Juju</h1><p class="sub">Escolha uma brincadeira!</p>
 <div class="menu">
 <button class="mcard" style="--c:#ff4d5e" onclick="go('cores')"><div class="ic"><img src="img/maca_cinza.webp" alt=""><img src="img/maca.webp" alt=""></div><h2>Que cor é?</h2><p>Toque na cor certa e pinte a figura!</p></button>
-<button class="mcard" style="--c:#3fa9f5" onclick="go('memoria')"><div class="ic"><img src="img/pato.webp" alt=""><img src="img/pato.webp" alt=""></div><h2>Memória</h2><p>Ache os pares dos amigos do Juju.</p></button>
-<button class="mcard" style="--c:#9b5de5" onclick="go('pintar')"><div class="ic"><img src="img/juju.webp" alt=""></div><h2>Pinte o Juju</h2><p>Escolha as cores e pinte do seu jeito.</p></button>
-<button class="mcard" style="--c:#ff8c1a" onclick="go('contar')"><div class="ic"><img src="img/laranja.webp" alt="" style="height:70px"><img src="img/laranja.webp" alt="" style="height:70px"><img src="img/laranja.webp" alt="" style="height:70px"></div><h2>Vamos contar?</h2><p>Conte os objetos e toque no número.</p></button>
+<button class="mcard" style="--c:#3fa9f5" onclick="go('memoria')"><div class="ic"><img src="obj/unicornio.webp" alt=""><img src="obj/unicornio.webp" alt=""></div><h2>Memória</h2><p>Ache os pares das figuras.</p></button>
+<button class="mcard" style="--c:#9b5de5" onclick="go('pintar')"><div class="ic"><img src="img/juju.webp" alt=""></div><h2>Pintar</h2><p>Pinte o Juju, a casa, o peixe, o foguete…</p></button>
+<button class="mcard" style="--c:#ff8c1a" onclick="go('contar')"><div class="ic"><img src="obj/morango.webp" alt="" style="height:70px"><img src="obj/morango.webp" alt="" style="height:70px"><img src="obj/morango.webp" alt="" style="height:70px"></div><h2>Vamos contar?</h2><p>Conte os objetos e toque no número.</p></button>
 <button class="mcard" style="--c:#4cd964" onclick="go('lixo')"><div class="ic" style="font-size:80px">🗑️</div><h2>Joga no lixo!</h2><p>Ache o lixo no quintal e jogue na lixeira.</p></button>
 <button class="mcard" style="--c:#3fa9f5" onclick="go('bolhas')"><div class="ic" style="font-size:80px">🫧</div><h2>Estoura bolhas</h2><p>Hora do banho! Estoure as bolhas de sabão.</p></button>
-<button class="mcard" style="--c:#2b2b33" onclick="go('sombras')"><div class="ic"><img src="img/coelho.webp" alt=""><img src="img/coelho.webp" alt="" style="filter:brightness(0);opacity:.8"></div><h2>Cadê a sombra?</h2><p>Ache a sombra igualzinha ao amiguinho.</p></button>
-<button class="mcard" style="--c:#ffd23f" onclick="go('formas')"><div class="ic" style="font-size:70px">🔺🟦⭐</div><h2>Formas</h2><p>Círculo, quadrado, triângulo, estrela…</p></button>
-<button class="mcard" style="--c:#ff6fb5" onclick="go('quebra')"><div class="ic" style="font-size:80px">🧩</div><h2>Quebra-cabeça</h2><p>Troque as pecinhas e monte a figura.</p></button>
-<button class="mcard" style="--c:#9b5de5" onclick="go('piano')"><div class="ic" style="font-size:80px">🎹</div><h2>Piano do Juju</h2><p>Toque as teclas e aprenda uma musiquinha.</p></button>
+<button class="mcard" style="--c:#2b2b33" onclick="go('sombras')"><div class="ic"><img src="obj/dinossauro.webp" alt=""><img src="obj/dinossauro.webp" alt="" style="filter:brightness(0);opacity:.8"></div><h2>Cadê a sombra?</h2><p>Ache a sombra igualzinha à figura.</p></button>
+<button class="mcard" style="--c:#ffd23f" onclick="go('formas')"><div class="ic" style="font-size:70px">🔺🟦⭐</div><h2>Formas</h2><p>Círculo, quadrado, losango, oval…</p></button>
+<button class="mcard" style="--c:#ff6fb5" onclick="go('quebra')"><div class="ic" style="font-size:80px">🧩</div><h2>Quebra-cabeça</h2><p>Arraste as pecinhas e monte a figura.</p></button>
+<button class="mcard" style="--c:#9b5de5" onclick="go('piano')"><div class="ic" style="font-size:80px">🎹</div><h2>Piano do Juju</h2><p>Toque e aprenda 3 musiquinhas.</p></button>
 </div>
-<p class="pais">👨‍👩‍👧 <b>Para os pais:</b> jogos grátis, sem anúncios e sem cadastro. Brinque junto e aproveite para cantar as <a href="/#clipes">músicas do Juju</a>!</p>
+<p class="pais">👨‍👩‍👧 <b>Para os pais:</b> jogos grátis, sem anúncios e sem cadastro. Cada jogo tem níveis que vão ficando mais difíceis. Brinque junto e aproveite para cantar as <a href="/#clipes">músicas do Juju</a>!</p>
 </section>
 
 <!-- ================= CORES ================= -->
 <section class="scr" id="cores">
 <div class="stage">
-<div class="q" id="c-q">Que cor é?</div>
+<div class="q"><span class="lvtag" data-lv="cores"></span> <span id="c-q">Que cor é?</span></div>
 <div class="objwrap" id="c-obj"><img id="c-grey" alt=""><img class="col" id="c-col" alt=""></div>
 <div class="big" id="c-word">&nbsp;</div>
 <div class="opts" id="c-opts"></div><div class="opts-pad"></div>
@@ -256,13 +284,14 @@ main{max-width:1100px;padding:clamp(10px,2.2dvh,18px) clamp(10px,3vw,24px) 30px}
 
 <!-- ================= MEMÓRIA ================= -->
 <section class="scr" id="memoria">
-<div class="lvl"><button id="lv-f" class="sel" onclick="memStart(3)">Fácil</button><button id="lv-n" onclick="memStart(6)">Normal</button></div>
+<div class="lvl"><span class="lvtag" data-lv="memoria"></span><button onclick="memStart()">🔀 Embaralhar</button></div>
 <div class="board" id="board"></div>
 <div class="info" id="m-info">&nbsp;</div>
 </section>
 
 <!-- ================= PINTAR ================= -->
 <section class="scr" id="pintar">
+<div class="dsel" id="dsel"></div>
 <div class="paint">
 <svg id="svg" viewBox="0 0 400 480" xmlns="http://www.w3.org/2000/svg" stroke="#33204a" stroke-width="6" stroke-linejoin="round" stroke-linecap="round">
  <rect class="pz" data-def="#bfe9ff" x="0" y="0" width="400" height="480" fill="#fff" stroke="none"/>
@@ -295,7 +324,7 @@ main{max-width:1100px;padding:clamp(10px,2.2dvh,18px) clamp(10px,3vw,24px) 30px}
 <!-- ================= CONTAR ================= -->
 <section class="scr" id="contar">
 <div class="stage">
-<div class="q" id="n-q">Quantos tem?</div>
+<div class="q"><span class="lvtag" data-lv="contar"></span> <span id="n-q">Quantos tem?</span></div>
 <div class="cbox" id="n-box"></div>
 <div class="big" id="n-word">&nbsp;</div>
 <div class="nums" id="n-opts"></div>
@@ -304,20 +333,20 @@ main{max-width:1100px;padding:clamp(10px,2.2dvh,18px) clamp(10px,3vw,24px) 30px}
 
 <!-- ================= LIXO ================= -->
 <section class="scr" id="lixo">
-<div class="q" style="text-align:center">Toque no lixo para jogar na lixeira! <span id="l-cnt"></span></div>
+<div class="q" style="text-align:center"><span class="lvtag" data-lv="lixo"></span> Toque no lixo! <span id="l-cnt"></span></div>
 <div class="yard" id="yard"><div class="bin" id="bin">🗑️</div></div>
 <div class="info" id="l-info">&nbsp;</div>
 </section>
 
 <!-- ================= BOLHAS ================= -->
 <section class="scr" id="bolhas">
-<div class="bath" id="bath"><div class="bhud"><span id="b-cnt">🫧 0</span><span id="b-time">⏱ 30</span></div>
+<div class="bath" id="bath"><div class="bhud"><span id="b-cnt">🫧 0</span><span class="lvtag" data-lv="bolhas"></span><span id="b-time">⏱ 30</span></div>
 <img src="img/juju.webp" class="bjuju" alt=""></div>
 </section>
 <!-- ================= SOMBRAS ================= -->
 <section class="scr" id="sombras">
 <div class="stage">
-<div class="q"><span id="s-q">Qual é a sombra?</span><button class="rep" onclick="falar('q_sombra')" aria-label="Ouvir">🔊</button></div>
+<div class="q"><span class="lvtag" data-lv="sombras"></span> <span id="s-q">Qual é a sombra?</span><button class="rep" onclick="falar('q_sombra')" aria-label="Ouvir">🔊</button></div>
 <img class="tgt" id="s-img" alt="">
 <div class="sils" id="s-opts"></div>
 </div>
@@ -326,7 +355,7 @@ main{max-width:1100px;padding:clamp(10px,2.2dvh,18px) clamp(10px,3vw,24px) 30px}
 <!-- ================= FORMAS ================= -->
 <section class="scr" id="formas">
 <div class="stage">
-<div class="q"><span id="f-q">Cadê o círculo?</span><button class="rep" onclick="falar('f_'+FALVO)" aria-label="Ouvir">🔊</button></div>
+<div class="q"><span class="lvtag" data-lv="formas"></span> <span id="f-q">Cadê o círculo?</span><button class="rep" onclick="falar('f_'+FALVO)" aria-label="Ouvir">🔊</button></div>
 <div class="shapes" id="f-opts"></div>
 <div class="info" id="f-info">&nbsp;</div>
 </div>
@@ -334,9 +363,8 @@ main{max-width:1100px;padding:clamp(10px,2.2dvh,18px) clamp(10px,3vw,24px) 30px}
 
 <!-- ================= QUEBRA-CABEÇA ================= -->
 <section class="scr" id="quebra">
-<div class="lvl"><button id="qz-f" class="sel" onclick="quebraStart(2)">Fácil</button><button id="qz-n" onclick="quebraStart(3)">Normal</button></div>
-<div class="pzl" id="pzl"></div>
-<div class="pref">Monte assim: <img id="q-ref" alt=""></div>
+<div class="lvl"><span class="lvtag" data-lv="quebra"></span><button onclick="quebraStart()">🔀 Outra figura</button></div>
+<div class="qwrap"><div class="qboard" id="qboard"></div><div class="qtray" id="qtray"></div></div>
 </section>
 
 <!-- ================= PIANO ================= -->
@@ -344,17 +372,18 @@ main{max-width:1100px;padding:clamp(10px,2.2dvh,18px) clamp(10px,3vw,24px) 30px}
 <div class="stage">
 <img src="img/juju.webp" class="pjuju" id="pj" alt="">
 <div class="keys" id="keys"></div>
-<div class="pbar"><button class="btn grn" id="pi-song" onclick="pianoSong()">⭐ Toque junto: Brilha, brilha estrelinha</button></div>
+<div class="pbar" id="pbar"></div>
 <div class="info" id="pi-info">Toque nas teclas! 🎶</div>
 </div>
 </section>
-<p class="privp" style="text-align:center;font-size:14px;margin:26px 0 90px;opacity:.8"><a href="/privacidade.html" style="color:inherit">Política de Privacidade</a></p>
+<p class="privp" style="text-align:center;font-size:14px;margin:26px 0 90px;opacity:.8"><a href="/privacidade.html" style="color:inherit">Política de Privacidade</a> · Figuras: <a href="obj/LICENSE-noto-emoji.txt" style="color:inherit">Noto Emoji (Apache 2.0)</a></p>
 </main>
 
 <div class="win" id="win"><div class="box"><img id="w-img" src="img/juju.webp" alt=""><h2 id="w-t">Parabéns!</h2><p id="w-p"></p>
 <div class="row"><button class="btn grn" id="w-again">Jogar de novo</button><button class="btn" onclick="hideWin();go('menu')">Outros jogos</button></div></div></div>
 <canvas id="party"></canvas>
 
+<script src="jogos.js?v=5"></script>
 <script>
 /* ---------- utilidades ---------- */
 var STARS=0;try{STARS=+localStorage.getItem('jj_stars')||0}catch(e){}
@@ -373,186 +402,14 @@ function party(n){PC.width=innerWidth;PC.height=innerHeight;var cols=['#ff3b4a',
  if(!PA)PA=requestAnimationFrame(step);}
 function step(){PX.clearRect(0,0,PC.width,PC.height);PP.forEach(function(p){p.vy+=.45;p.x+=p.vx;p.y+=p.vy;p.a+=p.s*.3;PX.save();PX.translate(p.x,p.y);PX.rotate(p.a);PX.fillStyle=p.c;PX.fillRect(-p.r,-p.r/2,p.r*2,p.r);PX.restore();});
  PP=PP.filter(function(p){return p.y<PC.height+40;});PA=PP.length?requestAnimationFrame(step):null;if(!PA)PX.clearRect(0,0,PC.width,PC.height);}
-function showWin(t,p,img,again){document.getElementById('w-t').textContent=t;document.getElementById('w-p').textContent=p;document.getElementById('w-img').src=img;
+function showWin(t,p,img,again,lbl){document.getElementById('w-again').textContent=lbl||'Jogar de novo';document.getElementById('w-t').textContent=t;document.getElementById('w-p').textContent=p;document.getElementById('w-img').src=img;
  document.getElementById('w-again').onclick=function(){hideWin();again();};document.getElementById('win').classList.add('on');sWin();party(160);if(!VOZ.src||VOZ.src.indexOf('l_fim')<0&&VOZ.src.indexOf('q_fim')<0)setTimeout(function(){falar(CUR==='bolhas'?'b_fim':'win')},250);}
 function hideWin(){document.getElementById('win').classList.remove('on');}
 function go(id){document.querySelectorAll('.scr').forEach(function(s){s.classList.toggle('on',s.id===id);});
  var bk=document.getElementById('back');bk.textContent=id==='menu'?'⬅ Voltar ao site':'⬅ Jogos';bk.style.visibility=(typeof APP!=='undefined'&&APP&&id==='menu')?'hidden':'';CUR=id;scrollTo(0,0);
- if(id==='cores')coresStart();if(id==='memoria')memStart(MEM_N);if(id==='pintar')paintInit();if(id==='contar')contarStart();if(id==='lixo')lixoStart();if(id==='bolhas')bolhasStart();else bolhasStop();if(id==='sombras')sombrasStart();if(id==='formas')formasStart();if(id==='quebra')quebraStart();if(id==='piano'){pianoInit();if(typeof musStop==='function')musStop();}else if(typeof STARTED!=='undefined'&&STARTED&&typeof musStart==='function')musStart();;if(id!=='piano'&&typeof pianoStop==='function')pianoStop();
+ if(id==='cores')coresStart();if(id==='memoria')memStart();if(id==='pintar')paintInit();if(id==='contar')contarStart();if(id==='lixo')lixoStart();if(id==='bolhas')bolhasStart();else bolhasStop();if(id==='sombras')sombrasStart();if(id==='formas')formasStart();if(id==='quebra')quebraStart();if(id==='piano'){pianoInit();if(typeof musStop==='function')musStop();}else if(typeof STARTED!=='undefined'&&STARTED&&typeof musStart==='function')musStart();;if(id!=='piano'&&typeof pianoStop==='function')pianoStop();
  if(typeof STARTED!=='undefined'&&STARTED){if(id==='menu')calar();else falar('i_'+id,true);}
  try{if(id==='menu')history.replaceState(null,'','#');else if(!NOPUSH)history.pushState({g:id},'','#'+id);else history.replaceState({g:id},'','#'+id);}catch(e){}NOPUSH=false;}
-
-/* ---------- QUE COR É? ---------- */
-var CORES=[['maca','VERMELHO','#ff3b4a'],['sol','AMARELO','#ffd23f'],['ceu','AZUL','#3fa9f5'],['juju','VERDE','#4cd964'],['laranja','LARANJA','#ff8c1a'],
- ['uva','ROXO','#9b5de5'],['nuvem','BRANCO','#ffffff'],['carvao','PRETO','#2b2b33'],['flor','ROSA','#ff6fb5']];
-var cq=[],ci=0,cLock=false;
-function coresStart(){cq=shuffle(CORES.slice());ci=0;coresRound();}
-function coresRound(){cLock=false;var it=cq[ci];var w=document.getElementById('c-obj');w.classList.remove('done');
- document.getElementById('c-grey').src='img/'+it[0]+'_cinza.webp';document.getElementById('c-col').src='img/'+it[0]+'.webp';
- document.getElementById('c-word').innerHTML='&nbsp;';document.getElementById('c-q').textContent='Que cor é? ('+(ci+1)+'/'+cq.length+')';if(ci>0)setTimeout(function(){falar('q_cor')},300);
- var others=shuffle(CORES.filter(function(c){return c!==it;})).slice(0,2);var ops=shuffle([it].concat(others));
- var box=document.getElementById('c-opts');box.innerHTML='';
- ops.forEach(function(o){var b=document.createElement('button');b.className='opt';b.style.background=o[2];b.setAttribute('aria-label',o[1]);
-  b.innerHTML='<span>'+o[1]+'</span>';b.onclick=function(){coresPick(o,b);};box.appendChild(b);});}
-function coresPick(o,b){if(cLock)return;var it=cq[ci];
- if(o!==it){b.classList.remove('no');void b.offsetWidth;b.classList.add('no');sNo();fNo();return;}
- cLock=true;sOk();falar('c_'+it[0]);addStar();document.getElementById('c-obj').classList.add('done');
- var wd=document.getElementById('c-word');wd.textContent=it[1]+'!';wd.style.color=it[2];party(70);
- setTimeout(function(){ci++;if(ci<cq.length)coresRound();else showWin('Parabéns!','Você acertou todas as cores! 🌈','img/juju.webp',coresStart);},1700);}
-
-/* ---------- MEMÓRIA ---------- */
-var MEM=['pato','coelho','formiga','ursinha','joaninha','borboleta','juju','maca','sol','uva'],MEM_N=3,mOpen=[],mMoves=0,mPairs=0,mLock=false;
-function memStart(n){MEM_N=n;document.getElementById('lv-f').classList.toggle('sel',n===3);document.getElementById('lv-n').classList.toggle('sel',n===6);
- var pick=shuffle(MEM.slice()).slice(0,n),deck=shuffle(pick.concat(pick)),bd=document.getElementById('board');
- bd.style.gridTemplateColumns='repeat('+(n===3?3:4)+',1fr)';bd.style.maxWidth=(n===3?520:720)+'px';bd.innerHTML='';mOpen=[];mMoves=0;mPairs=0;mLock=false;
- memFit();deck.forEach(function(nm){var c=document.createElement('button');c.className='card';c.dataset.n=nm;c.setAttribute('aria-label','carta');
-  c.innerHTML='<div class="in"><div class="b">?</div><div class="f"><img src="img/'+nm+'.webp" alt=""></div></div>';c.onclick=function(){memFlip(c);};bd.appendChild(c);});
- memInfo();}
-function memFit(){var bd=document.getElementById('board');if(!bd)return;var n=MEM_N,hdr=document.querySelector('.top').offsetHeight,land=innerWidth>innerHeight;
- var availH=innerHeight-hdr-(innerHeight<560?100:140),availW=Math.min(document.querySelector('main').clientWidth-24,1000),gap=12,best=null;
- (n===3?[3,6,2]:[4,6,3]).forEach(function(cols){var rows=Math.ceil(2*n/cols);var w=Math.min((availW-gap*(cols-1))/cols,(availH-gap*(rows-1))/rows*0.75);if(!best||w>best[1])best=[cols,w];});
- var w=Math.max(Math.min(best[1],200),48);bd.style.gridTemplateColumns='repeat('+best[0]+','+Math.floor(w)+'px)';bd.style.maxWidth='none';bd.style.justifyContent='center';}
-addEventListener('resize',function(){memFit();});
-function memInfo(){document.getElementById('m-info').textContent='Pares: '+mPairs+' de '+MEM_N+'   •   Jogadas: '+mMoves;}
-function memFlip(c){if(mLock||c.classList.contains('up')||c.classList.contains('ok'))return;c.classList.add('up');sPop();mOpen.push(c);
- if(mOpen.length<2)return;mMoves++;var a=mOpen[0],b=mOpen[1];mOpen=[];
- if(a.dataset.n===b.dataset.n){setTimeout(function(){a.classList.add('ok');b.classList.add('ok');a.classList.remove('up');b.classList.remove('up');sOk();addStar();party(40);mPairs++;memInfo();if(mPairs<MEM_N)falar(aleat(['m_par','ok1','ok4']));
-   if(mPairs===MEM_N)setTimeout(function(){showWin('Muito bem!','Você achou todos os pares em '+mMoves+' jogadas! 🎉','img/'+a.dataset.n+'.webp',function(){memStart(MEM_N);});},700);},350);}
- else{mLock=true;memInfo();setTimeout(function(){a.classList.remove('up');b.classList.remove('up');mLock=false;},1000);}
- memInfo();}
-
-/* ---------- PINTE O JUJU ---------- */
-var PAL=['#ff3b4a','#ff8c1a','#ffd23f','#4cd964','#2f9a37','#3fa9f5','#9b5de5','#ff6fb5','#8b5a2b','#2b2b33','#bfe9ff','#ffffff'],cur='#4cd964',pInit=false;
-function paintInit(){if(pInit)return;pInit=true;var pal=document.getElementById('pal');
- PAL.forEach(function(c){var b=document.createElement('button');b.className='c'+(c===cur?' sel':'');b.style.background=c;b.setAttribute('aria-label','cor');
-  b.onclick=function(){cur=c;pal.querySelectorAll('.c').forEach(function(x){x.classList.remove('sel');});b.classList.add('sel');sPop();};pal.appendChild(b);});
- [['🌈 Cores do Juju',function(){document.querySelectorAll('#svg .pz').forEach(function(p){p.setAttribute('fill',p.dataset.def);});party(60);sOk();fOk();}],
-  ['🧽 Limpar',function(){document.querySelectorAll('#svg .pz').forEach(function(p){p.setAttribute('fill','#fff');});}],
-  ['💾 Salvar',savePic]].forEach(function(a){var b=document.createElement('button');b.className='act';b.textContent=a[0];b.onclick=a[1];pal.appendChild(b);});
- document.querySelectorAll('#svg .pz').forEach(function(p){p.addEventListener('click',function(){p.setAttribute('fill',cur);sPop();});});}
-function savePic(){var svg=document.getElementById('svg'),xml=new XMLSerializer().serializeToString(svg);
- var img=new Image();img.onload=function(){var cv=document.createElement('canvas');cv.width=800;cv.height=960;var x=cv.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,800,960);x.drawImage(img,0,0,800,960);
-  var a=document.createElement('a');a.download='meu-juju-jacare.png';a.href=cv.toDataURL('image/png');a.click();addStar();falar('p_salvo',true);};
- img.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(xml);}
-
-
-/* ---------- VAMOS CONTAR ---------- */
-var NOBJ=['maca','laranja','uva','sol','flor','pato','joaninha','coelho'],NCOL=['#ff4d5e','#3fa9f5','#4cd964','#ff8c1a','#9b5de5','#ff6fb5'],nRound=0,nAns=0,nLock=false,N_TOTAL=8;
-function contarStart(){nRound=0;contarRound();}
-function contarRound(){nLock=false;nAns=1+Math.floor(Math.random()*(nRound<3?3:5));var o=NOBJ[Math.floor(Math.random()*NOBJ.length)];
- var box=document.getElementById('n-box');box.innerHTML='';
- for(var i=0;i<nAns;i++){var d=document.createElement('div');d.className='it';d.style.animationDelay=(i*.12)+'s';d.innerHTML='<img src="img/'+o+'.webp" alt=""><b>'+(i+1)+'</b>';box.appendChild(d);}
- document.getElementById('n-q').textContent='Quantos tem? ('+(nRound+1)+'/'+N_TOTAL+')';document.getElementById('n-word').innerHTML='&nbsp;';
- var ops=[nAns];while(ops.length<3){var r=1+Math.floor(Math.random()*6);if(ops.indexOf(r)<0)ops.push(r);}shuffle(ops);
- var nb=document.getElementById('n-opts');nb.innerHTML='';if(nRound>0)setTimeout(function(){falar('q_quantos')},300);
- ops.forEach(function(v,k){var b=document.createElement('button');b.textContent=v;b.style.background=NCOL[(v+k)%NCOL.length];b.onclick=function(){contarPick(v,b);};nb.appendChild(b);});}
-var NOMES=['','UM','DOIS','TRÊS','QUATRO','CINCO','SEIS'];
-function contarPick(v,b){if(nLock)return;if(v!==nAns){b.classList.remove('no');void b.offsetWidth;b.classList.add('no');sNo();fNo();return;}
- nLock=true;var its=document.querySelectorAll('#n-box .it');its.forEach(function(e,i){setTimeout(function(){e.classList.add('cnt');tone(500+i*90,.15,'triangle',.16);},i*600);});
- setTimeout(function(){sOk();addStar();party(60);falar('n'+nAns);var w=document.getElementById('n-word');w.textContent=NOMES[nAns]+'!';w.style.color='#ff8c1a';},its.length*600);
- setTimeout(function(){nRound++;if(nRound<N_TOTAL)contarRound();else showWin('Muito bem!','Você sabe contar direitinho! 🔢','img/laranja.webp',contarStart);},its.length*600+1700);}
-
-/* ---------- JOGA NO LIXO ---------- */
-var TRASH=['🍌','🥤','📰','🥫','🍎','🧃','🍾','🥡'],FRIENDS=['pato','coelho','formiga','ursinha'],lLeft=0,lLevel=0;
-function lixoStart(){lLevel=0;lixoRound();}
-function lixoRound(){var y=document.getElementById('yard');y.querySelectorAll('.tr').forEach(function(e){e.remove();});
- var nT=4+Math.min(lLevel,3)*1,items=[],spots=[];
- for(var i=0;i<nT;i++)items.push({t:'lixo',v:TRASH[Math.floor(Math.random()*TRASH.length)]});
- shuffle(FRIENDS.slice()).slice(0,2).forEach(function(f){items.push({t:'amigo',v:f});});
- ['🌼','🌷'].forEach(function(f){items.push({t:'flor',v:f});});
- var cols=4,rows=3;for(var r=0;r<rows;r++)for(var c=0;c<cols;c++)spots.push([3+c*18+Math.random()*4,40+r*17+Math.random()*4]);shuffle(spots);
- items.forEach(function(it,k){var b=document.createElement('button');b.className='tr';b.dataset.t=it.t;
-  b.innerHTML=it.t==='amigo'?'<img src="img/'+it.v+'.webp" alt="">':it.v;var p=spots[k%spots.length];b.style.left=p[0]+'%';b.style.top=p[1]+'%';
-  b.onclick=function(){lixoTap(b);};y.appendChild(b);});
- lLeft=nT;lixoInfo();}
-function lixoInfo(){document.getElementById('l-cnt').textContent='('+lLeft+' restando)';}
-function lixoTap(b){if(b.classList.contains('gone'))return;var t=b.dataset.t;
- if(t!=='lixo'){b.classList.remove('no');void b.offsetWidth;b.classList.add('no');sNo();
-  falar(t==='amigo'?'l_amigo':'l_flor');document.getElementById('l-info').textContent=t==='amigo'?'Ops! Esse é um amiguinho do Juju! 😄':'Essa florzinha é bonita, deixa no jardim! 🌼';return;}
- var bin=document.getElementById('bin'),yard=document.getElementById('yard');b.style.left=(bin.offsetLeft/yard.clientWidth*100+2)+'%';b.style.top=(bin.offsetTop/yard.clientHeight*100)+'%';
- b.classList.add('gone');sPop();setTimeout(function(){bin.classList.remove('eat');void bin.offsetWidth;bin.classList.add('eat');tone(300,.12,'square',.08);},550);
- lLeft--;lixoInfo();addStar();document.getElementById('l-info').textContent=['Isso aí! 👏','Muito bem! ♻️','Quintal limpinho! 🌿','Boa! 🎉'][Math.floor(Math.random()*4)];
- if(lLeft===0){lLevel++;setTimeout(function(){sOk();party(80);falar('l_fim');showWin('Quintal limpinho!','Lugar de lixo é no lixo! ♻️','img/juju.webp',lixoRound);},800);}}
-
-/* ---------- ESTOURA BOLHAS ---------- */
-var bT=null,bS=null,bCount=0,bTime=30,bRun=false;
-function bolhasStart(){bolhasStop();var bath=document.getElementById('bath');bath.querySelectorAll('.bub').forEach(function(e){e.remove();});
- bCount=0;bTime=30;bRun=true;bInfo();bS=setInterval(spawnBub,550);bT=setInterval(function(){bTime--;bInfo();if(bTime<=0){bolhasStop();
-  showWin('Que banho divertido!','Você estourou '+bCount+' bolhas! 🫧','img/juju.webp',bolhasStart);}},1000);}
-function bolhasStop(){bRun=false;clearInterval(bT);clearInterval(bS);}
-function bInfo(){document.getElementById('b-cnt').textContent='🫧 '+bCount;document.getElementById('b-time').textContent='⏱ '+Math.max(0,bTime);}
-function spawnBub(){if(!bRun||document.getElementById('bolhas').className.indexOf('on')<0)return;var bath=document.getElementById('bath');
- var d=document.createElement('div');d.className='bub';var sz=50+Math.random()*60;d.style.width=d.style.height=sz+'px';d.style.left=(Math.random()*(bath.clientWidth-sz))+'px';
- d.style.top=(bath.clientHeight)+'px';if(Math.random()<.15)d.textContent='🦆';bath.appendChild(d);
- var dur=4500+Math.random()*3000,t0=performance.now(),x0=parseFloat(d.style.left),ph=Math.random()*6;
- (function mv(t){if(!d.parentNode||d.classList.contains('pop'))return;var u=(t-t0)/dur;if(u>=1){d.remove();return;}
-  d.style.top=(bath.clientHeight*(1-u)-sz*u)+'px';d.style.left=(x0+18*Math.sin(u*8+ph))+'px';requestAnimationFrame(mv);})(t0);
- d.addEventListener('pointerdown',function(){if(d.classList.contains('pop'))return;d.classList.add('pop');tone(900+Math.random()*500,.07,'sine',.16);
-  bCount+=d.textContent?3:1;if(d.textContent){addStar();sOk();}bInfo();setTimeout(function(){d.remove();},260);});}
-
-
-/* ---------- CADÊ A SOMBRA? ---------- */
-var SOBJ=['pato','coelho','formiga','ursinha','joaninha','borboleta','juju','maca','sol','uva','laranja','flor','nuvem'],sq=[],si=0,sLock=false,S_TOTAL=8;
-function sombrasStart(){sq=shuffle(SOBJ.slice()).slice(0,S_TOTAL);si=0;sombrasRound();}
-function sombrasRound(){sLock=false;var it=sq[si];var im=document.getElementById('s-img');im.src='img/'+it+'.webp';im.style.animation='none';void im.offsetWidth;im.style.animation='';
- document.getElementById('s-q').textContent='Qual é a sombra? ('+(si+1)+'/'+S_TOTAL+')';
- var ops=shuffle([it].concat(shuffle(SOBJ.filter(function(x){return x!==it;})).slice(0,si<3?1:2)));var box=document.getElementById('s-opts');box.innerHTML='';
- ops.forEach(function(o){var b=document.createElement('button');b.innerHTML='<img src="img/'+o+'.webp" alt="">';b.setAttribute('aria-label','sombra');
-  b.onclick=function(){if(sLock)return;if(o!==it){b.classList.remove('no');void b.offsetWidth;b.classList.add('no');sNo();fNo();return;}
-   sLock=true;b.classList.add('ok');sOk();fOk();addStar();party(60);
-   setTimeout(function(){si++;if(si<S_TOTAL){sombrasRound();falar('q_sombra');}else showWin('Muito bem!','Você achou todas as sombras! 🌗','img/'+it+'.webp',sombrasStart);},1600);};box.appendChild(b);});}
-
-/* ---------- FORMAS ---------- */
-var FORMAS={circulo:['CÍRCULO','<circle cx="50" cy="50" r="44"/>'],quadrado:['QUADRADO','<rect x="8" y="8" width="84" height="84" rx="6"/>'],
- triangulo:['TRIÂNGULO','<path d="M50 6 L95 90 L5 90 Z"/>'],estrela:['ESTRELA','<path d="M50 4 L62 37 L97 38 L69 59 L79 93 L50 73 L21 93 L31 59 L3 38 L38 37 Z"/>'],
- coracao:['CORAÇÃO','<path d="M50 90 C20 70 3 52 6 30 C9 10 36 4 50 24 C64 4 91 10 94 30 C97 52 80 70 50 90 Z"/>']};
-var FCOL=['#ff4d5e','#3fa9f5','#ffd23f','#4cd964','#9b5de5','#ff8c1a','#ff6fb5'],FALVO='circulo',fr=0,fLock=false,F_TOTAL=8,fLast='';
-function formasStart(){fr=0;formasRound(true);}
-function formasRound(first){fLock=false;var ks=Object.keys(FORMAS);do{FALVO=ks[Math.floor(Math.random()*ks.length)];}while(FALVO===fLast);fLast=FALVO;
- document.getElementById('f-q').textContent='Cadê o '.replace('o ',(FALVO==='estrela'?'a ':'o '))+FORMAS[FALVO][0].toLowerCase()+'?';
- document.getElementById('f-info').textContent=(fr+1)+' de '+F_TOTAL;
- var ops=shuffle([FALVO].concat(shuffle(ks.filter(function(k){return k!==FALVO;})).slice(0,3))),cols=shuffle(FCOL.slice()),box=document.getElementById('f-opts');box.innerHTML='';
- ops.forEach(function(k,i){var b=document.createElement('button');b.setAttribute('aria-label',FORMAS[k][0]);
-  b.innerHTML='<svg viewBox="0 0 100 100" fill="'+cols[i]+'" stroke="#33204a" stroke-width="6" stroke-linejoin="round">'+FORMAS[k][1]+'</svg>';
-  b.onclick=function(){if(fLock)return;if(k!==FALVO){b.classList.remove('no');void b.offsetWidth;b.classList.add('no');sNo();fNo();return;}
-   fLock=true;b.classList.add('ok');sOk();fOk();addStar();party(60);document.getElementById('f-info').textContent='É o '.replace('o ',(k==='estrela'?'a ':'o '))+FORMAS[k][0]+'! ✨';
-   setTimeout(function(){fr++;if(fr<F_TOTAL)formasRound();else showWin('Parabéns!','Você conhece todas as formas! 🔺🟦⭐','img/juju.webp',formasStart);},1600);};box.appendChild(b);});
- var wait=first?(((FALAS.i_formas||[0,4])[1])*1000+500):350;setTimeout(function(){if(CUR==='formas')falar('f_'+FALVO);},wait);}
-
-/* ---------- QUEBRA-CABEÇA ---------- */
-var QIMG=['juju','pato','coelho','ursinha','joaninha','borboleta','sol','flor','maca'],QBG=['#bfe9ff','#fff0a0','#ffd6e8','#d9f7c8','#e7dcff'],qN=2,qOrd=[],qSel=-1,qPic='',qBg='';
-function quebraStart(n){qN=n||qN;document.getElementById('qz-f').classList.toggle('sel',qN===2);document.getElementById('qz-n').classList.toggle('sel',qN===3);
- qPic=QIMG[Math.floor(Math.random()*QIMG.length)];qBg=QBG[Math.floor(Math.random()*QBG.length)];var r=document.getElementById('q-ref');r.src='img/'+qPic+'.webp';r.style.setProperty('--bgc',qBg);
- var t=qN*qN;qOrd=[];for(var i=0;i<t;i++)qOrd.push(i);do{shuffle(qOrd);}while(qOrd.every(function(v,i){return v===i;}));qSel=-1;quebraDraw();}
-function quebraDraw(){var p=document.getElementById('pzl');p.classList.remove('done');p.style.gridTemplateColumns='repeat('+qN+',1fr)';p.innerHTML='';
- qOrd.forEach(function(v,pos){var d=document.createElement('div');var x=v%qN,y=Math.floor(v/qN);d.style.backgroundImage='url(img/'+qPic+'.webp)';d.style.backgroundColor=qBg;
-  d.style.backgroundSize=(qN*100)+'% '+(qN*100)+'%';d.style.backgroundPosition=(qN>1?x/(qN-1)*100:0)+'% '+(qN>1?y/(qN-1)*100:0)+'%';if(pos===qSel)d.classList.add('sel');
-  d.onclick=function(){quebraTap(pos);};p.appendChild(d);});}
-function quebraTap(pos){if(qSel<0){qSel=pos;sPop();quebraDraw();return;}if(qSel===pos){qSel=-1;quebraDraw();return;}
- var t=qOrd[qSel];qOrd[qSel]=qOrd[pos];qOrd[pos]=t;var ok=qOrd[pos]===pos||qOrd[qSel]===qSel;qSel=-1;quebraDraw();if(ok){tone(880,.12,'triangle',.15);}else sPop();
- if(qOrd.every(function(v,i){return v===i;})){document.getElementById('pzl').classList.add('done');addStar(qN);sOk();falar('q_fim');
-  setTimeout(function(){showWin('Montou!','Que quebra-cabeça bonito! 🧩','img/'+qPic+'.webp',function(){quebraStart();});},1400);}}
-
-/* ---------- PIANO DO JUJU ---------- */
-var PK=[[262,'DÓ','#ff4d5e','maca'],[294,'RÉ','#ff8c1a','laranja'],[330,'MI','#ffd23f','sol'],[349,'FÁ','#4cd964','juju'],[392,'SOL','#3fa9f5','pato'],[440,'LÁ','#9b5de5','uva'],[494,'SI','#ff6fb5','flor'],[523,'DÓ','#ff4d5e','joaninha']];
-var SONG=[0,0,4,4,5,5,4,3,3,2,2,1,1,0,4,4,3,3,2,2,1,4,4,3,3,2,2,1,0,0,4,4,5,5,4,3,3,2,2,1,1,0],pInitK=false,pSong=-1,pDT=null;
-function pnote(f){if(typeof SOM!=='undefined'&&!SOM)return;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();var t=AC.currentTime;
- [[1,'triangle',.28],[2,'sine',.08],[3,'sine',.03]].forEach(function(h){var o=AC.createOscillator(),g=AC.createGain();o.type=h[1];o.frequency.value=f*h[0];
-  g.gain.setValueAtTime(h[2],t);g.gain.exponentialRampToValueAtTime(.001,t+1.1);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+1.15);});}catch(e){}}
-function pianoInit(){if(!pInitK){pInitK=true;var k=document.getElementById('keys');PK.forEach(function(p,i){var b=document.createElement('button');b.style.setProperty('--k',p[2]);
-  b.innerHTML='<img src="img/'+p[3]+'.webp" alt=""><b>'+p[1]+'</b>';b.setAttribute('aria-label',p[1]);b.addEventListener('pointerdown',function(e){e.preventDefault();pianoKey(i);});k.appendChild(b);});}
- pianoStop();}
-function pianoKey(i){var ks=document.querySelectorAll('#keys button'),b=ks[i];pnote(PK[i][0]);b.classList.add('on');setTimeout(function(){b.classList.remove('on');},180);
- var pj=document.getElementById('pj');pj.classList.add('dance');clearTimeout(pDT);pDT=setTimeout(function(){pj.classList.remove('dance');},500);
- if(pSong>=0){if(i===SONG[pSong]){pSong++;addStarQuiet();if(pSong>=SONG.length){var done=pSong;pianoStop();addStar(3);sOk();showWin('Que lindo!','Você tocou Brilha, brilha estrelinha! 🌟','img/sol.webp',function(){pianoSong();});return;}pianoHint();}}
- else document.getElementById('pi-info').textContent=PK[i][1]+' 🎵';}
-var pStarN=0;function addStarQuiet(){pStarN++;document.getElementById('pi-info').textContent='⭐ '+pStarN+' de '+SONG.length+' notas';}
-function pianoHint(){var ks=document.querySelectorAll('#keys button');ks.forEach(function(b,j){b.classList.toggle('hint',j===SONG[pSong]);});}
-function pianoSong(){pSong=0;pStarN=0;document.getElementById('pi-info').textContent='Siga a tecla que brilha! ✨';
- var demo=[0,0,4,4,5,5,4],k=0;var ks=document.querySelectorAll('#keys button');ks.forEach(function(b){b.classList.remove('hint');});
- (function nx(){if(pSong!==0||CUR!=='piano')return;if(k<demo.length){var i=demo[k++];pnote(PK[i][0]);ks[i].classList.add('on');setTimeout(function(){ks[i].classList.remove('on');},250);setTimeout(nx,k===7?600:450);}
-  else{falar('pi_vez');pianoHint();}})();}
-function pianoStop(){pSong=-1;document.querySelectorAll('#keys button').forEach(function(b){b.classList.remove('hint');});var i=document.getElementById('pi-info');if(i)i.textContent='Toque nas teclas! 🎶';}
 
 /* ---------- VOZ DO JUJU + MÚSICA ---------- */
 var FALAS={},SOM=true,VOZ=new Audio(),ULT=null,FT=null,STARTED=false;
