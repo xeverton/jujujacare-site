@@ -175,8 +175,8 @@ main{max-width:1100px;padding:clamp(10px,2.2dvh,18px) clamp(10px,3vw,24px) 10px}
 .nums button{width:clamp(64px,min(22vw,13dvh),120px);font-size:clamp(34px,min(12vw,7.5dvh),68px)}
 .paint svg{display:block;width:auto;height:auto;max-width:100%;max-height:calc(100dvh - 200px);aspect-ratio:400/480;margin:0 auto}
 @media(max-width:640px){.paint svg{max-height:calc(100dvh - 350px)}.pal{padding:8px;gap:7px}.pal .act{font-size:14px}}
-.yard{height:clamp(220px,calc(100dvh - 190px),560px)}
-.bath{height:clamp(240px,calc(100dvh - 120px),640px)}
+.yard{height:clamp(200px,calc(100dvh - 190px - var(--dockb,0px)),560px)}
+.bath{height:clamp(200px,calc(100dvh - 120px - var(--dockb,0px)),640px)}
 .tgt{height:clamp(80px,min(30vw,20dvh),190px)}
 .sils button{width:clamp(76px,min(26vw,19dvh),170px)}
 .shapes{max-width:min(440px,calc((100dvh - 230px)*1.05))}
@@ -302,17 +302,18 @@ button,.card,.opt,.bub,.tr,.pc,.mcard{touch-action:manipulation;-webkit-touch-ca
 
 /* ===== músicas do Juju enquanto joga ===== */
 #mus.sel{background:#ffd23f}
-#dock{position:fixed;z-index:44;left:8px;right:8px;bottom:8px;display:none;flex-direction:column;background:#2b1840;border:4px solid var(--ol);border-radius:18px;padding:6px;box-shadow:0 6px 0 rgba(0,0,0,.35)}
+#dock{position:fixed;z-index:44;right:8px;bottom:8px;display:none;flex-direction:column;background:#2b1840;border:3px solid var(--ol);border-radius:14px;padding:4px;box-shadow:0 5px 0 rgba(0,0,0,.35);width:min(520px,calc(100vw - 16px));transition:width .35s}
 #dock.on{display:flex}
-#dock .dhead{display:flex;align-items:center;gap:6px;color:#fff;font-weight:800;font-size:14px;padding:0 4px 6px}
+#dock .dhead{display:flex;align-items:center;gap:4px;color:#fff;font-weight:800;font-size:13px;padding:0 2px 4px}
 #dock .dhead span{flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
-#dock .dhead button{width:34px;height:34px;border-radius:50%;border:3px solid #fff;background:#ffd23f;font-size:15px;font-weight:800;flex:none}
-#dock .dframe{width:100%;height:200px;border-radius:12px;overflow:hidden;background:#000}
+#dock .dhead button{width:30px;height:30px;border-radius:50%;border:2px solid #fff;background:#ffd23f;font-size:14px;font-weight:800;flex:none;padding:0}
+#dock .dframe{width:100%;aspect-ratio:16/9;min-height:200px;border-radius:10px;overflow:hidden;background:#000}
 #dock .dframe>*{width:100%;height:100%;display:block}
-@media (min-width:520px){#dock{left:auto;width:380px}}
-#dock.side{top:auto;width:min(380px,40vw)}
-#dock.side .dframe{height:max(200px,calc(min(380px,40vw) * .5625))}
+#dock.mini{width:208px}
+#dock.mini .dframe{width:200px;height:200px;aspect-ratio:auto}
+#dock.mini .dhead span{display:none}
 body.docked .fala{bottom:calc(var(--dockb,0px) + 14px)}
+body.docked.dside .fala{left:calc(50% - 111px);max-width:min(520px,calc(100vw - 250px))}
 .fala:not(.on){visibility:hidden;transition:transform .35s,visibility 0s .35s}
 body.docked .fala:not(.on){transform:translate(-50%,calc(140% + var(--dockb,0px) + 40px))}
 </style></head><body>
@@ -446,13 +447,15 @@ body.docked .fala:not(.on){transform:translate(-50%,calc(140% + var(--dockb,0px)
 </div>
 </section>
 <p class="privp" style="text-align:center;font-size:14px;margin:26px 0 90px;opacity:.8"><a href="/privacidade.html" style="color:inherit">Política de Privacidade</a> · Figuras: <a href="obj/LICENSE-noto-emoji.txt" style="color:inherit">Noto Emoji (Apache 2.0)</a></p>
+
 </main>
 
 <div class="win" id="win"><div class="box"><img id="w-img" src="img/juju.webp" alt=""><h2 id="w-t">Parabéns!</h2><p id="w-p"></p>
 <p id="w-rk" class="wrk"></p>
 <div class="row"><button class="btn grn" id="w-again">Jogar de novo</button><button class="btn" onclick="rkOpen(CUR)">🏆 Ranking</button><button class="btn" onclick="hideWin();go('menu')">Outros jogos</button></div></div></div>
 <canvas id="party"></canvas>
-<div id="dock" aria-label="Músicas do Juju"><div class="dhead"><span id="d-t">🎵 Músicas do Juju</span><button onclick="dockNext()" aria-label="Próxima música">⏭</button><button onclick="dockClose()" aria-label="Fechar músicas">✕</button></div><div class="dframe"><div id="d-p"></div></div></div>
+<div id="dock" class="mini" aria-label="Músicas do Juju"><div class="dhead"><span id="d-t">🎵 Músicas do Juju</span><button onclick="dockBig()" id="d-big" aria-label="Aumentar">⤢</button><button onclick="dockNext()" aria-label="Próxima música">⏭</button><button onclick="dockClose()" aria-label="Fechar músicas">✕</button></div><div class="dframe"><div id="d-p"></div></div></div>
+</div>
 <div class="modal" id="musq"><div class="box"><img src="img/juju.webp" alt="" style="height:100px"><h2>Quer ouvir as músicas do Juju enquanto brinca? 🎵</h2>
 <div class="row" style="margin-top:12px"><button class="btn grn" onclick="musqResp(true)">🎵 Quero!</button><button class="btn" onclick="musqResp(false)">Agora não</button></div></div></div>
 <div class="modal" id="nome"><div class="box"><img src="img/juju.webp" alt="" style="height:100px"><h2 id="nome-t">Qual é o seu nome?</h2>
@@ -462,7 +465,7 @@ body.docked .fala:not(.on){transform:translate(-50%,calc(140% + var(--dockb,0px)
 <div class="modal" id="rank" onclick="if(event.target===this)rkClose()"><div class="box"><button class="mx" onclick="rkClose()" aria-label="Fechar">✕</button><h2 id="rk-t">🏆 Ranking</h2>
 <div class="rktabs" id="rk-tabs"></div><ol class="rklist" id="rk-list"></ol><p class="dica">Os 5 melhores de cada jogo ficam aqui para sempre!</p></div></div>
 
-<script src="jogos.js?v=18"></script>
+<script src="jogos.js?v=21"></script>
 <script>
 /* ---------- utilidades ---------- */
 var STARS=0;try{STARS=+localStorage.getItem('jj_stars')||0}catch(e){}
@@ -507,7 +510,7 @@ function fOk(){falar(aleat(['ok1','ok2','ok3','ok4']));}
 function fNo(){falar(aleat(['no1','no2']));}
 /* música de fundo suave (gerada no navegador) */
 var MG=null,MT=null,MSTEP=0,MEL=[[523,659],[587,698],[659,784],[587,698],[523,659],[440,523],[494,587],[392,494]];
-function musVol(v){if(typeof dockVol==='function')dockVol(v<1?25:100);if(MG&&AC)MG.gain.setTargetAtTime(v*.05,AC.currentTime,.2);}
+function musVol(v){if(typeof dockDuck==='function')dockDuck(v<1);if(MG&&AC)MG.gain.setTargetAtTime(v*.05,AC.currentTime,.2);}
 function musStart(){if(!SOM||MT||(typeof DK!=='undefined'&&DK.on))return;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();
  if(!MG){MG=AC.createGain();MG.gain.value=.05;MG.connect(AC.destination);}MG.gain.setTargetAtTime(.05,AC.currentTime,.2);
  MT=setInterval(function(){var t=AC.currentTime,c=MEL[Math.floor(MSTEP/4)%MEL.length],f=MSTEP%4===0?c[0]/2:(MSTEP%2?c[1]:c[0]);
