@@ -29,12 +29,15 @@ var CORX = {
 
 
 /* ---------- encaixe automático das opções na tela (qualquer aparelho/orientação) ---------- */
+var DOCK_B = 0;
+function VH() { return innerHeight - DOCK_B; }
+function mainW() { var m = document.querySelector('main'), cs = getComputedStyle(m); return m.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight); }
 function overflowPx() { return document.documentElement.scrollHeight - innerHeight; }
 function fitBox(box, opt) {
   if (!box || !box.children.length || !box.offsetParent) return;
   opt = opt || {}; var n = box.children.length, gap = opt.gap || (innerWidth < 500 ? 10 : 16), extraH = opt.extraH || 0;
   box.style.width = '100%'; box.style.maxWidth = 'none';
-  var W = box.clientWidth, H = innerHeight - box.getBoundingClientRect().top - (opt.below || 70), best = null;
+  var W = box.clientWidth, H = VH() - box.getBoundingClientRect().top - (opt.below || 70), best = null;
   for (var cols = 1; cols <= n; cols++) {
     var rows = Math.ceil(n / cols), s = Math.min((W - gap * (cols - 1)) / cols, (H - gap * (rows - 1)) / rows - extraH);
     if (!best || s > best[1] + 2) best = [cols, s];
@@ -106,7 +109,7 @@ var MEM_N = 3, mOpen = [], mMoves = 0, mPairs = 0, mLock = false;
 function memPairs() { return [3, 4, 6, 8, 10][Math.min(lv('memoria') - 1, 4)]; }
 function memFit() {
   var bd = document.getElementById('board'); if (!bd) return; var n = MEM_N, hdr = document.querySelector('.top').offsetHeight;
-  var availH = innerHeight - hdr - (innerHeight < 560 ? 100 : 140), availW = Math.min(document.querySelector('main').clientWidth - 24, 1000), gap = innerWidth < 500 ? 8 : 12, best = null;
+  var availH = VH() - hdr - (VH() < 560 ? 100 : 140), availW = Math.min(mainW() - 8, 1000), gap = innerWidth < 500 ? 8 : 12, best = null;
   for (var cols = 2; cols <= 8; cols++) {
     var rows = Math.ceil(2 * n / cols); if (rows * cols - 2 * n >= cols) continue;
     var w = Math.min((availW - gap * (cols - 1)) / cols, (availH - gap * (rows - 1)) / rows * 0.75);
@@ -393,7 +396,7 @@ function quebraStart() {
 function quebraBuild() {
   var bd = document.getElementById('qboard'), tr = document.getElementById('qtray'), url = 'pzl/' + QG.pic.f + '.webp', ar = QG.pic.r;
   var land = innerWidth > innerHeight * 1.1, hdr = document.querySelector('.top').offsetHeight;
-  var availW = Math.min(document.querySelector('main').clientWidth - 8, 1000), availH = innerHeight - hdr - 150;
+  var availW = Math.min(mainW() + 16, 1000), availH = VH() - hdr - 150;
   var bw, bh;
   if (land) { bw = Math.min(availW * 0.56, availH * ar); }
   else { bw = Math.min(availW - 40, availH * 0.5 * ar); }
@@ -401,7 +404,7 @@ function quebraBuild() {
   bd.style.width = bw + 'px'; bd.style.height = bh + 'px'; bd.innerHTML = '<div class="ghost" style="background-image:url(' + url + ')"></div>';
   QG.pw = pw; QG.ph = ph; tr.innerHTML = '';
   var ts = land ? Math.min(1, (availW - bw - 30) / (pw * 2.2)) : Math.min(1, (availH * 0.42) / (ph * Math.ceil(QG.total / Math.max(1, Math.floor(availW / (pw + 10)))))) ;
-  var trayW = land ? Math.max(120, availW - bw - 90) : availW - 70, trayH = land ? availH + 60 : Math.max(120, innerHeight - hdr - bh - 150);
+  var trayW = land ? Math.max(120, availW - bw - 90) : availW - 70, trayH = land ? availH + 60 : Math.max(120, VH() - hdr - bh - 150);
   for (ts = 0.95; ts > 0.35; ts -= 0.05) { var pc = Math.max(1, Math.floor((trayW + 10) / (pw * ts + 10))), pr = Math.ceil(QG.total / pc); if (pr * (ph * ts + 10) <= trayH) break; }
   QG.ts = ts;
   for (var i = 0; i < QG.total; i++) {
@@ -567,3 +570,52 @@ function rkOpen(g) {
 }
 function rkClose() { document.getElementById('rank').classList.remove('on'); }
 userLoad();
+
+
+/* ---------- MÚSICAS DO JUJU ENQUANTO JOGA (player do YouTube visível, iniciado pela criança) ---------- */
+var DK = { on: false, p: null, list: [], i: 0, api: false, ready: false };
+try { DK.pref = localStorage.getItem('jj_musicas') === '1'; } catch (e) {}
+function dockLoadList(cb) {
+  if (DK.list.length) return cb();
+  fetch('/videos.json?v=' + Date.now(), { cache: 'no-store' }).then(function (r) { return r.json(); })
+    .then(function (a) { DK.list = shuffle(a.filter(function (v) { return !v.short; })); cb(); }).catch(function () { cb(); });
+}
+function dockOpen() {
+  if (!DK.list.length) return dockLoadList(function () { if (DK.list.length) dockOpen(); });
+  DK.on = true; try { localStorage.setItem('jj_musicas', '1'); } catch (e) {}
+  document.body.classList.add('docked'); document.getElementById('dock').classList.add('on'); dockBtn(); if (typeof musStop === 'function') musStop();
+  if (!DK.api) { DK.api = true; window.onYouTubeIframeAPIReady = dockMake; var s = document.createElement('script'); s.src = 'https://www.youtube.com/iframe_api'; document.head.appendChild(s); }
+  else if (DK.p && DK.p.playVideo) DK.p.playVideo(); else if (window.YT && YT.Player) dockMake();
+  setTimeout(dockLayout, 60);
+}
+function dockMake() {
+  if (DK.p) return; var v = DK.list[DK.i % DK.list.length];
+  DK.p = new YT.Player('d-p', { host: 'https://www.youtube-nocookie.com', videoId: v.id,
+    playerVars: { autoplay: 1, rel: 0, playsinline: 1, modestbranding: 1, fs: 0, cc_load_policy: 0, iv_load_policy: 3 },
+    events: { onReady: function (e) { DK.ready = true; try { e.target.unloadModule('captions'); } catch (x) {} e.target.playVideo(); dockTitle(); },
+      onStateChange: function (e) { if (e.data === 0) dockNext(); } } });
+}
+function dockTitle() { var v = DK.list[DK.i % DK.list.length]; document.getElementById('d-t').textContent = '🎵 ' + (v ? v.title.replace(/\s*\|.*$/, '').replace(/#\S+/g, '').trim() : 'Músicas do Juju'); }
+function dockNext() { if (!DK.p || !DK.p.loadVideoById) return; DK.i++; DK.p.loadVideoById(DK.list[DK.i % DK.list.length].id); dockTitle(); }
+function dockClose() {
+  DK.on = false; try { localStorage.setItem('jj_musicas', '0'); } catch (e) {}
+  if (DK.p && DK.p.pauseVideo) DK.p.pauseVideo(); document.getElementById('dock').classList.remove('on'); document.body.classList.remove('docked');
+  dockBtn(); dockLayout(); if (typeof musStart === 'function' && typeof STARTED !== 'undefined' && STARTED && CUR !== 'piano') musStart();
+}
+function dockToggle() { if (DK.on) dockClose(); else dockOpen(); }
+function dockBtn() { var b = document.getElementById('mus'); if (b) { b.classList.toggle('sel', DK.on); b.setAttribute('aria-pressed', DK.on); } }
+function dockVol(v) { if (DK.on && DK.p && DK.p.setVolume) try { DK.p.setVolume(v); } catch (e) {} }
+function dockPause(p) { if (!DK.on || !DK.p) return; try { p ? DK.p.pauseVideo() : DK.p.playVideo(); } catch (e) {} }
+function dockLayout() {
+  var d = document.getElementById('dock'), m = document.querySelector('main'), land = innerWidth > innerHeight;
+  d.classList.toggle('side', DK.on && land && innerWidth >= 700);
+  DOCK_B = 0; m.style.paddingBottom = ''; m.style.paddingRight = ''; m.style.maxWidth = '';
+  if (DK.on) {
+    var r = d.getBoundingClientRect();
+    if (d.classList.contains('side')) { m.style.paddingRight = (r.width + 20) + 'px'; m.style.maxWidth = 'none'; }
+    else { DOCK_B = r.height + 12; m.style.paddingBottom = DOCK_B + 'px'; }
+  }
+  document.documentElement.style.setProperty('--dockb', DOCK_B + 'px');
+  if (typeof fitNow === 'function') fitNow(); if (CUR === 'quebra' && QG.pic && QG.done === 0) quebraBuild();
+}
+addEventListener('resize', function () { if (DK.on) dockLayout(); });

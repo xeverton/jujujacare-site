@@ -299,10 +299,26 @@ button,.card,.opt,.bub,.tr,.pc,.mcard{touch-action:manipulation;-webkit-touch-ca
 .rklist li.me{background:#e6ffd9}
 .rklist li.muted{justify-content:center;border-style:dashed;background:#fff;font-weight:700}
 .win .box{max-height:calc(100dvh - 24px);overflow:auto}
+
+/* ===== músicas do Juju enquanto joga ===== */
+#mus.sel{background:#ffd23f}
+#dock{position:fixed;z-index:44;left:8px;right:8px;bottom:8px;display:none;flex-direction:column;background:#2b1840;border:4px solid var(--ol);border-radius:18px;padding:6px;box-shadow:0 6px 0 rgba(0,0,0,.35)}
+#dock.on{display:flex}
+#dock .dhead{display:flex;align-items:center;gap:6px;color:#fff;font-weight:800;font-size:14px;padding:0 4px 6px}
+#dock .dhead span{flex:1;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+#dock .dhead button{width:34px;height:34px;border-radius:50%;border:3px solid #fff;background:#ffd23f;font-size:15px;font-weight:800;flex:none}
+#dock .dframe{width:100%;height:200px;border-radius:12px;overflow:hidden;background:#000}
+#dock .dframe>*{width:100%;height:100%;display:block}
+@media (min-width:520px){#dock{left:auto;width:380px}}
+#dock.side{top:auto;width:min(380px,40vw)}
+#dock.side .dframe{height:max(200px,calc(min(380px,40vw) * .5625))}
+body.docked .fala{bottom:calc(var(--dockb,0px) + 14px)}
+.fala:not(.on){visibility:hidden;transition:transform .35s,visibility 0s .35s}
+body.docked .fala:not(.on){transform:translate(-50%,calc(140% + var(--dockb,0px) + 40px))}
 </style></head><body>
 <header class="top"><a href="/" aria-label="Voltar ao site"><img src="img/logo.webp" alt="Juju Jacaré"></a>
 <button class="back" id="back" onclick="voltar()">⬅ Voltar ao site</button>
-<button class="snd" id="snd" onclick="toggleSom()" aria-label="Som">🔊</button><span class="stars" id="stars">⭐ 0</span></header>
+<button class="snd" id="mus" onclick="dockToggle()" aria-label="Músicas do Juju">🎵</button><button class="snd" id="snd" onclick="toggleSom()" aria-label="Som">🔊</button><span class="stars" id="stars">⭐ 0</span></header>
 <div class="fala" id="fala"><img src="img/juju.webp" alt=""><div class="bal"><button class="x" onclick="calar()" aria-label="Fechar">✕</button><span id="fala-t"></span><br><button onclick="falarDeNovo()">🔊 Ouvir de novo</button></div></div>
 <div id="tapme" style="position:fixed;inset:0;z-index:60;background:rgba(43,24,64,.55);display:flex;align-items:center;justify-content:center" onclick="comecar()"><div style="background:#fff;border:6px solid var(--ol);border-radius:34px;padding:22px 26px;text-align:center;box-shadow:0 10px 0 var(--ol);max-width:380px"><img src="img/juju.webp" alt="" style="height:140px"><h2 style="font-size:34px;line-height:1.05;margin:6px 0">Vamos brincar?</h2><button style="font:inherit;font-size:26px;border:5px solid var(--ol);border-radius:999px;background:#4cd964;padding:8px 28px;cursor:pointer;margin-top:6px">▶ Começar</button></div></div>
 <main>
@@ -436,6 +452,9 @@ button,.card,.opt,.bub,.tr,.pc,.mcard{touch-action:manipulation;-webkit-touch-ca
 <p id="w-rk" class="wrk"></p>
 <div class="row"><button class="btn grn" id="w-again">Jogar de novo</button><button class="btn" onclick="rkOpen(CUR)">🏆 Ranking</button><button class="btn" onclick="hideWin();go('menu')">Outros jogos</button></div></div></div>
 <canvas id="party"></canvas>
+<div id="dock" aria-label="Músicas do Juju"><div class="dhead"><span id="d-t">🎵 Músicas do Juju</span><button onclick="dockNext()" aria-label="Próxima música">⏭</button><button onclick="dockClose()" aria-label="Fechar músicas">✕</button></div><div class="dframe"><div id="d-p"></div></div></div>
+<div class="modal" id="musq"><div class="box"><img src="img/juju.webp" alt="" style="height:100px"><h2>Quer ouvir as músicas do Juju enquanto brinca? 🎵</h2>
+<div class="row" style="margin-top:12px"><button class="btn grn" onclick="musqResp(true)">🎵 Quero!</button><button class="btn" onclick="musqResp(false)">Agora não</button></div></div></div>
 <div class="modal" id="nome"><div class="box"><img src="img/juju.webp" alt="" style="height:100px"><h2 id="nome-t">Qual é o seu nome?</h2>
 <p class="dica">Use só o primeiro nome ou um apelido 😉</p>
 <input id="nome-in" maxlength="14" autocomplete="off" autocapitalize="words" enterkeyhint="done" placeholder="Seu nome" onkeydown="if(event.key==='Enter')nomeOk(false)">
@@ -443,7 +462,7 @@ button,.card,.opt,.bub,.tr,.pc,.mcard{touch-action:manipulation;-webkit-touch-ca
 <div class="modal" id="rank" onclick="if(event.target===this)rkClose()"><div class="box"><button class="mx" onclick="rkClose()" aria-label="Fechar">✕</button><h2 id="rk-t">🏆 Ranking</h2>
 <div class="rktabs" id="rk-tabs"></div><ol class="rklist" id="rk-list"></ol><p class="dica">Os 5 melhores de cada jogo ficam aqui para sempre!</p></div></div>
 
-<script src="jogos.js?v=16"></script>
+<script src="jogos.js?v=18"></script>
 <script>
 /* ---------- utilidades ---------- */
 var STARS=0;try{STARS=+localStorage.getItem('jj_stars')||0}catch(e){}
@@ -465,9 +484,9 @@ function step(){PX.clearRect(0,0,PC.width,PC.height);PP.forEach(function(p){p.vy
 function showWin(t,p,img,again,lbl){document.getElementById('w-again').textContent=lbl||'Jogar de novo';document.getElementById('w-t').textContent=t;document.getElementById('w-p').textContent=p;document.getElementById('w-img').src=img;
  document.getElementById('w-again').onclick=function(){hideWin();again();};document.getElementById('win').classList.add('on');sWin();party(160);if(!VOZ.src||VOZ.src.indexOf('l_fim')<0&&VOZ.src.indexOf('q_fim')<0)setTimeout(function(){falar(CUR==='bolhas'?'b_fim':'win')},250);}
 function hideWin(){document.getElementById('win').classList.remove('on');}
-function go(id){if(typeof rkSend==='function'&&CUR&&CUR!==id&&RK_GAMES[CUR]&&CUR!=='bolhas')rkSend(CUR);if(typeof ptsReset==='function'&&RK_GAMES[id])ptsReset(id);document.querySelectorAll('.scr').forEach(function(s){s.classList.toggle('on',s.id===id);});
+function go(id){var PREV=CUR;if(typeof rkSend==='function'&&CUR&&CUR!==id&&RK_GAMES[CUR]&&CUR!=='bolhas')rkSend(CUR);if(typeof ptsReset==='function'&&RK_GAMES[id])ptsReset(id);document.querySelectorAll('.scr').forEach(function(s){s.classList.toggle('on',s.id===id);});
  var bk=document.getElementById('back');bk.textContent=id==='menu'?'⬅ Voltar ao site':'⬅ Jogos';bk.style.visibility=(typeof APP!=='undefined'&&APP&&id==='menu')?'hidden':'';CUR=id;scrollTo(0,0);
- if(id==='cores')coresStart();if(id==='memoria')memStart();if(id==='pintar')paintInit();if(id==='contar')contarStart();if(id==='lixo')lixoStart();if(id==='bolhas')bolhasStart();else bolhasStop();if(id==='sombras')sombrasStart();if(id==='formas')formasStart();if(id==='quebra')quebraStart();if(id==='piano'){pianoInit();if(typeof musStop==='function')musStop();}else if(typeof STARTED!=='undefined'&&STARTED&&typeof musStart==='function')musStart();;if(id!=='piano'&&typeof pianoStop==='function')pianoStop();if(typeof fitNow==='function')setTimeout(fitNow,60);
+ if(id==='cores')coresStart();if(id==='memoria')memStart();if(id==='pintar')paintInit();if(id==='contar')contarStart();if(id==='lixo')lixoStart();if(id==='bolhas')bolhasStart();else bolhasStop();if(id==='sombras')sombrasStart();if(id==='formas')formasStart();if(id==='quebra')quebraStart();if(id==='piano'){pianoInit();if(typeof musStop==='function')musStop();if(typeof dockPause==='function')dockPause(true);}else if(typeof dockPause==='function'&&PREV==='piano')dockPause(false);if(id==='piano'){}else if(typeof STARTED!=='undefined'&&STARTED&&typeof musStart==='function')musStart();;if(id!=='piano'&&typeof pianoStop==='function')pianoStop();if(typeof fitNow==='function')setTimeout(fitNow,60);
  if(typeof STARTED!=='undefined'&&STARTED){if(id==='menu')calar();else falar('i_'+id,true);}
  try{if(id==='menu')history.replaceState(null,'','#');else if(!NOPUSH)history.pushState({g:id},'','#'+id);else history.replaceState({g:id},'','#'+id);}catch(e){}NOPUSH=false;}
 
@@ -488,15 +507,16 @@ function fOk(){falar(aleat(['ok1','ok2','ok3','ok4']));}
 function fNo(){falar(aleat(['no1','no2']));}
 /* música de fundo suave (gerada no navegador) */
 var MG=null,MT=null,MSTEP=0,MEL=[[523,659],[587,698],[659,784],[587,698],[523,659],[440,523],[494,587],[392,494]];
-function musVol(v){if(MG&&AC)MG.gain.setTargetAtTime(v*.05,AC.currentTime,.2);}
-function musStart(){if(!SOM||MT)return;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();
+function musVol(v){if(typeof dockVol==='function')dockVol(v<1?25:100);if(MG&&AC)MG.gain.setTargetAtTime(v*.05,AC.currentTime,.2);}
+function musStart(){if(!SOM||MT||(typeof DK!=='undefined'&&DK.on))return;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();
  if(!MG){MG=AC.createGain();MG.gain.value=.05;MG.connect(AC.destination);}MG.gain.setTargetAtTime(.05,AC.currentTime,.2);
  MT=setInterval(function(){var t=AC.currentTime,c=MEL[Math.floor(MSTEP/4)%MEL.length],f=MSTEP%4===0?c[0]/2:(MSTEP%2?c[1]:c[0]);
   var o=AC.createOscillator(),g=AC.createGain();o.type='triangle';o.frequency.value=f;g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(1,t+.03);g.gain.exponentialRampToValueAtTime(.001,t+.5);
   o.connect(g);g.connect(MG);o.start(t);o.stop(t+.55);MSTEP++;},330);}catch(e){}}
 function musStop(){clearInterval(MT);MT=null;}
 function toggleSom(){SOM=!SOM;try{localStorage.setItem('jj_som',SOM?'1':'0')}catch(e){}somBtn();if(SOM){musStart();falar(CUR==='menu'?'oi':'i_'+CUR,true);}else{musStop();calar();}}
-function comecar(){document.getElementById('tapme').style.display='none';STARTED=true;musStart();var seg=function(){falar(CUR==='menu'?'oi':'i_'+CUR,true);};if(!USER)nomeAbrir(true,seg);else seg();}
+function comecar(){document.getElementById('tapme').style.display='none';STARTED=true;musStart();var seg=function(){falar(CUR==='menu'?'oi':'i_'+CUR,true);};var mus=function(){if(DK.pref){dockOpen();seg();}else{MUSQ_NEXT=seg;document.getElementById('musq').classList.add('on');}};if(!USER)nomeAbrir(true,mus);else mus();}
+var MUSQ_NEXT=null;function musqResp(sim){document.getElementById('musq').classList.remove('on');if(sim)dockOpen();else{try{localStorage.setItem('jj_musicas','0')}catch(e){}}var f=MUSQ_NEXT;MUSQ_NEXT=null;if(f)f();}
 somBtn();
 if(typeof userShow==='function')userShow();
 var APP=false;try{if(/[?&]app=1/.test(location.search))sessionStorage.setItem('jj_app','1');APP=sessionStorage.getItem('jj_app')==='1'||matchMedia('(display-mode: standalone)').matches&&document.referrer.indexOf('android-app://')===0;}catch(e){}
