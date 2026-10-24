@@ -272,6 +272,33 @@ button,.card,.opt,.bub,.tr,.pc,.mcard{touch-action:manipulation;-webkit-touch-ca
 #f-opts button,#s-opts button{aspect-ratio:auto;padding:10px}
 #c-opts .opt{aspect-ratio:auto}
 #n-opts button{aspect-ratio:auto;font-size:clamp(28px,7vmin,64px)}
+
+/* ===== jogador e ranking ===== */
+.ubar{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:-8px 0 18px}
+.ub{border:4px solid var(--ol);border-radius:999px;background:#fff;font-weight:800;font-size:18px;padding:4px 16px;box-shadow:0 4px 0 var(--ol);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ub.rk{background:#ffd23f}
+.ptag{display:inline-block;background:#fff;border:3px solid var(--ol);border-radius:999px;padding:0 10px;font-weight:800;font-size:clamp(13px,1.9dvh,17px);white-space:nowrap;vertical-align:middle;margin:0 4px}
+.ptag.bump{animation:pop .4s}
+.bhud .ptag{font-size:20px;padding:0 12px;border-width:4px}
+.wrk{display:none;background:#fff3c4;border:3px solid var(--ol);border-radius:16px;padding:6px 10px;font-weight:800;font-size:17px;margin:-6px 0 12px}
+.modal{position:fixed;inset:0;z-index:70;background:rgba(43,24,64,.6);display:none;align-items:center;justify-content:center;padding:14px}
+.modal.on{display:flex}
+.modal .box{position:relative;background:#fff;border:6px solid var(--ol);border-radius:30px;padding:18px;text-align:center;max-width:440px;width:100%;max-height:calc(100dvh - 28px);overflow:auto;box-shadow:0 10px 0 var(--ol);animation:pop .4s}
+.modal h2{font-size:30px;line-height:1.1;margin:4px 0}
+.modal .dica{font-size:15px;opacity:.8;margin:4px 0 10px}
+.modal input{width:100%;font:inherit;font-size:26px;font-weight:800;text-align:center;border:4px solid var(--ol);border-radius:18px;padding:8px;margin:4px 0 14px;user-select:text;-webkit-user-select:text}
+.modal .row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.modal .mx{position:absolute;top:8px;right:8px;width:40px;height:40px;border-radius:50%;border:4px solid var(--ol);background:#fff;font-size:18px;font-weight:800}
+.rktabs{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:8px 0 12px}
+.rktabs button{width:46px;height:46px;border-radius:14px;border:4px solid var(--ol);background:#fff;font-size:22px;box-shadow:0 3px 0 var(--ol)}
+.rktabs button.sel{background:#ffd23f;transform:translateY(-2px)}
+.rklist{list-style:none;padding:0;margin:0 0 6px;text-align:left}
+.rklist li{display:flex;align-items:center;gap:10px;border:3px solid var(--ol);border-radius:16px;padding:6px 12px;margin-bottom:8px;font-size:19px;font-weight:800;background:#f7f2ff}
+.rklist li b{width:36px;text-align:center;font-size:22px}.rklist li span{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rklist li em{font-style:normal;color:#ff8c1a}
+.rklist li.me{background:#e6ffd9}
+.rklist li.muted{justify-content:center;border-style:dashed;background:#fff;font-weight:700}
+.win .box{max-height:calc(100dvh - 24px);overflow:auto}
 </style></head><body>
 <header class="top"><a href="/" aria-label="Voltar ao site"><img src="img/logo.webp" alt="Juju Jacaré"></a>
 <button class="back" id="back" onclick="voltar()">⬅ Voltar ao site</button>
@@ -282,6 +309,7 @@ button,.card,.opt,.bub,.tr,.pc,.mcard{touch-action:manipulation;-webkit-touch-ca
 <!-- ================= MENU ================= -->
 <section class="scr on" id="menu">
 <h1>🎮 Jogos do Juju</h1><p class="sub">Escolha uma brincadeira!</p>
+<div class="ubar"><button class="ub" onclick="nomeAbrir(false)">👤 <span id="u-name">Jogador</span> ✏️</button><button class="ub rk" onclick="rkOpen()">🏆 Ranking</button></div>
 <div class="menu">
 <button class="mcard" style="--c:#ff4d5e" onclick="go('cores')"><div class="ic"><img src="img/maca_cinza.webp" alt=""><img src="img/maca.webp" alt=""></div><h2>Que cor é?</h2><p>Toque na cor certa e pinte a figura!</p></button>
 <button class="mcard" style="--c:#3fa9f5" onclick="go('memoria')"><div class="ic"><img src="obj/unicornio.webp" alt=""><img src="obj/unicornio.webp" alt=""></div><h2>Memória</h2><p>Ache os pares das figuras.</p></button>
@@ -300,7 +328,7 @@ button,.card,.opt,.bub,.tr,.pc,.mcard{touch-action:manipulation;-webkit-touch-ca
 <!-- ================= CORES ================= -->
 <section class="scr" id="cores">
 <div class="stage">
-<div class="q"><span class="lvtag" data-lv="cores"></span> <span id="c-q">Que cor é?</span><button class="rep" onclick="falar(qk(cq[ci]))" aria-label="Ouvir">🔊</button></div>
+<div class="q"><span class="lvtag" data-lv="cores"></span><span class="ptag" data-pts="cores">🏅 0</span> <span id="c-q">Que cor é?</span><button class="rep" onclick="falar(qk(cq[ci]))" aria-label="Ouvir">🔊</button></div>
 <div class="objwrap" id="c-obj"><img id="c-grey" alt=""><img class="col" id="c-col" alt=""></div>
 <div class="big" id="c-word">&nbsp;</div>
 <div class="opts" id="c-opts"></div><div class="opts-pad"></div>
@@ -309,7 +337,7 @@ button,.card,.opt,.bub,.tr,.pc,.mcard{touch-action:manipulation;-webkit-touch-ca
 
 <!-- ================= MEMÓRIA ================= -->
 <section class="scr" id="memoria">
-<div class="lvl"><span class="lvtag" data-lv="memoria"></span><button onclick="memStart()">🔀 Embaralhar</button></div>
+<div class="lvl"><span class="lvtag" data-lv="memoria"></span><span class="ptag" data-pts="memoria">🏅 0</span><button onclick="memStart()">🔀 Embaralhar</button></div>
 <div class="board" id="board"></div>
 <div class="info" id="m-info">&nbsp;</div>
 </section>
@@ -349,7 +377,7 @@ button,.card,.opt,.bub,.tr,.pc,.mcard{touch-action:manipulation;-webkit-touch-ca
 <!-- ================= CONTAR ================= -->
 <section class="scr" id="contar">
 <div class="stage">
-<div class="q"><span class="lvtag" data-lv="contar"></span> <span id="n-q">Quantos tem?</span></div>
+<div class="q"><span class="lvtag" data-lv="contar"></span><span class="ptag" data-pts="contar">🏅 0</span> <span id="n-q">Quantos tem?</span></div>
 <div class="cbox" id="n-box"></div>
 <div class="big" id="n-word">&nbsp;</div>
 <div class="nums" id="n-opts"></div>
@@ -358,20 +386,20 @@ button,.card,.opt,.bub,.tr,.pc,.mcard{touch-action:manipulation;-webkit-touch-ca
 
 <!-- ================= LIXO ================= -->
 <section class="scr" id="lixo">
-<div class="q" style="text-align:center"><span class="lvtag" data-lv="lixo"></span> Toque no lixo! <span id="l-cnt"></span></div>
+<div class="q" style="text-align:center"><span class="lvtag" data-lv="lixo"></span><span class="ptag" data-pts="lixo">🏅 0</span> Toque no lixo! <span id="l-cnt"></span></div>
 <div class="yard" id="yard"><div class="bin" id="bin">🗑️</div></div>
 <div class="info" id="l-info">&nbsp;</div>
 </section>
 
 <!-- ================= BOLHAS ================= -->
 <section class="scr" id="bolhas">
-<div class="bath" id="bath"><div class="bhud"><span id="b-cnt">🫧 0</span><span class="lvtag" data-lv="bolhas"></span><span id="b-time">⏱ 30</span></div>
+<div class="bath" id="bath"><div class="bhud"><span id="b-cnt">🫧 0</span><span class="lvtag" data-lv="bolhas"></span><span class="ptag" data-pts="bolhas">🏅 0</span><span id="b-time">⏱ 30</span></div>
 <img src="img/juju.webp" class="bjuju" alt=""></div>
 </section>
 <!-- ================= SOMBRAS ================= -->
 <section class="scr" id="sombras">
 <div class="stage">
-<div class="q"><span class="lvtag" data-lv="sombras"></span> <span id="s-q">Qual é a sombra?</span><button class="rep" onclick="falar('q_sombra')" aria-label="Ouvir">🔊</button></div>
+<div class="q"><span class="lvtag" data-lv="sombras"></span><span class="ptag" data-pts="sombras">🏅 0</span> <span id="s-q">Qual é a sombra?</span><button class="rep" onclick="falar('q_sombra')" aria-label="Ouvir">🔊</button></div>
 <img class="tgt" id="s-img" alt="">
 <div class="sils" id="s-opts"></div>
 </div>
@@ -380,7 +408,7 @@ button,.card,.opt,.bub,.tr,.pc,.mcard{touch-action:manipulation;-webkit-touch-ca
 <!-- ================= FORMAS ================= -->
 <section class="scr" id="formas">
 <div class="stage">
-<div class="q"><span class="lvtag" data-lv="formas"></span> <span id="f-q">Cadê o círculo?</span><button class="rep" onclick="falar('f_'+FALVO)" aria-label="Ouvir">🔊</button></div>
+<div class="q"><span class="lvtag" data-lv="formas"></span><span class="ptag" data-pts="formas">🏅 0</span> <span id="f-q">Cadê o círculo?</span><button class="rep" onclick="falar('f_'+FALVO)" aria-label="Ouvir">🔊</button></div>
 <div class="shapes" id="f-opts"></div>
 <div class="info" id="f-info">&nbsp;</div>
 </div>
@@ -388,7 +416,7 @@ button,.card,.opt,.bub,.tr,.pc,.mcard{touch-action:manipulation;-webkit-touch-ca
 
 <!-- ================= QUEBRA-CABEÇA ================= -->
 <section class="scr" id="quebra">
-<div class="lvl"><span class="lvtag" data-lv="quebra"></span><button onclick="quebraStart()">🔀 Outra figura</button></div>
+<div class="lvl"><span class="lvtag" data-lv="quebra"></span><span class="ptag" data-pts="quebra">🏅 0</span><button onclick="quebraStart()">🔀 Outra figura</button></div>
 <div class="qwrap"><div class="qboard" id="qboard"></div><div class="qtray" id="qtray"></div></div>
 </section>
 
@@ -405,10 +433,17 @@ button,.card,.opt,.bub,.tr,.pc,.mcard{touch-action:manipulation;-webkit-touch-ca
 </main>
 
 <div class="win" id="win"><div class="box"><img id="w-img" src="img/juju.webp" alt=""><h2 id="w-t">Parabéns!</h2><p id="w-p"></p>
-<div class="row"><button class="btn grn" id="w-again">Jogar de novo</button><button class="btn" onclick="hideWin();go('menu')">Outros jogos</button></div></div></div>
+<p id="w-rk" class="wrk"></p>
+<div class="row"><button class="btn grn" id="w-again">Jogar de novo</button><button class="btn" onclick="rkOpen(CUR)">🏆 Ranking</button><button class="btn" onclick="hideWin();go('menu')">Outros jogos</button></div></div></div>
 <canvas id="party"></canvas>
+<div class="modal" id="nome"><div class="box"><img src="img/juju.webp" alt="" style="height:100px"><h2 id="nome-t">Qual é o seu nome?</h2>
+<p class="dica">Use só o primeiro nome ou um apelido 😉</p>
+<input id="nome-in" maxlength="14" autocomplete="off" autocapitalize="words" enterkeyhint="done" placeholder="Seu nome" onkeydown="if(event.key==='Enter')nomeOk(false)">
+<div class="row"><button class="btn grn" onclick="nomeOk(false)">✅ Pronto</button><button class="btn" id="nome-pular" onclick="nomeOk(true)">▶ Pular</button></div></div></div>
+<div class="modal" id="rank" onclick="if(event.target===this)rkClose()"><div class="box"><button class="mx" onclick="rkClose()" aria-label="Fechar">✕</button><h2 id="rk-t">🏆 Ranking</h2>
+<div class="rktabs" id="rk-tabs"></div><ol class="rklist" id="rk-list"></ol><p class="dica">Os 5 melhores de cada jogo ficam aqui para sempre!</p></div></div>
 
-<script src="jogos.js?v=15"></script>
+<script src="jogos.js?v=16"></script>
 <script>
 /* ---------- utilidades ---------- */
 var STARS=0;try{STARS=+localStorage.getItem('jj_stars')||0}catch(e){}
@@ -430,7 +465,7 @@ function step(){PX.clearRect(0,0,PC.width,PC.height);PP.forEach(function(p){p.vy
 function showWin(t,p,img,again,lbl){document.getElementById('w-again').textContent=lbl||'Jogar de novo';document.getElementById('w-t').textContent=t;document.getElementById('w-p').textContent=p;document.getElementById('w-img').src=img;
  document.getElementById('w-again').onclick=function(){hideWin();again();};document.getElementById('win').classList.add('on');sWin();party(160);if(!VOZ.src||VOZ.src.indexOf('l_fim')<0&&VOZ.src.indexOf('q_fim')<0)setTimeout(function(){falar(CUR==='bolhas'?'b_fim':'win')},250);}
 function hideWin(){document.getElementById('win').classList.remove('on');}
-function go(id){document.querySelectorAll('.scr').forEach(function(s){s.classList.toggle('on',s.id===id);});
+function go(id){if(typeof rkSend==='function'&&CUR&&CUR!==id&&RK_GAMES[CUR]&&CUR!=='bolhas')rkSend(CUR);if(typeof ptsReset==='function'&&RK_GAMES[id])ptsReset(id);document.querySelectorAll('.scr').forEach(function(s){s.classList.toggle('on',s.id===id);});
  var bk=document.getElementById('back');bk.textContent=id==='menu'?'⬅ Voltar ao site':'⬅ Jogos';bk.style.visibility=(typeof APP!=='undefined'&&APP&&id==='menu')?'hidden':'';CUR=id;scrollTo(0,0);
  if(id==='cores')coresStart();if(id==='memoria')memStart();if(id==='pintar')paintInit();if(id==='contar')contarStart();if(id==='lixo')lixoStart();if(id==='bolhas')bolhasStart();else bolhasStop();if(id==='sombras')sombrasStart();if(id==='formas')formasStart();if(id==='quebra')quebraStart();if(id==='piano'){pianoInit();if(typeof musStop==='function')musStop();}else if(typeof STARTED!=='undefined'&&STARTED&&typeof musStart==='function')musStart();;if(id!=='piano'&&typeof pianoStop==='function')pianoStop();if(typeof fitNow==='function')setTimeout(fitNow,60);
  if(typeof STARTED!=='undefined'&&STARTED){if(id==='menu')calar();else falar('i_'+id,true);}
@@ -461,8 +496,9 @@ function musStart(){if(!SOM||MT)return;try{AC=AC||new (window.AudioContext||wind
   o.connect(g);g.connect(MG);o.start(t);o.stop(t+.55);MSTEP++;},330);}catch(e){}}
 function musStop(){clearInterval(MT);MT=null;}
 function toggleSom(){SOM=!SOM;try{localStorage.setItem('jj_som',SOM?'1':'0')}catch(e){}somBtn();if(SOM){musStart();falar(CUR==='menu'?'oi':'i_'+CUR,true);}else{musStop();calar();}}
-function comecar(){document.getElementById('tapme').style.display='none';STARTED=true;musStart();falar(CUR==='menu'?'oi':'i_'+CUR,true);}
+function comecar(){document.getElementById('tapme').style.display='none';STARTED=true;musStart();var seg=function(){falar(CUR==='menu'?'oi':'i_'+CUR,true);};if(!USER)nomeAbrir(true,seg);else seg();}
 somBtn();
+if(typeof userShow==='function')userShow();
 var APP=false;try{if(/[?&]app=1/.test(location.search))sessionStorage.setItem('jj_app','1');APP=sessionStorage.getItem('jj_app')==='1'||matchMedia('(display-mode: standalone)').matches&&document.referrer.indexOf('android-app://')===0;}catch(e){}
 if(APP){var lg=document.querySelector('.top a');if(lg){lg.removeAttribute('href');}document.getElementById('back').style.visibility='hidden';}
 var CUR='menu',NOPUSH=false;

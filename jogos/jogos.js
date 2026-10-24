@@ -17,6 +17,7 @@ function setLv(g, v) { LV[g] = v; try { localStorage.setItem('jj_lv', JSON.strin
 function lvShow() { document.querySelectorAll('[data-lv]').forEach(function (e) { e.textContent = '⭐ Nível ' + lv(e.dataset.lv); }); }
 function levelWin(g, title, msg, img, start) {
   var L = lv(g); setLv(g, L + 1);
+  setTimeout(function () { rkWinNote(g); }, 50);
   showWin(title, 'Nível ' + L + ' completo! ' + msg, img, function () { start(); setTimeout(function () { falar('lv_up', true); }, 250); }, 'Próximo nível ▶');
 }
 function shake(b) { b.classList.remove('no'); void b.offsetWidth; b.classList.add('no'); }
@@ -91,7 +92,7 @@ function coresRound() {
     b.onclick = function () {
       if (cLock) return;
       if (k !== it.c) { shake(b); sNo(); fNo(); return; }
-      cLock = true; sOk(); addStar(); w.classList.add('done'); falar(CORX[k][2]);
+      cLock = true; sOk(); addStar(); pts('cores', 10 * L); w.classList.add('done'); falar(CORX[k][2]);
       var wd = document.getElementById('c-word'); wd.textContent = CORX[k][0] + '!'; wd.style.color = CORX[k][1]; party(70);
       setTimeout(function () { ci++; if (ci < C_N) { coresRound(); setTimeout(function () { falar(qk(cq[ci])); }, 250); } else levelWin('cores', 'Parabéns!', 'Você conhece as cores! 🌈', oimg(it), coresStart); }, 1700);
     };
@@ -135,7 +136,7 @@ function memFlip(c) {
   if (mOpen.length < 2) return; mMoves++; var a = mOpen[0], b = mOpen[1]; mOpen = [];
   if (a.dataset.n === b.dataset.n) {
     setTimeout(function () {
-      a.classList.add('ok'); b.classList.add('ok'); a.classList.remove('up'); b.classList.remove('up'); sOk(); addStar(); party(40); mPairs++; memInfo();
+      a.classList.add('ok'); b.classList.add('ok'); a.classList.remove('up'); b.classList.remove('up'); sOk(); addStar(); pts('memoria', 10 * lv('memoria')); party(40); mPairs++; memInfo();
       if (mPairs < MEM_N) falar(rnd(['m_par', 'ok1', 'ok4']));
       else setTimeout(function () { levelWin('memoria', 'Muito bem!', 'Achou todos os pares em ' + mMoves + ' jogadas! 🎉', a.querySelector('img').src, memStart); }, 700);
     }, 350);
@@ -254,7 +255,7 @@ function contarPick(v, b) {
   if (nLock) return; if (v !== nAns) { shake(b); sNo(); fNo(); return; }
   nLock = true; var its = document.querySelectorAll('#n-box .it'), dt = its.length > 6 ? 380 : 560;
   its.forEach(function (e, i) { setTimeout(function () { e.classList.add('cnt'); tone(500 + i * 70, 0.15, 'triangle', 0.16); }, i * dt); });
-  setTimeout(function () { sOk(); addStar(); party(60); falar('n' + nAns); var w = document.getElementById('n-word'); w.textContent = NOMES[nAns] + '!'; w.style.color = '#ff8c1a'; }, its.length * dt);
+  setTimeout(function () { sOk(); addStar(); pts('contar', 10 * lv('contar')); party(60); falar('n' + nAns); var w = document.getElementById('n-word'); w.textContent = NOMES[nAns] + '!'; w.style.color = '#ff8c1a'; }, its.length * dt);
   setTimeout(function () { nRound++; if (nRound < N_TOTAL) contarRound(); else levelWin('contar', 'Muito bem!', 'Você sabe contar direitinho! 🔢', its[0].querySelector('img').src, contarStart); }, its.length * dt + 1700);
 }
 
@@ -282,7 +283,7 @@ function lixoTap(b) {
   var bin = document.getElementById('bin'), yard = document.getElementById('yard');
   b.style.left = (bin.offsetLeft / yard.clientWidth * 100 + 2) + '%'; b.style.top = (bin.offsetTop / yard.clientHeight * 100) + '%';
   b.classList.add('gone'); sPop(); setTimeout(function () { bin.classList.remove('eat'); void bin.offsetWidth; bin.classList.add('eat'); tone(300, 0.12, 'square', 0.08); }, 550);
-  lLeft--; lixoInfo(); addStar(); document.getElementById('l-info').textContent = ['Isso aí! 👏', 'Muito bem! ♻️', 'Quintal limpinho! 🌿', 'Boa! 🎉'][Math.floor(Math.random() * 4)];
+  lLeft--; lixoInfo(); addStar(); pts('lixo', 5 * lv('lixo')); document.getElementById('l-info').textContent = ['Isso aí! 👏', 'Muito bem! ♻️', 'Quintal limpinho! 🌿', 'Boa! 🎉'][Math.floor(Math.random() * 4)];
   if (lLeft === 0) setTimeout(function () { sOk(); party(80); falar('l_fim'); levelWin('lixo', 'Quintal limpinho!', 'Lugar de lixo é no lixo! ♻️', 'img/juju.webp', lixoRound); }, 800);
 }
 
@@ -291,14 +292,14 @@ var bT = null, bS = null, bCount = 0, bTime = 30, bRun = false, bGoal = 20;
 function bolhasStart() {
   bolhasStop(); catReady(function () {
     var bath = document.getElementById('bath'); bath.querySelectorAll('.bub').forEach(function (e) { e.remove(); });
-    var L = lv('bolhas'); bGoal = 15 + L * 5; bCount = 0; bTime = 30; bRun = true; bInfo(); lvShow();
+    var L = lv('bolhas'); bGoal = 15 + L * 5; bCount = 0; ptsReset('bolhas'); bTime = 30; bRun = true; bInfo(); lvShow();
     bS = setInterval(spawnBub, Math.max(260, 560 - L * 40));
     bT = setInterval(function () {
       bTime--; bInfo();
       if (bTime <= 0) {
         bolhasStop();
         if (bCount >= bGoal) levelWin('bolhas', 'Que banho divertido!', 'Você estourou ' + bCount + ' bolhas! 🫧', 'img/juju.webp', bolhasStart);
-        else showWin('Quase lá!', 'Você estourou ' + bCount + ' de ' + bGoal + ' bolhas. Tenta de novo! 🫧', 'img/juju.webp', bolhasStart);
+        else { showWin('Quase lá!', 'Você estourou ' + bCount + ' de ' + bGoal + ' bolhas. Tenta de novo! 🫧', 'img/juju.webp', bolhasStart); setTimeout(function () { rkWinNote('bolhas'); }, 50); }
       }
     }, 1000);
   });
@@ -320,7 +321,7 @@ function spawnBub() {
   })(t0);
   d.addEventListener('pointerdown', function () {
     if (d.classList.contains('pop')) return; d.classList.add('pop'); tone(900 + Math.random() * 500, 0.07, 'sine', 0.16);
-    bCount += val; if (val > 1) { addStar(); sOk(); } bInfo(); setTimeout(function () { d.remove(); }, 260);
+    bCount += val; if (val > 1) { addStar(); sOk(); } bInfo(); pts('bolhas', val); setTimeout(function () { d.remove(); }, 260);
   });
 }
 
@@ -337,7 +338,7 @@ function sombrasRound() {
     var b = document.createElement('button'); b.innerHTML = '<img src="' + oimg(o) + '" alt="">'; b.setAttribute('aria-label', 'sombra');
     b.onclick = function () {
       if (sLock) return; if (o !== it) { shake(b); sNo(); fNo(); return; }
-      sLock = true; b.classList.add('ok'); sOk(); fOk(); addStar(); party(60);
+      sLock = true; b.classList.add('ok'); sOk(); fOk(); addStar(); pts('sombras', 10 * L); party(60);
       setTimeout(function () { si++; if (si < S_TOTAL) { sombrasRound(); falar('q_sombra'); } else levelWin('sombras', 'Muito bem!', 'Você achou todas as sombras! 🌗', oimg(it), sombrasStart); }, 1600);
     };
     box.appendChild(b);
@@ -368,7 +369,7 @@ function formasRound(first) {
     b.innerHTML = '<svg viewBox="0 0 100 100" fill="' + cols[i % cols.length] + '" stroke="#33204a" stroke-width="6" stroke-linejoin="round"><g transform="rotate(' + rot + ' 50 50)">' + FORMAS[k][1] + '</g></svg>';
     b.onclick = function () {
       if (fLock) return; if (k !== FALVO) { shake(b); sNo(); fNo(); return; }
-      fLock = true; b.classList.add('ok'); sOk(); fOk(); addStar(); party(60);
+      fLock = true; b.classList.add('ok'); sOk(); fOk(); addStar(); pts('formas', 10 * L); party(60);
       document.getElementById('f-info').textContent = 'É ' + FORMAS[k][2] + ' ' + FORMAS[k][0] + '! ✨';
       setTimeout(function () { fr++; if (fr < F_TOTAL) formasRound(); else levelWin('formas', 'Parabéns!', 'Você conhece as formas! 🔺🟦⭐', 'img/juju.webp', formasStart); }, 1600);
     };
@@ -438,7 +439,7 @@ function qUp(e) {
   var ph = qDrag.ph; qDrag = null;
   if (dist < Math.min(QG.pw, QG.ph) * 0.5) {
     p.classList.remove('drag'); p.classList.add('placed'); p.style.left = x * QG.pw + 'px'; p.style.top = y * QG.ph + 'px'; p.style.transform = 'none';
-    bd.appendChild(p); ph.remove(); QG.done++; tone(880, 0.12, 'triangle', 0.18); tone(1175, 0.15, 'triangle', 0.14, 0.08); addStar();
+    bd.appendChild(p); ph.remove(); QG.done++; pts('quebra', 5 * lv('quebra')); tone(880, 0.12, 'triangle', 0.18); tone(1175, 0.15, 'triangle', 0.14, 0.08); addStar();
     var sl = bd.querySelector('.slot[data-i="' + i + '"]'); if (sl) sl.classList.add('ok');
     if (QG.done === QG.total) { bd.classList.add('done'); sOk(); party(120); falar('q_fim'); setTimeout(function () { levelWin('quebra', 'Montou!', 'Que quebra-cabeça bonito! 🧩', 'pzl/' + QG.pic.f + '.webp', quebraStart); }, 1500); }
     else if (QG.done % 3 === 0) falar('q_peca');
@@ -506,3 +507,63 @@ function pianoSong(s) {
   })();
 }
 function pianoStop() { pSong = -1; document.querySelectorAll('#keys button').forEach(function (b) { b.classList.remove('hint'); }); var i = document.getElementById('pi-info'); if (i) i.textContent = 'Toque nas teclas! 🎶'; }
+
+/* ---------- JOGADOR + RANKING (top 5 de cada jogo, para sempre) ---------- */
+var RK_URL = 'https://script.google.com/macros/s/AKfycbxKDVBQQ-nJIHqIWhnn8IbHB0g9s58b-A7p79N6UhVs3GxDltlao4MD2zwp6dbOZnXKHQ/exec';
+var RK_GAMES = { cores: ['🎨', 'Que cor é?'], memoria: ['🃏', 'Memória'], contar: ['🔢', 'Contar'], lixo: ['♻️', 'Joga no lixo'], bolhas: ['🫧', 'Bolhas'], sombras: ['🌗', 'Sombras'], formas: ['🔺', 'Formas'], quebra: ['🧩', 'Quebra-cabeça'] };
+var USER = null, SP = {}, SP_SENT = {}, RK_CACHE = null;
+function getCookie(k) { var m = document.cookie.match(new RegExp('(?:^|; )' + k + '=([^;]*)')); return m ? decodeURIComponent(m[1]) : null; }
+function setCookie(k, v) { document.cookie = k + '=' + encodeURIComponent(v) + '; max-age=2592000; path=/; SameSite=Lax'; }
+function userLoad() { try { var c = getCookie('jj_user'); if (c) USER = JSON.parse(c); } catch (e) {} if (USER) setCookie('jj_user', JSON.stringify(USER)); }
+function userSave() { setCookie('jj_user', JSON.stringify(USER)); userShow(); }
+function anonName(id) { return 'JujuUser' + (1000 + (parseInt(id.slice(-6), 36) % 9000)); }
+function userName() { return USER ? (USER.n || anonName(USER.id)) : ''; }
+function newId() { var s = ''; for (var i = 0; i < 14; i++) s += 'abcdefghijklmnopqrstuvwxyz0123456789'[Math.floor(Math.random() * 36)]; return s; }
+function userShow() { var e = document.getElementById('u-name'); if (e) e.textContent = userName() || 'Jogador'; }
+function nomeAbrir(primeira, depois) {
+  var m = document.getElementById('nome'), inp = document.getElementById('nome-in');
+  m.classList.add('on'); inp.value = USER && USER.n ? USER.n : ''; document.getElementById('nome-pular').style.display = primeira ? '' : 'none';
+  document.getElementById('nome-t').textContent = primeira ? 'Qual é o seu nome?' : 'Trocar meu nome';
+  m._depois = depois; if (primeira) falar('nome', false); setTimeout(function () { try { inp.focus(); } catch (e) {} }, 150);
+}
+function nomeOk(pular) {
+  var v = (document.getElementById('nome-in').value || '').replace(/[^\p{L}\p{N} ]/gu, '').replace(/\s+/g, ' ').trim().slice(0, 14);
+  if (!pular && v.length < 2) { shake(document.getElementById('nome-in')); sNo(); return; }
+  if (!USER) USER = { id: newId(), n: '' };
+  USER.n = pular ? '' : v; userSave(); var m = document.getElementById('nome'); m.classList.remove('on'); sOk();
+  if (m._depois) { var f = m._depois; m._depois = null; f(); }
+}
+function pts(g, v) { if (!RK_GAMES[g]) return; SP[g] = (SP[g] || 0) + v; var e = document.querySelector('[data-pts="' + g + '"]'); if (e) { e.textContent = '🏅 ' + SP[g]; e.classList.remove('bump'); void e.offsetWidth; e.classList.add('bump'); } }
+function ptsReset(g) { SP[g] = 0; SP_SENT[g] = 0; var e = document.querySelector('[data-pts="' + g + '"]'); if (e) e.textContent = '🏅 0'; }
+function rkSend(g, score, cb) {
+  score = Math.floor(score || SP[g] || 0); if (!USER || !RK_GAMES[g] || score <= 0 || score <= (SP_SENT[g] || 0)) { if (cb) cb(0); return; }
+  SP_SENT[g] = score;
+  fetch(RK_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify({ g: g, s: score, u: USER.id, n: USER.n || '' }) })
+    .then(function (r) { return r.json(); }).then(function (d) { if (d && d.ok) { if (RK_CACHE) RK_CACHE[g] = d.rank; if (cb) cb(d.pos || 0); } else if (cb) cb(0); })
+    .catch(function () { SP_SENT[g] = 0; if (cb) cb(0); });
+}
+function rkWinNote(g, score) {
+  var note = document.getElementById('w-rk'); note.textContent = ''; note.style.display = 'none';
+  rkSend(g, score, function (pos) {
+    if (pos > 0 && document.getElementById('win').classList.contains('on')) {
+      note.textContent = (pos === 1 ? '🥇 Você é o 1º lugar' : '🏆 Você está em ' + pos + 'º lugar') + ' no ranking de ' + RK_GAMES[g][1] + '!'; note.style.display = 'block';
+      setTimeout(function () { falar('rk_top'); }, 1800);
+    }
+  });
+}
+function rkOpen(g) {
+  var m = document.getElementById('rank'); m.classList.add('on'); g = RK_GAMES[g] ? g : (m._g || 'bolhas'); m._g = g;
+  var tabs = document.getElementById('rk-tabs'); tabs.innerHTML = '';
+  Object.keys(RK_GAMES).forEach(function (k) { var b = document.createElement('button'); b.textContent = RK_GAMES[k][0]; b.title = RK_GAMES[k][1]; b.className = k === g ? 'sel' : ''; b.onclick = function () { rkOpen(k); }; tabs.appendChild(b); });
+  document.getElementById('rk-t').textContent = '🏆 ' + RK_GAMES[g][1];
+  var list = document.getElementById('rk-list'); list.innerHTML = '<li class="muted">Carregando…</li>';
+  var draw = function () {
+    var L = (RK_CACHE && RK_CACHE[g]) || []; list.innerHTML = '';
+    if (!L.length) { list.innerHTML = '<li class="muted">Ninguém ainda! Seja o primeiro! 🐊</li>'; return; }
+    L.forEach(function (x, i) { var li = document.createElement('li'); if (x.n === userName()) li.className = 'me'; li.innerHTML = '<b>' + ['🥇', '🥈', '🥉', '4º', '5º'][i] + '</b><span></span><em>' + x.s + ' pts</em>'; li.querySelector('span').textContent = x.n; list.appendChild(li); });
+  };
+  if (RK_CACHE) draw();
+  fetch(RK_URL + '?t=' + Date.now()).then(function (r) { return r.json(); }).then(function (d) { if (d && d.ok) { RK_CACHE = d.rank; if (m._g === g) draw(); } }).catch(function () { if (!RK_CACHE) list.innerHTML = '<li class="muted">Sem internet agora 😕</li>'; });
+}
+function rkClose() { document.getElementById('rank').classList.remove('on'); }
+userLoad();

@@ -342,5 +342,13 @@
 "qc_juju": [
 "E aí, qual é a cor do Juju?",
 1.47
+],
+"nome": [
+"Qual é o seu nome? Escreva aqui, ou toque em pular!",
+2.72
+],
+"rk_top": [
+"Uau! Você entrou no ranking dos campeões!",
+2.4
 ]
 }
