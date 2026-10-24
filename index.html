@@ -212,6 +212,9 @@ var COLS=['#ff9f1c','#4cd964','#3fa9f5','#9b5de5','#ff6fb5','#ff4d5e'];
 function clean(t){return t.replace(/\s*\|.*$/,'').replace(/#\S+/g,'').replace(/\s+/g,' ').trim();}
 function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
 function thumb(id){return 'https://i.ytimg.com/vi/'+id+'/hqdefault.jpg';}
+/* vídeo excluído/privado: o YouTube devolve miniatura cinza 120x90 -> some o card */
+function vivo(img,el){function ck(){if(!img.naturalWidth||img.naturalWidth<=120){el.remove();if(TV)TV=TV.filter(function(v){return v.id!==el.dataset.vid;});}}
+ img.addEventListener('error',function(){el.remove();});img.addEventListener('load',ck);if(img.complete&&img.naturalWidth)ck();}
 function play(b){b.addEventListener('click',function(){var f=document.createElement('iframe');
 f.src='https://www.youtube-nocookie.com/embed/'+b.dataset.id+'?autoplay=1&rel=0';f.allow='autoplay; encrypted-media; picture-in-picture; fullscreen';
 f.allowFullscreen=true;f.title=b.getAttribute('aria-label')||'';b.replaceChildren(f);b.style.cursor='default';},{once:true});}
@@ -256,11 +259,11 @@ fetch('videos.json?v='+Date.now()).then(function(r){return r.json();}).then(func
   var g=document.getElementById('grid');
   longs.forEach(function(v,k){var t=clean(v.title);var a=document.createElement('article');a.className='vid';a.style.setProperty('--c',COLS[k%COLS.length]);
     a.innerHTML='<button class="thumb" data-id="'+esc(v.id)+'" aria-label="Assistir '+esc(t)+'"><img loading="lazy" src="'+thumb(v.id)+'" alt="'+esc(t)+'"><span class="play" aria-hidden="true"></span></button><div class="vinfo"><h3>'+esc(t)+'</h3></div>';
-    g.appendChild(a);play(a.querySelector('.thumb'));});
+    a.dataset.vid=v.id;g.appendChild(a);play(a.querySelector('.thumb'));vivo(a.querySelector('img'),a);});
   if(shorts.length){var s=document.getElementById('shorts');
     shorts.slice(0,8).forEach(function(v,k){var t=clean(v.title);var a=document.createElement('a');a.className='short';a.style.setProperty('--c',COLS[k%COLS.length]);
       a.href='https://www.youtube.com/shorts/'+v.id;a.target='_blank';a.rel='noopener';
-      a.innerHTML='<img loading="lazy" src="'+thumb(v.id)+'" alt="'+esc(t)+'"><span class="play" aria-hidden="true"></span><b>'+esc(t)+'</b>';s.appendChild(a);});
+      a.innerHTML='<img loading="lazy" src="'+thumb(v.id)+'" alt="'+esc(t)+'"><span class="play" aria-hidden="true"></span><b>'+esc(t)+'</b>';a.dataset.vid=v.id;s.appendChild(a);vivo(a.querySelector('img'),a);});
     document.getElementById('shorts-box').hidden=false;}
 });
 </script>
