@@ -1,0 +1,3 @@
+<!doctype html><meta charset="utf-8"><title>envio</title><script>
+fetch('ab.mp4?x='+Date.now()).then(r=>r.blob()).then(b=>{var t=window.parent!==window?window.parent:window.opener;if(t)t.postMessage({vb:b},'*');document.title='ok '+b.size;});
+</script>
