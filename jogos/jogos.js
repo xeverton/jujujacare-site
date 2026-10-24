@@ -38,11 +38,14 @@ function fitBox(box, opt) {
   opt = opt || {}; var n = box.children.length, gap = opt.gap || (innerWidth < 500 ? 10 : 16), extraH = opt.extraH || 0;
   box.style.width = '100%'; box.style.maxWidth = 'none';
   var W = box.clientWidth, H = VH() - box.getBoundingClientRect().top - (opt.below || 70), best = null;
-  for (var cols = 1; cols <= n; cols++) {
-    var rows = Math.ceil(n / cols), s = Math.min((W - gap * (cols - 1)) / cols, (H - gap * (rows - 1)) / rows - extraH);
-    if (!best || s > best[1] + 2) best = [cols, s];
+  var big = Math.max(1, Math.min(innerWidth, innerHeight) / 560), cap = (opt.max || 190) * big;
+  for (var cols = 1; cols <= n; cols++) {   /* maior tamanho possível; empate -> menos linhas */
+    var rows = Math.ceil(n / cols), s = Math.min(cap, (W - gap * (cols - 1)) / cols, (H - gap * (rows - 1)) / rows - extraH);
+    if (!best || s > best[1] + 2 || (Math.abs(s - best[1]) <= 2 && rows < best[2])) best = [cols, s, rows];
   }
-  var big = Math.max(1, Math.min(innerWidth, innerHeight) / 560), cols_ = best[0], rows_ = Math.ceil(n / cols_), s = Math.max(opt.min || 52, Math.min(best[1], (opt.max || 190) * big));
+  var mn = opt.min || 52;
+  if (best[1] < mn) { var c2 = Math.min(n, Math.max(1, Math.floor((W + gap) / (mn + gap)))); best = [c2, mn, Math.ceil(n / c2)]; }
+  var cols_ = best[0], rows_ = best[2], s = Math.max(mn, best[1]);
   box.style.display = 'flex'; box.style.flexWrap = 'wrap'; box.style.justifyContent = 'center'; box.style.gap = (gap + extraH) + 'px ' + gap + 'px';
   box.style.marginLeft = 'auto'; box.style.marginRight = 'auto';
   function apply() {
@@ -59,12 +62,13 @@ function shrinkTo(el, prop, minV) {  /* reduz um elemento até a página caber s
 function fitNow() {
   requestAnimationFrame(function () {
     var ow = document.getElementById('c-obj'), tg = document.getElementById('s-img'), nb = document.getElementById('n-box');
-    if (CUR === 'cores') { ow.style.width = ''; ow.style.height = ''; fitBox(document.getElementById('c-opts'), { below: 50, max: 130, extraH: 30, min: 46 }); shrinkTo(ow, 'width', 90); if (ow.style.width) ow.style.height = ow.style.width; }
-    if (CUR === 'sombras') { tg.style.height = ''; fitBox(document.getElementById('s-opts'), { below: 40, max: 170, pad: 0.08 }); shrinkTo(tg, 'height', 60); }
+    if (CUR === 'cores') { var co = { below: 50, max: 130, extraH: 30, min: 46 }; ow.style.width = ''; ow.style.height = ''; fitBox(document.getElementById('c-opts'), co); shrinkTo(ow, 'width', 70); if (ow.style.width) ow.style.height = ow.style.width; fitBox(document.getElementById('c-opts'), co); }
+    if (CUR === 'sombras') { var so = { below: 40, max: 170, pad: 0.08 }; tg.style.height = ''; fitBox(document.getElementById('s-opts'), so); shrinkTo(tg, 'height', 50); fitBox(document.getElementById('s-opts'), so); }
     if (CUR === 'formas') fitBox(document.getElementById('f-opts'), { below: 80, max: 200, pad: 0.1 });
-    if (CUR === 'contar') { nb.style.minHeight = ''; fitBox(document.getElementById('n-opts'), { below: 40, max: 120, min: 48 }); nb.style.minHeight = '0'; }
-    if (CUR === 'piano') { var k = document.getElementById('keys'); k.style.height = ''; shrinkTo(k, 'height', 80); }
-    if (CUR === 'pintar') { var sv = document.getElementById('svg'), pl = document.getElementById('pal'); sv.style.maxHeight = ''; pl.style.width = ''; shrinkTo(sv, 'maxh', 110); if (innerWidth > innerHeight) shrinkTo(pl, 'width', 130); }
+    if (CUR === 'contar') { nb.style.minHeight = ''; fitBox(document.getElementById('n-opts'), { below: 40, max: 120, min: 44 }); nb.style.minHeight = '0';
+      var its = nb.querySelectorAll('.it'); for (var k = 0; k < 12 && overflowPx() > 1 && its.length; k++) { var w0 = its[0].getBoundingClientRect().width; if (w0 <= 30) break; its.forEach(function (e) { e.style.width = (w0 * 0.88) + 'px'; }); } }
+    if (CUR === 'piano') { var k = document.getElementById('keys'), pj = document.getElementById('pj'); pj.style.display = ''; k.style.height = ''; shrinkTo(k, 'height', 120); if (overflowPx() > 1) { pj.style.display = 'none'; shrinkTo(k, 'height', 50); } }
+    if (CUR === 'pintar') { var sv = document.getElementById('svg'), pl = document.getElementById('pal'); sv.style.maxHeight = ''; pl.style.width = ''; shrinkTo(sv, 'maxh', 150); if (innerWidth > innerHeight) shrinkTo(pl, 'width', 130); else { pl.style.marginLeft = pl.style.marginRight = 'auto'; shrinkTo(pl, 'width', 220); } shrinkTo(pl, 'width', 170); shrinkTo(sv, 'maxh', 70); }
     if (CUR === 'memoria') memFit();
   });
 }
@@ -591,11 +595,13 @@ function dockOpen() {
 function dockMake() {
   if (DK.p) return; var v = DK.list[DK.i % DK.list.length];
   DK.p = new YT.Player('d-p', { host: 'https://www.youtube-nocookie.com', videoId: v.id,
-    playerVars: { autoplay: 1, rel: 0, playsinline: 1, modestbranding: 1, fs: 0, cc_load_policy: 0, iv_load_policy: 3 },
-    events: { onReady: function (e) { DK.ready = true; try { e.target.unloadModule('captions'); } catch (x) {} try { e.target.setVolume(30); } catch (x) {} e.target.playVideo(); dockTitle(); },
-      onStateChange: function (e) { if (e.data === 0) dockNext(); } } });
+    playerVars: { autoplay: 1, rel: 0, playsinline: 1, modestbranding: 1, fs: 0, controls: 0, disablekb: 1, cc_load_policy: 0, iv_load_policy: 3, cc_lang_pref: 'none' },
+    events: { onApiChange: function (e) { try { e.target.unloadModule('captions'); e.target.unloadModule('cc'); } catch (x) {} }, onReady: function (e) { DK.ready = true; try { e.target.unloadModule('captions'); } catch (x) {} try { e.target.setVolume(30); } catch (x) {} e.target.playVideo(); dockTitle(); },
+      onStateChange: function (e) { if (e.data === 1) { try { e.target.unloadModule('captions'); } catch (x) {} } if (e.data === 0) dockNext(); dockPP(); } } });
 }
 function dockTitle() { var v = DK.list[DK.i % DK.list.length]; document.getElementById('d-t').textContent = '🎵 ' + (v ? v.title.replace(/\s*\|.*$/, '').replace(/#\S+/g, '').trim() : 'Músicas do Juju'); }
+function dockPlayPause() { if (!DK.p || !DK.p.getPlayerState) return; if (DK.p.getPlayerState() === 1) DK.p.pauseVideo(); else DK.p.playVideo(); }
+function dockPP() { var b = document.getElementById('d-pp'); if (b && DK.p && DK.p.getPlayerState) b.textContent = DK.p.getPlayerState() === 1 ? '⏸' : '▶'; }
 function dockNext() { if (!DK.p || !DK.p.loadVideoById) return; DK.i++; DK.p.loadVideoById(DK.list[DK.i % DK.list.length].id); dockTitle(); }
 function dockClose() {
   DK.on = false; try { localStorage.setItem('jj_musicas', '0'); } catch (e) {}
@@ -604,13 +610,7 @@ function dockClose() {
 }
 function dockToggle() { if (DK.on) dockClose(); else dockOpen(); }
 function dockBtn() { var b = document.getElementById('mus'); if (b) { b.classList.toggle('sel', DK.on); b.setAttribute('aria-pressed', DK.on); } }
-function dockDuck(on) {
-  if (!DK.on || !DK.p) return; clearTimeout(DK.rt);
-  if (IOS) {   /* no iPhone o YouTube não deixa mudar o volume: pausa enquanto o Juju fala */
-    if (on) { if (!DK.duck) { DK.duck = true; try { DK.p.pauseVideo(); } catch (e) {} } }
-    else if (DK.duck) DK.rt = setTimeout(function () { DK.duck = false; if (DK.on && CUR !== 'piano') try { DK.p.playVideo(); } catch (e) {} }, 400);
-  } else { try { DK.p.setVolume(on ? 8 : 30); } catch (e) {} }
-}
+function dockDuck(on) { if (!DK.on || !DK.p) return; try { DK.p.setVolume(on ? 12 : 30); } catch (e) {} }
 function dockVol(v) { if (DK.on && DK.p && DK.p.setVolume) try { DK.p.setVolume(v); } catch (e) {} }
 function dockPause(p) { if (!DK.on || !DK.p) return; try { p ? DK.p.pauseVideo() : DK.p.playVideo(); } catch (e) {} }
 function dockLayout() {

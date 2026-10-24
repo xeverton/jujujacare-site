@@ -454,7 +454,7 @@ body.docked .fala:not(.on){transform:translate(-50%,calc(140% + var(--dockb,0px)
 <p id="w-rk" class="wrk"></p>
 <div class="row"><button class="btn grn" id="w-again">Jogar de novo</button><button class="btn" onclick="rkOpen(CUR)">🏆 Ranking</button><button class="btn" onclick="hideWin();go('menu')">Outros jogos</button></div></div></div>
 <canvas id="party"></canvas>
-<div id="dock" class="mini" aria-label="Músicas do Juju"><div class="dhead"><span id="d-t">🎵 Músicas do Juju</span><button onclick="dockBig()" id="d-big" aria-label="Aumentar">⤢</button><button onclick="dockNext()" aria-label="Próxima música">⏭</button><button onclick="dockClose()" aria-label="Fechar músicas">✕</button></div><div class="dframe"><div id="d-p"></div></div></div>
+<div id="dock" class="mini" aria-label="Músicas do Juju"><div class="dhead"><span id="d-t">🎵 Músicas do Juju</span><button onclick="dockBig()" id="d-big" aria-label="Aumentar">⤢</button><button onclick="dockPlayPause()" id="d-pp" aria-label="Pausar ou tocar">⏸</button><button onclick="dockNext()" aria-label="Próxima música">⏭</button><button onclick="dockClose()" aria-label="Fechar músicas">✕</button></div><div class="dframe"><div id="d-p"></div></div></div>
 </div>
 <div class="modal" id="musq"><div class="box"><img src="img/juju.webp" alt="" style="height:100px"><h2>Quer ouvir as músicas do Juju enquanto brinca? 🎵</h2>
 <div class="row" style="margin-top:12px"><button class="btn grn" onclick="musqResp(true)">🎵 Quero!</button><button class="btn" onclick="musqResp(false)">Agora não</button></div></div></div>
@@ -465,7 +465,7 @@ body.docked .fala:not(.on){transform:translate(-50%,calc(140% + var(--dockb,0px)
 <div class="modal" id="rank" onclick="if(event.target===this)rkClose()"><div class="box"><button class="mx" onclick="rkClose()" aria-label="Fechar">✕</button><h2 id="rk-t">🏆 Ranking</h2>
 <div class="rktabs" id="rk-tabs"></div><ol class="rklist" id="rk-list"></ol><p class="dica">Os 5 melhores de cada jogo ficam aqui para sempre!</p></div></div>
 
-<script src="jogos.js?v=21"></script>
+<script src="jogos.js?v=23"></script>
 <script>
 /* ---------- utilidades ---------- */
 var STARS=0;try{STARS=+localStorage.getItem('jj_stars')||0}catch(e){}
