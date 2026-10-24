@@ -45,7 +45,22 @@ if xml:
                     'short': '/shorts/' in link or '#short' in title.lower()})
 else:
     print('feed RSS indisponível; só confere os vídeos já listados')
-    out = atual
+    out = []
+
+# o feed do YouTube só traz os 15 vídeos mais recentes: junta com a lista já salva
+# e com os clipes das páginas de letra, para o player ter TODOS os vídeos
+ids = {v['id'] for v in out}
+for v in atual:
+    if v['id'] not in ids:
+        out.append(v); ids.add(v['id'])
+try:
+    for m in json.load(open('scripts/musicas.json', encoding='utf-8')):
+        if m['id'] not in ids:
+            out.append({'id': m['id'], 'title': m.get('titulo_yt') or m['nome'], 'date': m.get('upload', ''), 'short': False})
+            ids.add(m['id'])
+except Exception as e:
+    print('musicas.json:', e)
+out.sort(key=lambda v: v.get('date', ''), reverse=True)
 
 out = [v for v in out if existe(v['id'])]
 if out and out != atual:
