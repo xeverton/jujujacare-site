@@ -82,7 +82,7 @@ def head(title, desc, url, img, extra_ld):
 <style>{CSS}</style>
 <script type="application/ld+json">{ld}</script></head><body>
 <header><div class="w"><a href="/"><img src="{LOGO}" alt="Juju Jacaré" width="130" height="48"></a>
-<nav><a href="/musicas/">🎵 Letras</a><a href="/jogos/">🎮 Jogos</a><a href="/#clipes">🎬 Clipes</a></nav></div></header>'''
+<nav><a href="/colorir/">🖍️ Colorir</a><a href="/musicas/">🎵 Letras</a><a href="/jogos/">🎮 Jogos</a><a href="/#clipes">🎬 Clipes</a></nav></div></header>'''
 
 
 FOOT = '''<footer>© 2026 Juju Jacaré · Músicas infantis animadas · <a href="/privacidade.html">Política de Privacidade</a></footer>
@@ -93,7 +93,7 @@ for m in DADOS:
     m['letra_html'] = limpa_letra(m['letra'])
     m['letra_txt'] = '\n'.join(l for l in (re.sub(r'^\[(Juju|THETHECO|Thetheco)\]\s*', '', x.strip()) for x in m['letra'].split('\n')) if l and not l.startswith('['))
 os.makedirs(os.path.join(ROOT, 'musicas'), exist_ok=True)
-urls = [(SITE + '/', '1.0'), (SITE + '/jogos/', '0.9'), (SITE + '/musicas/', '0.9'), (SITE + '/privacidade.html', '0.2')]
+urls = [(SITE + '/', '1.0'), (SITE + '/jogos/', '0.9'), (SITE + '/musicas/', '0.9'), (SITE + '/colorir/', '0.9'), (SITE + '/privacidade.html', '0.2')]
 for m in DADOS:
     url = f"{SITE}/musicas/{m['slug']}/"
     thumb = f"https://i.ytimg.com/vi/{m['id']}/maxresdefault.jpg"
