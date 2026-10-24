@@ -70,6 +70,9 @@ function fitNow() {
     if (CUR === 'piano') { var k = document.getElementById('keys'), pj = document.getElementById('pj'); pj.style.display = ''; k.style.height = ''; shrinkTo(k, 'height', 120); if (overflowPx() > 1) { pj.style.display = 'none'; shrinkTo(k, 'height', 50); } }
     if (CUR === 'pintar') { var sv = document.getElementById('svg'), pl = document.getElementById('pal'); sv.style.maxHeight = ''; pl.style.width = ''; shrinkTo(sv, 'maxh', 150); if (innerWidth > innerHeight) shrinkTo(pl, 'width', 130); else { pl.style.marginLeft = pl.style.marginRight = 'auto'; shrinkTo(pl, 'width', 220); } shrinkTo(pl, 'width', 170); shrinkTo(sv, 'maxh', 70); }
     if (CUR === 'memoria') memFit();
+    if (CUR === 'mat') { var me = document.getElementById('m-eq'); fitBox(document.getElementById('m-opts'), { below: 40, max: 120, min: 44 });
+      var mi = me.querySelectorAll('.it'); mi.forEach(function (e) { e.style.width = ''; });
+      for (var q = 0; q < 14 && overflowPx() > 1 && mi.length; q++) { var w1 = mi[0].getBoundingClientRect().width; if (w1 <= 26) break; mi.forEach(function (e) { e.style.width = (w1 * 0.88) + 'px'; }); } }
   });
 }
 addEventListener('resize', fitNow); addEventListener('orientationchange', function () { setTimeout(fitNow, 300); });
@@ -264,6 +267,58 @@ function contarPick(v, b) {
   its.forEach(function (e, i) { setTimeout(function () { e.classList.add('cnt'); tone(500 + i * 70, 0.15, 'triangle', 0.16); }, i * dt); });
   setTimeout(function () { sOk(); addStar(); pts('contar', 10 * lv('contar')); party(60); falar('n' + nAns); var w = document.getElementById('n-word'); w.textContent = NOMES[nAns] + '!'; w.style.color = '#ff8c1a'; }, its.length * dt);
   setTimeout(function () { nRound++; if (nRound < N_TOTAL) contarRound(); else levelWin('contar', 'Muito bem!', 'Você sabe contar direitinho! 🔢', its[0].querySelector('img').src, contarStart); }, its.length * dt + 1700);
+}
+
+/* ---------- CONTINHAS DO JUJU (somar e tirar) ---------- */
+var MQ = { a: 0, b: 0, op: '+', ans: 0, round: 0, lock: false, obj: null }, M_TOTAL = 8;
+function matStart() {
+  catReady(function () {
+    MQ.round = 0; lvShow(); matRound(true);
+  });
+}
+function matRound(first) {
+  MQ.lock = false; var L = lv('mat'), op;
+  if (L <= 2) op = '+'; else if (L === 3) op = '-'; else op = Math.random() < 0.5 ? '+' : '-';
+  var max = L === 1 ? 5 : L === 3 ? 6 : 10, a, b;
+  if (op === '+') { do { a = 1 + Math.floor(Math.random() * (max - 1)); b = 1 + Math.floor(Math.random() * (max - a)); } while (a + b > max || (MQ.a === a && MQ.b === b)); }
+  else { do { a = 2 + Math.floor(Math.random() * (max - 1)); b = 1 + Math.floor(Math.random() * (a - 1)); } while (MQ.a === a && MQ.b === b); }
+  MQ.a = a; MQ.b = b; MQ.op = op; MQ.ans = op === '+' ? a + b : a - b; MQ.obj = rnd(CAT);
+  var src = oimg(MQ.obj), eq = document.getElementById('m-eq'); eq.innerHTML = '';
+  function grp(n, cls) { var g = document.createElement('div'); g.className = 'mg ' + (cls || ''); for (var i = 0; i < n; i++) { var d = document.createElement('div'); d.className = 'it'; d.style.animationDelay = (i * 0.08) + 's'; d.innerHTML = '<img src="' + src + '" alt=""><b></b>'; g.appendChild(d); } return g; }
+  if (op === '+') {
+    eq.appendChild(grp(a, 'ga'));
+    var s = document.createElement('div'); s.className = 'msign'; s.textContent = '+'; eq.appendChild(s);
+    eq.appendChild(grp(b, 'gb'));
+  } else {
+    var g = grp(a, 'ga'); eq.appendChild(g);
+    var its = g.querySelectorAll('.it');
+    setTimeout(function () { for (var i = a - b; i < a; i++) if (its[i]) its[i].classList.add('out'); tone(300, 0.2, 'sawtooth', 0.06); }, 900);
+  }
+  document.getElementById('m-txt').innerHTML = '<span class="na">' + a + '</span> ' + (op === '+' ? '+' : '−') + ' <span class="nb">' + b + '</span> = <span class="nq">?</span>';
+  document.getElementById('m-q').textContent = (op === '+' ? 'Quanto é? Junte tudo!' : 'Quantos ficam?') + ' (' + (MQ.round + 1) + '/' + M_TOTAL + ')';
+  document.getElementById('m-word').innerHTML = '&nbsp;';
+  var nOpt = L >= 4 ? 4 : 3, ops = [MQ.ans];
+  while (ops.length < nOpt) { var r = Math.max(op === '-' ? 0 : 1, Math.min(10, MQ.ans + Math.floor(Math.random() * 7) - 3)); if (ops.indexOf(r) < 0) ops.push(r); }
+  shuffle(ops); var nb = document.getElementById('m-opts'); nb.innerHTML = '';
+  ops.forEach(function (v, k) { var bt = document.createElement('button'); bt.textContent = v; bt.style.background = NCOL[(v + k) % NCOL.length]; bt.onclick = function () { matPick(v, bt); }; nb.appendChild(bt); });
+  fitNow();
+  var key = (op === '+' ? 'm_' : 's_') + a + '_' + b;
+  var wait = first ? (((FALAS.i_mat || [0, 5])[1]) * 1000 + 400) : 350;
+  if (first && op === '-' ) { setTimeout(function () { if (CUR === 'mat') falar('i_mat_s'); }, wait); wait += ((FALAS.i_mat_s || [0, 4])[1]) * 1000 + 300; }
+  setTimeout(function () { if (CUR === 'mat') falar(key); }, wait);
+}
+function matPick(v, b) {
+  if (MQ.lock) return; if (v !== MQ.ans) { shake(b); sNo(); fNo(); return; }
+  MQ.lock = true;
+  var its = [].slice.call(document.querySelectorAll('#m-eq .it')).filter(function (e) { return !e.classList.contains('out'); });
+  var dt = its.length > 6 ? 330 : 480;
+  its.forEach(function (e, i) { setTimeout(function () { e.querySelector('b').textContent = i + 1; e.classList.add('cnt'); tone(500 + i * 60, 0.14, 'triangle', 0.15); }, i * dt); });
+  setTimeout(function () {
+    sOk(); addStar(); pts('mat', 10 * lv('mat')); party(60); if (MQ.ans > 0) falar('n' + MQ.ans);
+    document.querySelector('#m-txt .nq').textContent = MQ.ans; document.querySelector('#m-txt .nq').classList.add('ok');
+    var w = document.getElementById('m-word'); w.textContent = (NOMES[MQ.ans] || MQ.ans) + '!'; w.style.color = '#3fa9f5';
+  }, its.length * dt);
+  setTimeout(function () { MQ.round++; if (MQ.round < M_TOTAL) matRound(false); else levelWin('mat', 'Muito bem!', 'Você é fera nas continhas! ➕➖', oimg(MQ.obj), matStart); }, its.length * dt + 1800);
 }
 
 /* ---------- JOGA NO LIXO ---------- */

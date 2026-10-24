@@ -350,5 +350,373 @@
 "rk_top": [
 "Uau! Você entrou no ranking dos campeões!",
 2.4
+],
+"i_mat": [
+"Vamos fazer continhas! Junte as figurinhas, conte tudo, e toque no número certo!",
+4.64
+],
+"i_mat_s": [
+"Agora é de tirar! Algumas figurinhas vão embora. Quantas ficam?",
+3.47
+],
+"m_1_1": [
+"Quanto é, um, mais um?",
+1.15
+],
+"m_1_2": [
+"Quanto é, um, mais dois?",
+1.52
+],
+"m_1_3": [
+"Quanto é, um, mais três?",
+1.58
+],
+"m_1_4": [
+"Quanto é, um, mais quatro?",
+1.51
+],
+"m_1_5": [
+"Quanto é, um, mais cinco?",
+1.33
+],
+"m_1_6": [
+"Quanto é, um, mais seis?",
+1.49
+],
+"m_1_7": [
+"Quanto é, um, mais sete?",
+1.58
+],
+"m_1_8": [
+"Quanto é, um, mais oito?",
+1.24
+],
+"m_1_9": [
+"Quanto é, um, mais nove?",
+1.4
+],
+"m_2_1": [
+"Quanto é, dois, mais um?",
+1.2
+],
+"m_2_2": [
+"Quanto é, dois, mais dois?",
+1.69
+],
+"m_2_3": [
+"Quanto é, dois, mais três?",
+1.69
+],
+"m_2_4": [
+"Quanto é, dois, mais quatro?",
+1.58
+],
+"m_2_5": [
+"Quanto é, dois, mais cinco?",
+1.52
+],
+"m_2_6": [
+"Quanto é, dois, mais seis?",
+1.67
+],
+"m_2_7": [
+"Quanto é, dois, mais sete?",
+1.48
+],
+"m_2_8": [
+"Quanto é, dois, mais oito?",
+1.45
+],
+"m_3_1": [
+"Quanto é, três, mais um?",
+1.24
+],
+"m_3_2": [
+"Quanto é, três, mais dois?",
+1.64
+],
+"m_3_3": [
+"Quanto é, três, mais três?",
+1.58
+],
+"m_3_4": [
+"Quanto é, três, mais quatro?",
+1.59
+],
+"m_3_5": [
+"Quanto é, três, mais cinco?",
+1.52
+],
+"m_3_6": [
+"Quanto é, três, mais seis?",
+1.63
+],
+"m_3_7": [
+"Quanto é, três, mais sete?",
+1.58
+],
+"m_4_1": [
+"Quanto é, quatro, mais um?",
+1.38
+],
+"m_4_2": [
+"Quanto é, quatro, mais dois?",
+1.78
+],
+"m_4_3": [
+"Quanto é, quatro, mais três?",
+1.87
+],
+"m_4_4": [
+"Quanto é, quatro, mais quatro?",
+1.83
+],
+"m_4_5": [
+"Quanto é, quatro, mais cinco?",
+1.75
+],
+"m_4_6": [
+"Quanto é, quatro, mais seis?",
+1.75
+],
+"m_5_1": [
+"Quanto é, cinco, mais um?",
+1.35
+],
+"m_5_2": [
+"Quanto é, cinco, mais dois?",
+1.73
+],
+"m_5_3": [
+"Quanto é, cinco, mais três?",
+1.72
+],
+"m_5_4": [
+"Quanto é, cinco, mais quatro?",
+1.68
+],
+"m_5_5": [
+"Quanto é, cinco, mais cinco?",
+1.68
+],
+"m_6_1": [
+"Quanto é, seis, mais um?",
+1.18
+],
+"m_6_2": [
+"Quanto é, seis, mais dois?",
+1.66
+],
+"m_6_3": [
+"Quanto é, seis, mais três?",
+1.55
+],
+"m_6_4": [
+"Quanto é, seis, mais quatro?",
+1.45
+],
+"m_7_1": [
+"Quanto é, sete, mais um?",
+1.42
+],
+"m_7_2": [
+"Quanto é, sete, mais dois?",
+1.87
+],
+"m_7_3": [
+"Quanto é, sete, mais três?",
+1.65
+],
+"m_8_1": [
+"Quanto é, oito, mais um?",
+1.45
+],
+"m_8_2": [
+"Quanto é, oito, mais dois?",
+1.7
+],
+"m_9_1": [
+"Quanto é, nove, mais um?",
+1.47
+],
+"s_2_1": [
+"Quanto é, dois, menos um?",
+1.34
+],
+"s_3_1": [
+"Quanto é, três, menos um?",
+1.46
+],
+"s_3_2": [
+"Quanto é, três, menos dois?",
+1.7
+],
+"s_4_1": [
+"Quanto é, quatro, menos um?",
+1.54
+],
+"s_4_2": [
+"Quanto é, quatro, menos dois?",
+1.91
+],
+"s_4_3": [
+"Quanto é, quatro, menos três?",
+1.92
+],
+"s_5_1": [
+"Quanto é, cinco, menos um?",
+1.42
+],
+"s_5_2": [
+"Quanto é, cinco, menos dois?",
+1.82
+],
+"s_5_3": [
+"Quanto é, cinco, menos três?",
+1.78
+],
+"s_5_4": [
+"Quanto é, cinco, menos quatro?",
+1.83
+],
+"s_6_1": [
+"Quanto é, seis, menos um?",
+1.21
+],
+"s_6_2": [
+"Quanto é, seis, menos dois?",
+1.56
+],
+"s_6_3": [
+"Quanto é, seis, menos três?",
+1.6
+],
+"s_6_4": [
+"Quanto é, seis, menos quatro?",
+1.59
+],
+"s_6_5": [
+"Quanto é, seis, menos cinco?",
+1.4
+],
+"s_7_1": [
+"Quanto é, sete, menos um?",
+1.38
+],
+"s_7_2": [
+"Quanto é, sete, menos dois?",
+1.89
+],
+"s_7_3": [
+"Quanto é, sete, menos três?",
+1.88
+],
+"s_7_4": [
+"Quanto é, sete, menos quatro?",
+1.79
+],
+"s_7_5": [
+"Quanto é, sete, menos cinco?",
+1.64
+],
+"s_7_6": [
+"Quanto é, sete, menos seis?",
+1.7
+],
+"s_8_1": [
+"Quanto é, oito, menos um?",
+1.61
+],
+"s_8_2": [
+"Quanto é, oito, menos dois?",
+1.81
+],
+"s_8_3": [
+"Quanto é, oito, menos três?",
+1.89
+],
+"s_8_4": [
+"Quanto é, oito, menos quatro?",
+1.86
+],
+"s_8_5": [
+"Quanto é, oito, menos cinco?",
+1.78
+],
+"s_8_6": [
+"Quanto é, oito, menos seis?",
+1.74
+],
+"s_8_7": [
+"Quanto é, oito, menos sete?",
+1.82
+],
+"s_9_1": [
+"Quanto é, nove, menos um?",
+1.39
+],
+"s_9_2": [
+"Quanto é, nove, menos dois?",
+1.81
+],
+"s_9_3": [
+"Quanto é, nove, menos três?",
+1.86
+],
+"s_9_4": [
+"Quanto é, nove, menos quatro?",
+1.94
+],
+"s_9_5": [
+"Quanto é, nove, menos cinco?",
+1.68
+],
+"s_9_6": [
+"Quanto é, nove, menos seis?",
+1.63
+],
+"s_9_7": [
+"Quanto é, nove, menos sete?",
+1.71
+],
+"s_9_8": [
+"Quanto é, nove, menos oito?",
+1.69
+],
+"s_10_1": [
+"Quanto é, dez, menos um?",
+1.46
+],
+"s_10_2": [
+"Quanto é, dez, menos dois?",
+1.78
+],
+"s_10_3": [
+"Quanto é, dez, menos três?",
+1.55
+],
+"s_10_4": [
+"Quanto é, dez, menos quatro?",
+1.61
+],
+"s_10_5": [
+"Quanto é, dez, menos cinco?",
+1.6
+],
+"s_10_6": [
+"Quanto é, dez, menos seis?",
+1.57
+],
+"s_10_7": [
+"Quanto é, dez, menos sete?",
+1.65
+],
+"s_10_8": [
+"Quanto é, dez, menos oito?",
+1.64
+],
+"s_10_9": [
+"Quanto é, dez, menos nove?",
+1.66
 ]
 }
