@@ -596,7 +596,7 @@ function dockMake() {
   if (DK.p) return; var v = DK.list[DK.i % DK.list.length];
   DK.p = new YT.Player('d-p', { host: 'https://www.youtube-nocookie.com', videoId: v.id,
     playerVars: { autoplay: 1, rel: 0, playsinline: 1, modestbranding: 1, fs: 0, controls: 0, disablekb: 1, cc_load_policy: 0, iv_load_policy: 3, cc_lang_pref: 'none' },
-    events: { onApiChange: function (e) { try { e.target.unloadModule('captions'); e.target.unloadModule('cc'); } catch (x) {} }, onReady: function (e) { DK.ready = true; try { e.target.unloadModule('captions'); } catch (x) {} try { e.target.setVolume(30); } catch (x) {} e.target.playVideo(); dockTitle(); },
+    events: { onApiChange: function (e) { try { e.target.unloadModule('captions'); e.target.unloadModule('cc'); } catch (x) {} }, onReady: function (e) { DK.ready = true; try { e.target.unloadModule('captions'); } catch (x) {} try { e.target.setVolume(15); } catch (x) {} e.target.playVideo(); dockTitle(); },
       onStateChange: function (e) { if (e.data === 1) { try { e.target.unloadModule('captions'); } catch (x) {} } if (e.data === 0) dockNext(); dockPP(); } } });
 }
 function dockTitle() { var v = DK.list[DK.i % DK.list.length]; document.getElementById('d-t').textContent = '🎵 ' + (v ? v.title.replace(/\s*\|.*$/, '').replace(/#\S+/g, '').trim() : 'Músicas do Juju'); }
@@ -610,7 +610,7 @@ function dockClose() {
 }
 function dockToggle() { if (DK.on) dockClose(); else dockOpen(); }
 function dockBtn() { var b = document.getElementById('mus'); if (b) { b.classList.toggle('sel', DK.on); b.setAttribute('aria-pressed', DK.on); } }
-function dockDuck(on) { if (!DK.on || !DK.p) return; try { DK.p.setVolume(on ? 12 : 30); } catch (e) {} }
+function dockDuck(on) { if (!DK.on || !DK.p) return; try { DK.p.setVolume(on ? 5 : 15); } catch (e) {} }
 function dockVol(v) { if (DK.on && DK.p && DK.p.setVolume) try { DK.p.setVolume(v); } catch (e) {} }
 function dockPause(p) { if (!DK.on || !DK.p) return; try { p ? DK.p.pauseVideo() : DK.p.playVideo(); } catch (e) {} }
 function dockLayout() {
