@@ -6,9 +6,10 @@
   const n = new URLSearchParams(location.search).get('n') || 'video.mp4';
   try {
     const r = await fetch(u); const b = await r.blob();
-    if (window.opener) { window.opener.postMessage({jjRelay: true, name: n, blob: b}, '*'); document.body.textContent = 'ok ' + b.size; }
+    const T = window.opener || (window.parent !== window ? window.parent : null);
+    if (T) { T.postMessage({jjRelay: true, name: n, blob: b}, '*'); document.body.textContent = 'ok ' + b.size; }
     else document.body.textContent = 'sem opener';
-  } catch (e) { document.body.textContent = 'erro ' + e; if (window.opener) window.opener.postMessage({jjRelay: true, error: String(e)}, '*'); }
-  setTimeout(() => window.close(), 1500);
+  } catch (e) { document.body.textContent = 'erro ' + e; if (window.opener || window.parent !== window) (window.opener || window.parent).postMessage({jjRelay: true, error: String(e)}, '*'); }
+  if (window.opener) setTimeout(() => window.close(), 1500);
 })();
 </script>
