@@ -118,6 +118,8 @@ h1{font-size:clamp(30px,6vw,46px);line-height:1.05;text-align:center;margin:8px 
 .bub{position:absolute;border-radius:50%;border:3px solid rgba(255,255,255,.95);background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.95) 0 12%,rgba(255,255,255,.15) 13% 60%,rgba(160,220,255,.35));z-index:2;cursor:pointer;
  box-shadow:inset -6px -8px 14px rgba(155,93,229,.25),inset 6px 6px 12px rgba(255,111,181,.2);display:flex;align-items:center;justify-content:center;font-size:26px}
 .bub.pop{animation:bpop .25s forwards}
+.bfloat{position:absolute;z-index:4;transform:translateX(-50%);font-weight:800;font-size:24px;color:#fff;-webkit-text-stroke:1.5px #33204a;pointer-events:none;white-space:nowrap;animation:bfl .8s forwards}
+@keyframes bfl{to{transform:translate(-50%,-50px);opacity:0}}
 .bub.fade{transition:opacity .25s;opacity:0;pointer-events:none}
 @keyframes bpop{to{transform:scale(1.6);opacity:0}}
 
@@ -491,7 +493,7 @@ body.docked .fala:not(.on){transform:translate(-50%,calc(140% + var(--dockb,0px)
 <div class="modal" id="rank" onclick="if(event.target===this)rkClose()"><div class="box"><button class="mx" onclick="rkClose()" aria-label="Fechar">✕</button><h2 id="rk-t">🏆 Ranking</h2>
 <div class="rktabs" id="rk-tabs"></div><ol class="rklist" id="rk-list"></ol><p class="dica">Os 5 melhores de cada jogo ficam aqui para sempre!</p></div></div>
 
-<script src="jogos.js?v=26"></script>
+<script src="jogos.js?v=27"></script>
 <script>
 /* ---------- utilidades ---------- */
 var STARS=0;try{STARS=+localStorage.getItem('jj_stars')||0}catch(e){}

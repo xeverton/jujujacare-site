@@ -351,12 +351,15 @@ function lixoTap(b) {
 
 /* ---------- ESTOURA BOLHAS ---------- */
 var bT = null, bS = null, bCount = 0, bTime = 30, bRun = false, bGoal = 20;
-/* bolhasStart(): começa do zero (entrar no jogo / tentar de novo)
-   bolhasNext(): próximo nível — a pontuação continua somando */
-function bolhasStart(cont) {
+/* Pontuação por CAPACIDADE: cada nível é uma partida de 30 s com placar próprio (não soma entre níveis).
+   Ponto = valor da bolha × nível × combo. Combo sobe a cada 5 bolhas seguidas (até x5) e zera
+   quando uma bolha escapa ou quando toca fora da bolha. O ranking guarda a melhor partida. */
+var bCombo = 0;
+function bMult() { return Math.min(5, 1 + Math.floor(bCombo / 5)); }
+function bolhasStart() {
   bolhasStop(); catReady(function () {
     var bath = document.getElementById('bath'); bath.querySelectorAll('.bub').forEach(function (e) { e.remove(); });
-    var L = lv('bolhas'); bGoal = 15 + L * 5; bCount = 0; if (cont !== true) ptsReset('bolhas'); bTime = 30; bRun = true; bInfo(); lvShow();
+    var L = lv('bolhas'); bGoal = 15 + L * 5; bCount = 0; bCombo = 0; ptsReset('bolhas'); bTime = 30; bRun = true; bInfo(); lvShow();
     bS = setInterval(spawnBub, bSpawnMs(L));
     bT = setInterval(function () {
       bTime--; bInfo();
@@ -368,7 +371,7 @@ function bolhasStart(cont) {
     }, 1000);
   });
 }
-function bolhasNext() { bolhasStart(true); }
+function bolhasNext() { bolhasStart(); }
 function bolhasStop() { bRun = false; clearInterval(bT); clearInterval(bS); }
 function bInfo() { document.getElementById('b-cnt').textContent = '🫧 ' + bCount + ' / ' + bGoal; document.getElementById('b-time').textContent = '⏱ ' + Math.max(0, bTime); }
 /* velocidade: cada nível as bolhas sobem mais rápido e aparecem com mais frequência */
@@ -403,16 +406,24 @@ function spawnBub() {
   (function mv(t) {
     if (!d.parentNode || d.classList.contains('pop')) return; var u = (t - t0) / dur;
     var y = y0 - (y0 - yEnd) * u; /* para no placar, não passa por baixo dele */
-    if (u >= 1 || y <= yEnd) { d.classList.add('fade'); setTimeout(function () { d.remove(); }, 250); return; }
+    if (u >= 1 || y <= yEnd) { bCombo = 0; d.classList.add('fade'); setTimeout(function () { d.remove(); }, 250); return; }
     var x = Math.min(A.w - sz, Math.max(0, x0 + sway * Math.sin(u * 8 + ph)));
     d.style.top = y + 'px'; d.style.left = x + 'px'; requestAnimationFrame(mv);
   })(t0);
   d.addEventListener('pointerdown', function (e) {
     if (e && e.preventDefault) e.preventDefault();
     if (d.classList.contains('pop') || d.classList.contains('fade')) return; d.classList.add('pop'); tone(900 + Math.random() * 500, 0.07, 'sine', 0.16);
-    bCount += val; if (val > 1) { addStar(); sOk(); } bInfo(); pts('bolhas', val * L); setTimeout(function () { d.remove(); }, 260);
+    bCombo++; var m = bMult(), ganho = val * L * m;
+    bCount += val; if (val > 1) { addStar(); sOk(); } bInfo(); pts('bolhas', ganho); bFloat(bath, d, '+' + ganho + (m > 1 ? ' 🔥x' + m : '')); setTimeout(function () { d.remove(); }, 260);
   });
 }
+
+function bFloat(bath, d, txt) {
+  var f = document.createElement('div'); f.className = 'bfloat'; f.textContent = txt;
+  f.style.left = (parseFloat(d.style.left) + d.offsetWidth / 2) + 'px'; f.style.top = parseFloat(d.style.top) + 'px';
+  bath.appendChild(f); setTimeout(function () { f.remove(); }, 800);
+}
+(function () { var bath = document.getElementById('bath'); if (bath) bath.addEventListener('pointerdown', function (e) { if (bRun && !e.target.closest('.bub') && !e.target.closest('.bhud')) bCombo = 0; }); })();
 
 /* sem zoom no jogo: bloqueia pinça (iOS), toque duplo e zoom do navegador durante os jogos */
 (function () {
