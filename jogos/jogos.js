@@ -650,10 +650,14 @@ function pts(g, v) { if (!RK_GAMES[g]) return; SP[g] = (SP[g] || 0) + v; var e =
 function ptsReset(g) { SP[g] = 0; SP_SENT[g] = 0; var e = document.querySelector('[data-pts="' + g + '"]'); if (e) e.textContent = '🏅 0'; }
 function rkSend(g, score, cb) {
   score = Math.floor(score || SP[g] || 0); if (!USER || !RK_GAMES[g] || score <= 0 || score <= (SP_SENT[g] || 0)) { if (cb) cb(0); return; }
-  SP_SENT[g] = score;
+  var prev = SP_SENT[g] || 0; SP_SENT[g] = score;
   fetch(RK_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify({ g: g, s: score, u: USER.id, n: USER.n || '' }) })
-    .then(function (r) { return r.json(); }).then(function (d) { if (d && d.ok) { if (RK_CACHE) RK_CACHE[g] = d.rank; if (cb) cb(d.pos || 0); } else if (cb) cb(0); })
-    .catch(function () { SP_SENT[g] = 0; if (cb) cb(0); });
+    .then(function (r) { return r.json(); }).then(function (d) {
+      if (d && d.ok) { if (RK_CACHE) RK_CACHE[g] = d.rank; if (cb) cb(d.pos || 0); return; }
+      /* não ficou salvo: libera para reenviar (e tenta de novo sozinho se o servidor pediu calma) */
+      SP_SENT[g] = prev; if (d && d.err === 'devagar') setTimeout(function () { rkSend(g, score, cb); }, 5000); else if (cb) cb(0);
+    })
+    .catch(function () { SP_SENT[g] = prev; if (cb) cb(0); });
 }
 function rkWinNote(g, score) {
   var note = document.getElementById('w-rk'); note.textContent = ''; note.style.display = 'none';
