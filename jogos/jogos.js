@@ -351,41 +351,81 @@ function lixoTap(b) {
 
 /* ---------- ESTOURA BOLHAS ---------- */
 var bT = null, bS = null, bCount = 0, bTime = 30, bRun = false, bGoal = 20;
-function bolhasStart() {
+/* bolhasStart(): começa do zero (entrar no jogo / tentar de novo)
+   bolhasNext(): próximo nível — a pontuação continua somando */
+function bolhasStart(cont) {
   bolhasStop(); catReady(function () {
     var bath = document.getElementById('bath'); bath.querySelectorAll('.bub').forEach(function (e) { e.remove(); });
-    var L = lv('bolhas'); bGoal = 15 + L * 5; bCount = 0; ptsReset('bolhas'); bTime = 30; bRun = true; bInfo(); lvShow();
-    bS = setInterval(spawnBub, Math.max(260, 560 - L * 40));
+    var L = lv('bolhas'); bGoal = 15 + L * 5; bCount = 0; if (cont !== true) ptsReset('bolhas'); bTime = 30; bRun = true; bInfo(); lvShow();
+    bS = setInterval(spawnBub, bSpawnMs(L));
     bT = setInterval(function () {
       bTime--; bInfo();
       if (bTime <= 0) {
         bolhasStop();
-        if (bCount >= bGoal) levelWin('bolhas', 'Que banho divertido!', 'Você estourou ' + bCount + ' bolhas! 🫧', 'img/juju.webp', bolhasStart);
+        if (bCount >= bGoal) levelWin('bolhas', 'Que banho divertido!', 'Você estourou ' + bCount + ' bolhas! 🫧', 'img/juju.webp', bolhasNext);
         else { showWin('Quase lá!', 'Você estourou ' + bCount + ' de ' + bGoal + ' bolhas. Tenta de novo! 🫧', 'img/juju.webp', bolhasStart); setTimeout(function () { rkWinNote('bolhas'); }, 50); }
       }
     }, 1000);
   });
 }
+function bolhasNext() { bolhasStart(true); }
 function bolhasStop() { bRun = false; clearInterval(bT); clearInterval(bS); }
 function bInfo() { document.getElementById('b-cnt').textContent = '🫧 ' + bCount + ' / ' + bGoal; document.getElementById('b-time').textContent = '⏱ ' + Math.max(0, bTime); }
+/* velocidade: cada nível as bolhas sobem mais rápido e aparecem com mais frequência */
+function bSpawnMs(L) { return Math.max(240, 620 - (L - 1) * 45); }
+function bRiseMs(L) { return Math.max(1500, 5200 - (L - 1) * 380) * (0.85 + Math.random() * 0.3); }
+/* área realmente visível do banho: abaixo do placar e acima do player de música / fim da tela */
+function bArea(bath) {
+  var br = bath.getBoundingClientRect(), hud = bath.querySelector('.bhud');
+  var top = hud ? hud.offsetTop + hud.offsetHeight + 4 : 0;
+  var bottom = Math.min(bath.clientHeight, (window.innerHeight || bath.clientHeight) - br.top);
+  return { br: br, top: top, bottom: bottom, w: bath.clientWidth };
+}
 function spawnBub() {
   if (!bRun || document.getElementById('bolhas').className.indexOf('on') < 0) return; var bath = document.getElementById('bath'), L = lv('bolhas');
-  var d = document.createElement('div'); d.className = 'bub'; var sz = 50 + Math.random() * 60; d.style.width = d.style.height = sz + 'px';
-  d.style.left = (Math.random() * (bath.clientWidth - sz)) + 'px'; d.style.top = bath.clientHeight + 'px';
+  var A = bArea(bath); if (A.bottom - A.top < 120) return;
+  var sz = Math.round(Math.min(50 + Math.random() * 60, A.w * 0.3)), sway = 18;
+  var x0 = sway + Math.random() * Math.max(1, A.w - sz - 2 * sway), y0 = A.bottom;
+  /* se o player de música estiver por cima dessa coluna, a bolha nasce acima dele */
+  var dock = document.getElementById('dock');
+  if (dock && dock.classList.contains('on')) {
+    var dr = dock.getBoundingClientRect(), bx = A.br.left + x0;
+    if (dr.width && bx + sz + sway > dr.left && bx - sway < dr.right && dr.top - A.br.top < y0) y0 = dr.top - A.br.top;
+  }
+  if (y0 - A.top < sz + 60) return;
+  var d = document.createElement('div'); d.className = 'bub'; d.style.width = d.style.height = sz + 'px';
+  d.style.left = x0 + 'px'; d.style.top = y0 + 'px';
   var r = Math.random(), val = 1;
   if (r < 0.06) { d.classList.add('gold'); d.innerHTML = '<span>⭐</span>'; val = 5; }
   else if (r < 0.26) { var o = rnd(CAT.filter(function (x) { return x.k === 'bicho' || x.k === 'fruta' || x.k === 'brinquedo'; })); d.innerHTML = '<img src="' + oimg(o) + '" alt="">'; val = 3; }
   bath.appendChild(d);
-  var dur = Math.max(2600, 4800 - L * 250) + Math.random() * 2500, t0 = performance.now(), x0 = parseFloat(d.style.left), ph = Math.random() * 6;
+  var dur = bRiseMs(L), t0 = performance.now(), ph = Math.random() * 6, yEnd = A.top;
   (function mv(t) {
-    if (!d.parentNode || d.classList.contains('pop')) return; var u = (t - t0) / dur; if (u >= 1) { d.remove(); return; }
-    d.style.top = (bath.clientHeight * (1 - u) - sz * u) + 'px'; d.style.left = (x0 + 18 * Math.sin(u * 8 + ph)) + 'px'; requestAnimationFrame(mv);
+    if (!d.parentNode || d.classList.contains('pop')) return; var u = (t - t0) / dur;
+    var y = y0 - (y0 - yEnd) * u; /* para no placar, não passa por baixo dele */
+    if (u >= 1 || y <= yEnd) { d.classList.add('fade'); setTimeout(function () { d.remove(); }, 250); return; }
+    var x = Math.min(A.w - sz, Math.max(0, x0 + sway * Math.sin(u * 8 + ph)));
+    d.style.top = y + 'px'; d.style.left = x + 'px'; requestAnimationFrame(mv);
   })(t0);
-  d.addEventListener('pointerdown', function () {
-    if (d.classList.contains('pop')) return; d.classList.add('pop'); tone(900 + Math.random() * 500, 0.07, 'sine', 0.16);
-    bCount += val; if (val > 1) { addStar(); sOk(); } bInfo(); pts('bolhas', val); setTimeout(function () { d.remove(); }, 260);
+  d.addEventListener('pointerdown', function (e) {
+    if (e && e.preventDefault) e.preventDefault();
+    if (d.classList.contains('pop') || d.classList.contains('fade')) return; d.classList.add('pop'); tone(900 + Math.random() * 500, 0.07, 'sine', 0.16);
+    bCount += val; if (val > 1) { addStar(); sOk(); } bInfo(); pts('bolhas', val * L); setTimeout(function () { d.remove(); }, 260);
   });
 }
+
+/* sem zoom no jogo: bloqueia pinça (iOS), toque duplo e zoom do navegador durante os jogos */
+(function () {
+  var isField = function (t) { return t && /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName); };
+  ['gesturestart', 'gesturechange', 'gestureend'].forEach(function (ev) { document.addEventListener(ev, function (e) { e.preventDefault(); }, { passive: false }); });
+  document.addEventListener('dblclick', function (e) { if (!isField(e.target)) e.preventDefault(); }, { passive: false });
+  var lastEnd = 0;
+  document.addEventListener('touchend', function (e) { var n = Date.now(); if (n - lastEnd < 350 && !isField(e.target)) e.preventDefault(); lastEnd = n; }, { passive: false });
+  document.addEventListener('touchmove', function (e) { if (e.touches && e.touches.length > 1) e.preventDefault(); }, { passive: false });
+  document.addEventListener('wheel', function (e) { if (e.ctrlKey) e.preventDefault(); }, { passive: false });
+  var bath = document.getElementById('bath');
+  if (bath) { bath.addEventListener('touchstart', function (e) { if (!isField(e.target)) e.preventDefault(); }, { passive: false }); bath.addEventListener('touchmove', function (e) { e.preventDefault(); }, { passive: false }); }
+})();
 
 /* ---------- CADÊ A SOMBRA? ---------- */
 var sq = [], si = 0, sLock = false, S_TOTAL = 8;
